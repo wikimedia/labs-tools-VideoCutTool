@@ -19,6 +19,10 @@
   color: white;
 }
 
+.Content {
+  min-height: 80vh;
+}
+
 .App-link {
   color: #61dafb;
 }
