@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Typography, Layout, Upload, InputNumber, Icon, Col, Row, Button, Anchor } from 'antd';
+import { Input, Typography, Layout, Upload, InputNumber, Icon, Col, Row, Button, Anchor } from 'antd';
 import "antd/dist/antd.css";
 import './App.css';
 
@@ -31,15 +31,15 @@ class App extends Component {
                 <Row gutter={10}>
                   <Col span={6}>
                     <Typography.Text strong style={{paddingRight: '0.2rem'}}>From</Typography.Text>
-                    <InputNumber min={100} max={5000} step={1} />
+                    <Input placeholder="00:00:00" />
                   </Col>
                   <Col span={6}>
                     <Typography.Text strong style={{paddingRight: '0.2rem'}}>To</Typography.Text>
-                    <InputNumber min={100} max={5000} step={0.1}/>
+                    <Input placeholder="00:00:00" />
                   </Col>
                 </Row>
                 <h2></h2>
-                <Button type="primary">Submit</Button>
+                <Button type="primary">Trim</Button>
               </Col>
             </Row>
           </Content>
