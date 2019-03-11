@@ -2,6 +2,10 @@
   "name": "video-crop",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "7.10.1",
+    "npm": "6.2.0"
+  },
   "dependencies": {
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
