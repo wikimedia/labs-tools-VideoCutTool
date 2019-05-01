@@ -1,3 +1,5 @@
+![demo.gif](https://github.com/gopavasanth/VideoCutTool/blob/Express_backend/demo.gif)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
