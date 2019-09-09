@@ -4,13 +4,13 @@
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  height: 80vmin;
   pointer-events: none;
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,8 +19,12 @@
   color: white;
 }
 
+body{
+ height:100%
+}
+
 .Content {
-  min-height: 80vh;
+  height: 80vh;
 }
 
 .App-link {
@@ -35,3 +39,79 @@
     transform: rotate(360deg);
   }
 }
+
+#mydiv {
+  position: absolute;
+  z-index: 9;
+  background-color: #f1f1f1;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+  resize: both;
+  overflow: auto;
+  opacity: 0.5;
+  width: 675px;
+  height: 350px;
+}
+
+#mydivheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #f1f1f1;
+  color: #fff;
+  resize: both;
+  overflow: none;
+}
+
+#RotatePlayerValue0 {
+  /* width: 754px;
+  height: 424px; */
+  padding: 20px;
+  width: 450px;
+  height: 300px;
+  position: relative;
+  transform: rotate(90deg);
+}
+
+#RotatePlayerValue1 {
+  /* width: 754px;
+  height: 424px; */
+  padding: 20px;
+  width: 450px;
+  height: 300px;
+  position: relative;
+  transform: rotate(180deg);
+}
+
+#RotatePlayerValue2 {
+  /* width: 754px;
+  height: 424px; */
+  padding: 20px;
+  width: 450px;
+  height: 300px;
+  position: relative;
+  transform: rotate(270deg);
+}
+
+#RotatePlayerValue3 {
+  /* width: 754px;
+  height: 424px; */
+  padding: 20px;
+  width: 450px;
+  height: 300px;
+  position: relative;
+  transform: rotate(360deg);
+}
+.rotate {
+  animation: rotate-keyframes 15s;
+ }
+ 
+ @keyframes rotate-keyframes {
+  from {
+   transform: rotate(0deg);
+  }
+ 
+  to {
+   transform: rotate(360deg);
+  }
+ }
