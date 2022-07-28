@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Duke of Wikipädia",
 			"Eduardo Addad de Oliveira",
 			"Eduardoaddad",
 			"Mariagarbin"
@@ -24,6 +25,7 @@
 	"notifications-not-existing": "O arquivo não existe no Wikimedia Commons",
 	"notifications-not-overwritable": "Você não pode substituir um vídeo de um dispositivo",
 	"notifications-title": "Notificação !",
+	"notifications-title-error": "Erro!",
 	"notifications-wait": "Seu vídeo está sendo processado. Aguarde até que o novo vídeo seja gerado",
 	"preview-text": "Pré-visualizar",
 	"preview-title": "Pré-visualize minhas alterações",
@@ -52,6 +54,9 @@
 	"task-uploaded-wikimedia-commons": "Enviado ao Wikimedia Commons",
 	"task-uploading": "enviando",
 	"task-uploading-wikimedia-commons": "Enviando ao Wikimedia Commons",
+	"trim-total-duration": "Duração total",
+	"theme-darkmode": "Escuro",
+	"theme-lightmode": "Claro",
 	"progress-bitrate": "Taxa de bits",
 	"progress-speed": "Velocidade",
 	"progress-time": "Tempo",
@@ -62,11 +67,11 @@
 	"upload-action-overwrite": "Substituir",
 	"upload-action-title": "Ação para um arquivo",
 	"upload-button": "Carregar para Commons",
-	"upload-comment": "Enviar comentário:",
+	"upload-comment": "Comentário",
 	"upload-edit-button": "Editar vídeo",
 	"upload-tab-upload-video": "Carregar vídeo",
 	"upload-tab-video-url": "URL do vídeo",
-	"upload-text": "Texto:",
+	"upload-text": "Texto",
 	"upload-upload-text": "Clique ou arraste o vídeo para esta área para carregá-lo",
 	"video-trim-from": "De",
 	"video-trim-more": "Adicionar mais",
