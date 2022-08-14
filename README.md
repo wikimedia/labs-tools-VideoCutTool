@@ -1,10 +1,10 @@
 An online tool to cut/trim videos in Wikimedia commons.
 
-See live demo at: https://videocuttool.wmcloud.org/
+See live demo at: <https://videocuttool.wmcloud.org/>
 
 ## Learn More
 
-You can learn more in the https://commons.wikimedia.org/wiki/Commons:VideoCutTool.
+You can learn more in the <https://commons.wikimedia.org/wiki/Commons:VideoCutTool>.
 
 ## Installation
 
@@ -12,7 +12,7 @@ You can learn more in the https://commons.wikimedia.org/wiki/Commons:VideoCutToo
 
 Go to:
 
-https://meta.wikimedia.org/wiki/Special:OAuthConsumerRegistration/propose.
+<https://meta.wikimedia.org/wiki/Special:OAuthConsumerRegistration/propose>.
 
 Create an application with the following grants:
 
@@ -24,13 +24,13 @@ Create an application with the following grants:
 
 - Upload, replace, and move files.
 
-If its for production, use call back URL as: https://videocuttool.wmcloud.org/api/auth/mediawiki/callback
+If its for production, use call back URL as: <https://videocuttool.wmcloud.org/api/auth/mediawiki/callback>
 
 Add the keys to server/config.js file under CLIENT_ID and CLIENT_SERCRET after you clone the repo.
 
 ### Connecting to Cloud VPS Servers
 
-Cloud VPS Horizon URL: https://horizon.wikimedia.org
+Cloud VPS Horizon URL: <https://horizon.wikimedia.org>
 
 videocuttool instance using `ssh -J <username>@primary.bastion.wmflabs.org <username>@videocuttool.videocuttool.eqiad1.wikimedia.cloud`
 
@@ -53,13 +53,18 @@ Install the following utilities
   - Connect to mongo using shell - `mongo`
   - `show databases`
   - `use video-cut-tool`
-  - `db.users.find({}, {"_id":0, username : 1})`
+  - `db.users.find({}, {"_id":0 })`
+- View the list of videos being edited/that have been processed
+  - Connect to mongo using shell - `mongo`
+  - `show databases`
+  - `use video-cut-tool`
+  - `db.videos.find({}, {"_id":0 })`
 
 ### Install Docker
 
 The tool uses docker to install and run everything with a single command.
 
-Install docker from this link: https://docs.docker.com/get-docker/
+Install docker from this link: <https://docs.docker.com/get-docker/>
 
 ### Clone Repo
 

@@ -88,6 +88,7 @@ function VideoProcess(props) {
 
 		const formData = new FormData();
 		formData.append('data', JSON.stringify(settingData));
+		formData.append('user', JSON.stringify(appState.user));
 		formData.append('file', file);
 
 		axios

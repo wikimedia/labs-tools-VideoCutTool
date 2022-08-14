@@ -3,10 +3,11 @@ import axios from 'axios';
 import { Worker } from 'worker_threads';
 import fs from 'fs';
 import FormData from 'form-data';
-
 import UserModel from '../models/User.js';
 import config from '../config.js';
 import utils from '../utils.js';
+import VideoModel from '../models/Video.js';
+import mongoose from 'mongoose';
 
 const __dirname = path.resolve();
 
@@ -129,9 +130,9 @@ export const uploadVideos = async (req, res) => {
 
 export const processVideo = async (req, res) => {
 	const io = req.app.get('socketio');
-	const socketID = req.app.get('socketid');
 
 	const uploadedFile = req.files?.file;
+	let videoIdResponse = '';
 	try {
 		let videoDownloadPath = null;
 		// Handle file process from upload
@@ -154,8 +155,36 @@ export const processVideo = async (req, res) => {
 			req.body.data
 		);
 
+		const user = JSON.parse(req.body.user);
+
+		await UserModel.findOneAndUpdate({ mediawikiId: user.mediawikiId }, user, { upsert: true });
+		const userDoc = await UserModel.findOne({ mediawikiId: user.mediawikiId });
+
+		const videoData = {
+			url: inputVideoUrl,
+			videoDownloadPath,
+			uploadedBy: userDoc._id,
+			status: 'downloading',
+			videoName,
+			settings: {
+				trims,
+				trimMode,
+				crop,
+				modified,
+				rotateValue
+			}
+		};
+
+		const videoDbObj = await VideoModel.create(videoData);
+		await videoDbObj.save();
+		await UserModel.findOneAndUpdate({ mediawikiId: user.mediawikiId }, { '$push': { videos: videoDbObj._id } });
+		const videoId = videoDbObj._id.toString();
+
+		videoIdResponse = JSON.stringify({ videoId: videoDbObj._id.toString() });
+
 		const worker = new Worker(path.resolve(__dirname, 'worker.js'), {
 			workerData: {
+				_id: videoId,
 				inputVideoUrl,
 				videoDownloadPath,
 				videoName,
@@ -171,7 +200,17 @@ export const processVideo = async (req, res) => {
 
 		// Listen for a message from worker
 		worker.on('message', payload => {
-			io.to(socketID).emit('progress:update', payload);
+			console.log(payload)
+			if (payload.type.includes('frontend')) {
+				io.to(req.app.get('socketid')).emit('progress:update', payload.data);
+			}
+			if (payload.data.status === 'processing')
+				VideoModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(payload.videoId) }, { status: payload.data.status, stage: payload.data.stage }).exec();
+			else if (payload.data.status === 'done')
+				VideoModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(payload.videoId) },
+					{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos }).exec();
+			else
+				VideoModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(payload.videoId) }, { status: payload.data.status, errorData: payload.data.error }).exec();
 		});
 
 		worker.on('error', error => {
@@ -181,7 +220,11 @@ export const processVideo = async (req, res) => {
 		console.log(err);
 		return res.status(400).send('Something went wrong');
 	}
-	res.writeHead(200).end('OK');
+
+	res.writeHead(200, {
+		'Content-Length': Buffer.byteLength(videoIdResponse),
+		'Content-Type': 'text/plain'
+	}).end(videoIdResponse);
 };
 
 export const downloadVideo = (req, res) => {

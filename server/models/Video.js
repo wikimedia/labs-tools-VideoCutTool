@@ -1,47 +1,58 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const trimSchema = new Schema({
 	from: Number,
 	to: Number
 });
 
-const SettingsSchema = new Schema({
-	mode: { type: String, enum: ['single', 'multiple'] },
-	trimVideo: Boolean,
-	disableAudio: Boolean,
-	cropVideo: Boolean,
+const cropSchema = new Schema({
+	width: Number,
+	height: Number,
+	x: Number,
+	y: Number
+});
 
-	out_width: Number,
-	out_height: Number,
-	x_value: Number,
-	y_value: Number,
+const modifiedSchema = new Schema({
+	mute: Boolean,
+	rotate: Boolean,
+	trim: Boolean,
+	crop: Boolean
+});
+
+const SettingsSchema = new Schema({
 	rotateValue: Number,
-	trims: [trimSchema]
+	trimMode: { type: String, enum: ['single', 'multiple'] },
+	trims: [trimSchema],
+	modified: modifiedSchema,
+	crop: cropSchema
 });
 
 const VideoSchema = new Schema({
 	url: String,
+	videoDownloadPath: String,
+	videoPublicPaths: [String],
 	uploadedBy: { type: Schema.Types.ObjectId, ref: 'User' },
 	videoName: String,
-	status: { type: String, enum: ['queued', 'processing', 'done', 'failed'] },
+	status: { type: String, enum: ['downloading', 'processing', 'done', 'error'] },
 	stage: {
 		type: String,
 		enum: [
+			'downloading',
+			'manipulations',
 			'trimming',
-			'concating',
-			'rotating',
-			'cropping',
-			'losing audio',
-			'converting video format'
+			'contacting',
+			'converting',
+			'done'
 		]
 	},
-	outputs: [String],
+	errorData: String,
 	settings: SettingsSchema,
 	created_at: { type: Number, default: Date.now }
 });
 
-VideoSchema.pre('save', function (next) {
+VideoSchema.pre('save', (next) => {
 	const now = Date.now();
 	this.updated_at = now;
 	if (!this.created_at) {

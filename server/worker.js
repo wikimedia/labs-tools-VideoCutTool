@@ -1,7 +1,9 @@
 import { parentPort, workerData } from 'worker_threads';
 import fs from 'fs';
-
+import VideoModel from './models/Video.js';
 import utils from './utils.js';
+import pkg from 'mongoose'
+const { Types } = pkg;
 
 async function process() {
 	const {
@@ -9,7 +11,7 @@ async function process() {
 		inputVideoUrl,
 		videoName,
 		videoDownloadPath,
-		settings: { trims, trimMode, crop, modified, rotateValue }
+		settings: { trims, trimMode, crop, modified, rotateValue },
 	} = workerData;
 
 	const videoId = _id;
@@ -93,11 +95,16 @@ async function process() {
 		// Delete downloaded video
 		utils.deleteFiles(videoPath);
 
-		return convertFormat;
+		return { videoId, convertFormat };
 	} catch (manipulationError) {
 		parentPort.postMessage({
-			status: 'error',
-			error: manipulationError
+			type: 'server-side-and-frontend-update',
+			videoId,
+			data: {
+				videoId,
+				status: 'error',
+				error: manipulationError
+			}
 		});
 		console.log('ERROR', manipulationError);
 		return manipulationError;
@@ -106,11 +113,15 @@ async function process() {
 
 process().then(async videos => {
 	// Move videos to public folder
-	const videosWithNewPaths = await utils.moveVideosToPublic(videos);
+	const videosWithNewPaths = await utils.moveVideosToPublic(videos.convertFormat);
 
-	// Update progress bar
 	parentPort.postMessage({
-		status: 'done',
-		videos: videosWithNewPaths
+		type: 'server-side-and-frontend-update',
+		videoId: videos.videoId,
+		data: {
+			videoId: videos.videoId,
+			status: 'done',
+			videos: videosWithNewPaths
+		}
 	});
 });

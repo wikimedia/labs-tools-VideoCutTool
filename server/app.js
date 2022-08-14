@@ -13,6 +13,7 @@ import { processVideo, uploadVideos, downloadVideo } from './controllers/router-
 import config from './config.js';
 import UserModel from './models/User.js';
 import auth from './auth.js';
+import VideoModel from './models/Video.js';
 
 function connectMongoDB(retry = 0) {
 	const option = {
@@ -57,7 +58,6 @@ app.use(
 app.use(logger('dev'));
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
-app.use(cookieParser());
 
 // Use CORS and File Upload modules here
 app.use(cors());
@@ -65,8 +65,7 @@ app.use(cors());
 app.use(
 	session({
 		secret: 'OAuth Session',
-		saveUninitialized: true,
-		resave: true
+		saveUninitialized: true
 	})
 );
 
@@ -77,6 +76,28 @@ app.get('/', (req, res) => {
 
 app.get('/api/', (req, res) => {
 	res.json({ data: 'Back-end is up' });
+});
+
+app.get('/api/user/:mediawiki_user_id', async (req, res) => {
+	const userId = req.params.mediawiki_user_id;
+	const userDoc = await UserModel.findOne({ mediawikiId: userId });
+	const videoList = userDoc.videos.map(videoIds => videoIds.toString());
+	res.send({
+		username: userDoc.username,
+		mediawiki_id: userId,
+		videos: videoList
+	});
+});
+
+app.get('/api/video/:video_id', async (req, res) => {
+	const { video_id } = req.params;
+	const videoData = await VideoModel.findOne(
+		{
+			_id: mongoose.Types.ObjectId(video_id)
+		},
+		{ _id: 0 }
+	);
+	res.send(videoData);
 });
 
 app.get('/api/error', (req, res) => {
