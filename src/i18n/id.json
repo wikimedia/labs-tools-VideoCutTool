@@ -3,7 +3,8 @@
 		"authors": [
 			"Akmaie Ajam",
 			"Naufal06",
-			"Sonic Speedy"
+			"Sonic Speedy",
+			"Veracious"
 		]
 	},
 	"404-go-back": "Masuk ke halaman utama",
@@ -24,6 +25,7 @@
 	"notifications-not-existing": "Berkas tidak ada di Wikimedia Commons",
 	"notifications-not-overwritable": "Anda tidak dapat menimpa video dari perangkat",
 	"notifications-title": "Notifikasi !",
+	"notifications-title-error": "Galat!",
 	"notifications-wait": "Video Anda sedang diproses. Harap tunggu sampai video baru dihasilkan",
 	"preview-text": "Pratayang",
 	"preview-title": "Pratayang perubahan Anda",
@@ -52,6 +54,9 @@
 	"task-uploaded-wikimedia-commons": "Unggah ke Wikimedia Commons",
 	"task-uploading": "mengunggah",
 	"task-uploading-wikimedia-commons": "mengunggah ke Wikimedia Commons",
+	"trim-total-duration": "Durasi total",
+	"theme-darkmode": "Gelap",
+	"theme-lightmode": "Terang",
 	"progress-bitrate": "Laju bit",
 	"progress-speed": "Kecepatan",
 	"progress-time": "Waktu",
@@ -62,11 +67,11 @@
 	"upload-action-overwrite": "Timpa",
 	"upload-action-title": "Tindakan untuk berkas",
 	"upload-button": "Unggah ke Commons",
-	"upload-comment": "Komentar pengunggahan:",
+	"upload-comment": "Komentar",
 	"upload-edit-button": "Sunting video",
 	"upload-tab-upload-video": "Unggah Video",
 	"upload-tab-video-url": "URL Video",
-	"upload-text": "Teks:",
+	"upload-text": "Teks",
 	"upload-upload-text": "Klik atau seret video ke area ini untuk mengunggah",
 	"video-trim-from": "Dari",
 	"video-trim-more": "Tambahkan Lebih Banyak",
