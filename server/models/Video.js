@@ -49,10 +49,11 @@ const VideoSchema = new Schema({
 	},
 	errorData: String,
 	settings: SettingsSchema,
+	updated_at: { type: Number, default: Date.now },
 	created_at: { type: Number, default: Date.now }
 });
 
-VideoSchema.pre('save', (next) => {
+VideoSchema.pre('save', function (next) {
 	const now = Date.now();
 	this.updated_at = now;
 	if (!this.created_at) {
