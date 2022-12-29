@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yupik"
+		]
+	},
+	"404-go-back": "Ouddsijddu",
+	"404-image-description": "404 Seidd ij käunnʼjam",
+	"languages": "Ǩiõl",
+	"login": "Rekisterõõđ / ǩeeʹrjtõõđ sizz",
+	"login-alert": "Ǩeeʹrjtõõđ sizz, jõs haaʹlääk âʹnškueʹtted VideoCutTool.",
+	"logout": "Ǩeeʹrjtõõđ åålǥas",
+	"notifications-title-error": "Vââʹǩǩ!",
+	"preview-text": "Ǩičč õõudǩiõʹtte",
+	"setting-audio": "Jaukkâd jiõn",
+	"step-result-choice-download": "Laadd",
+	"step-video-settings": "Videoasetõõzz",
+	"step-video-url": "Video URL-addrõs",
+	"undo": "Kååʹmet",
+	"upload-action-new-file": "Ruõkk ođđ teâttõssân",
+	"upload-edit-button": "Muuʹtt video",
+	"upload-tab-upload-video": "Ruõkk video",
+	"upload-tab-video-url": "Video URL-addrõs",
+	"upload-text": "Teʹkstt",
+	"welcome": "Tiõrv pueʹttem, $1"
+}
