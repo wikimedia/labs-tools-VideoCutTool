@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import { AppProvider } from './context';
 import Home from './components/home';
-import NotFound from './components/NotFound';
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -15,7 +15,7 @@ function App() {
 			<BrowserRouter>
 				<Routes>
 					<Route exact path={ENV_SETTINGS.path} element={<Home />} title="VideoCutTool" />
-					<Route path={ENV_SETTINGS.not_found_path} element={NotFound} />
+					<Route path={ENV_SETTINGS.not_found_path} element={<Navigate to="/" />} />
 				</Routes>
 			</BrowserRouter>
 		</AppProvider>
