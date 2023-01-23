@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Spinner, ProgressBar } from 'react-bootstrap';
 import { Message } from '@wikimedia/react.i18n';
 import '../style/progress-bar.css';
+import { AppContext } from '../context';
 
 function Progress(props) {
 	const { info } = props;
@@ -9,6 +10,15 @@ function Progress(props) {
 		return <Spinner animation="border" />;
 	}
 	const { bitrate, frame, progress: progressPercentage, speed, time } = info;
+
+	const { setHourTimer, setMinuteTimer, setSecondTimer } = useContext(AppContext);
+
+	useEffect(() => {
+		const timer = new Date();
+		setHourTimer(timer.getHours());
+		setMinuteTimer(timer.getMinutes());
+		setSecondTimer(timer.getSeconds());
+	}, []);
 
 	return (
 		<div id="progress-bar-wrapper">
