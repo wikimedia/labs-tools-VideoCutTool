@@ -27,6 +27,7 @@ function Results() {
 	const [videoState, setVideoState] = useState([]);
 	const [showProgress, setShowProgress] = useState(false);
 	const [encodeTimer,setEncodeTimer] = useState("");
+	const [wantTitle,setWantTitle] = useState('');
 
 	const updateVideoState = (newState, index) => {
 		const newVideoData = { ...videoState[index], ...newState };
@@ -98,6 +99,7 @@ function Results() {
 
 	const updateTitle = (index, title) => {
 		updateVideoState({ title }, index);
+		setWantTitle(title);
 	};
 
 	const updateUploadState = (index, status) => {
@@ -124,7 +126,8 @@ function Results() {
 				updateAppState({
 					notification: {
 						type: 'success',
-						messageId: 'task-uploaded-wikimedia-commons'
+						messageId: 'task-uploaded-wikimedia-commons',
+						text: `https://commons.wikimedia.org/wiki/File:${wantTitle}`
 					},
 					// Reset UI
 					current_step: 1,
