@@ -18,6 +18,16 @@ import VideoProcess from './VideoProcess';
 import Trim from './Trim';
 import VideoPlayer from './VideoPlayer';
 import { storeItem, getStoredItem, clearItems } from '../utils/storage';
+import { formatTime } from '../utils/time';
+
+/** utility function to convert string to Title case.
+ * @param {string} type, string to convert
+ * @returns {string} type, string after converting to title case
+ * Note-> Planned to migrate this function to another file in future
+ */
+function toTitleCase(type) {
+	return type.charAt(0).toUpperCase() + type.slice(1);
+}
 
 /**
  * Handle videos settings UI and actions
@@ -36,6 +46,9 @@ function VideoSettings(props) {
 
 	// Hash to reset trim
 	const trimHash = useRef(getStoredItem('video-trim-hash') || Date.now());
+	const [totalChanges, setTotalChanges] = useState(0);
+	const [changes, setChanges] = useState([]);
+	const [isModified, setIsModified] = useState(false);
 
 	const initialVideoManipulationData = {
 		crop_x: 0,
@@ -96,6 +109,20 @@ function VideoSettings(props) {
 		cloneSettings[currentSettingIndex] = { ...cloneSettings[currentSettingIndex], ...newSettings };
 		setSettings(cloneSettings);
 
+		// gets the settings where 	`modified=true`,
+		// to get number of features enabled
+
+		let modifiedSettings = cloneSettings.filter(setting => setting.modified);
+		if (modifiedSettings.length !== 0) {
+			setIsModified(true);
+			setChanges([
+				...modifiedSettings.map(obj => toTitleCase(obj.type) + ('values' in obj ? obj.values : ''))
+			]);
+			setTotalChanges(modifiedSettings.length);
+		} else {
+			setChanges([]);
+			setIsModified(false);
+		}
 		storeItem('video-settings', cloneSettings);
 
 		// Update current setting
@@ -203,7 +230,8 @@ function VideoSettings(props) {
 		});
 
 		updateSettings({
-			modified: newRotateValue !== 3
+			modified: newRotateValue !== 3,
+			values: `(${transformRotate}°)`
 		});
 	};
 
@@ -227,7 +255,10 @@ function VideoSettings(props) {
 		// Prevent changing setting attributes if crop is not selected
 		if (currentSetting.type === 'crop') {
 			const isCropModified = left === 0 && top === 0 && width === 100 && height === 100;
-			updateSettings({ modified: !isCropModified });
+			updateSettings({
+				modified: !isCropModified,
+				values: `(${cropValues.crop_height}x${cropValues.crop_width})`
+			});
 		}
 	};
 
@@ -252,10 +283,16 @@ function VideoSettings(props) {
 			trimMode.current = newValue;
 			isModeModified = newValue !== 'single' || trims.current !== null;
 		}
-
+		let trimValue = '';
+		for (let i = 0; i < newValue.length; i++) {
+			trimValue += `(${formatTime(newValue[i].from).split('.')[0]} - ${
+				formatTime(newValue[i].to).split('.')[0]
+			})`;
+		}
 		updateSettings(
 			{
-				modified: areTrimsModified || isModeModified
+				modified: areTrimsModified || isModeModified,
+				values: !isModeModified ? trimValue : undefined
 			},
 			'trim'
 		);
@@ -323,6 +360,11 @@ function VideoSettings(props) {
 					)}
 				</VideoPlayer>
 			</div>
+			{isModified && (
+				<div className="d-flex justify-content-center">
+					<Message id="enabled-features" placeholders={[changes.join()]} />
+				</div>
+			)}
 			<div className="video-manipulations mt-5">
 				<div className="video-manipulation-controls d-flex flex-column flex-md-row">
 					<ToggleButtonGroup
