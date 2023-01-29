@@ -22,10 +22,11 @@ const API_URL = ENV_SETTINGS.backend_url;
 
 function Results() {
 	const banana = useContext(BananaContext);
-	const { appState, updateAppState } = useContext(AppContext);
+	const { appState, updateAppState , hourTimer, minuteTimer, secondTimer,  setHourTimer, setMinuteTimer, setSecondTimer} = useContext(AppContext);
 	const { videos, user, video_details: videoDetails } = appState;
 	const [videoState, setVideoState] = useState([]);
 	const [showProgress, setShowProgress] = useState(false);
+	const [encodeTimer,setEncodeTimer] = useState("");
 
 	const updateVideoState = (newState, index) => {
 		const newVideoData = { ...videoState[index], ...newState };
@@ -67,6 +68,25 @@ function Results() {
 			};
 		});
 		setVideoState(videosWithDetails);
+	}, []);
+
+	useEffect(()=>{
+		const endTimer = new Date();
+		let endHour = (endTimer.getHours() - hourTimer);
+		let endMinute = (endTimer.getMinutes() - minuteTimer);
+		let endSecond = (endTimer.getSeconds() - secondTimer);
+		if(endSecond < 0){
+			endMinute=endMinute-1;
+			endSecond=60+endSecond;
+		}
+		if(endMinute < 0){
+			endHour=endHour-1;
+			endMinute=60+endMinute;
+		}
+		setEncodeTimer(`${endHour} hours: ${endMinute} minutes: ${endSecond} seconds`);
+		setHourTimer('');
+		setMinuteTimer('');
+		setSecondTimer('');
 	}, []);
 
 	const updateUploadType = (index, type) => {
@@ -159,6 +179,7 @@ function Results() {
 								</span>
 							</Button>
 						</div>
+						<p>Time Taken: {encodeTimer} </p>
 						<div
 							className={`video-results-body ${video.displayUploadToCommons === false && 'd-none'}`}
 						>

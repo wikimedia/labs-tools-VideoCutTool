@@ -60,9 +60,14 @@ export const AppProvider = props => {
 			notifications
 		});
 	};
+	const [timeToProcess,setTimeToProcess] = useState('');
 
+	const [hourTimer, setHourTimer] =useState('');
+	const [minuteTimer, setMinuteTimer] =useState('');
+	const [secondTimer, setSecondTimer] =useState('');
+	
 	return (
-		<AppContext.Provider value={{ appState, updateAppState, updateNotification }}>
+		<AppContext.Provider value={{ appState, updateAppState, updateNotification, hourTimer, setHourTimer, minuteTimer, setMinuteTimer, secondTimer, setSecondTimer }}>
 			<IntlProvider locale={appState.current_locale.locale} messages={getLanguagesFromDir()}>
 				{children}
 			</IntlProvider>
