@@ -1,5 +1,5 @@
 # Install node
-FROM node:14
+FROM node:16
 
 # Install FFMPEG library
 RUN apt update -y
@@ -16,12 +16,9 @@ COPY server/package-lock.json ./server
 
 
 # Run npm install - install the npm dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --loglevel verbose
 
-RUN cd server && npm install --legacy-peer-deps
-
-# Copy application source
-COPY . .
+RUN cd server && npm install --legacy-peer-deps --loglevel verbose
 
 EXPOSE 3000 4000 8081
 
