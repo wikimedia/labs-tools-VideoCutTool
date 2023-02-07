@@ -105,6 +105,7 @@ function Home() {
 						|
 						<a
 							target="_blank"
+							rel="noreferrer"
 							href="https://phabricator.wikimedia.org/project/view/4054/"
 							rel="noreferrer"
 						>
@@ -113,6 +114,7 @@ function Home() {
 						|
 						<a
 							target="_blank"
+							rel="noreferrer"
 							href="https://gerrit.wikimedia.org/r/admin/repos/labs/tools/VideoCutTool"
 							rel="noreferrer"
 						>

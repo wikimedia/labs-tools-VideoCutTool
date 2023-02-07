@@ -7,6 +7,7 @@ import logo from '../logo.svg';
 import { localesList } from '../utils/languages';
 import { AppContext } from '../context';
 import { socket } from '../utils/socket';
+import Authentication from './Authentication';
 
 function Sidebar(props) {
 	const { appState, updateAppState } = useContext(AppContext);
@@ -37,35 +38,6 @@ function Sidebar(props) {
 		setThemeMode(newTheme);
 	};
 
-	// Login redirect URL to the back-end server
-	const onLogin = () => {
-		PopupTools.popup(
-			`${apiUrl}/login`,
-			'Wiki Connect',
-			{ width: 1000, height: 600 },
-			(err, data) => {
-				if (!err) {
-					updateAppState({ user: data.user });
-					localStorage.setItem('user', JSON.stringify(data.user));
-					socket.emit('authenticate', data.user);
-				}
-			}
-		);
-	};
-
-	const onLogOut = () => {
-		localStorage.removeItem('user');
-		updateAppState({
-			user: null,
-			notification: {
-				type: 'info',
-				messageId: 'Logged out successfully'
-			}
-		});
-
-		document.querySelector('#logout-button').click();
-	};
-
 	const updateLocaleState = localeObj => {
 		localStorage.setItem('localeObj', JSON.stringify(localeObj));
 		localeName.current = localeObj.native_name;
@@ -75,25 +47,6 @@ function Sidebar(props) {
 	const closeSidebar = () => {
 		document.body.setAttribute('data-sidebar', 'hide');
 	};
-	const popover = (
-		<Popover id="popover-basic">
-			<Popover.Header as="h3">
-				<Message id="logout-confirm-text" />
-			</Popover.Header>
-			<Popover.Body>
-				<Button variant="primary" size="sm" onClick={onLogOut}>
-					<Message id="logout-confirm-yes" />
-				</Button>
-				<Button
-					variant="light"
-					size="sm"
-					onClick={() => document.querySelector('#logout-button').click()}
-				>
-					<Message id="logout-confirm-no" />
-				</Button>
-			</Popover.Body>
-		</Popover>
-	);
 
 	const localesListPopover = (
 		<Popover id="locales-popover">
@@ -139,33 +92,7 @@ function Sidebar(props) {
 				<Image alt="logo" src={logo} width="100" height="40" />
 				<h1 className="text-white">VideoCutTool</h1>
 			</div>
-			<div className="user-wrapper mt-4">
-				{!user && (
-					<Button variant="secondary" onClick={onLogin}>
-						Login
-					</Button>
-				)}
-
-				{user && (
-					<div className="d-flex flex-column align-items-center">
-						<span style={{ color: 'white' }}>
-							Welcome,
-							{' '}
-							<a
-								className="text-white font-weight-bold"
-								href={`https://commons.wikimedia.org/wiki/user:${user.username}`}
-							>
-								{user.username}
-							</a>
-						</span>
-						<OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popover}>
-							<Button className="mt-2" variant="success" id="logout-button" size="sm">
-								<Message id="logout" />
-							</Button>
-						</OverlayTrigger>
-					</div>
-				)}
-			</div>
+			<Authentication user={user} apiUrl={props.apiUrl} />
 			<div className="site-options">
 				<span className="darkmode-switch option-wrapper" onClick={onThemeSwitch}>
 					<span className="option-icon">

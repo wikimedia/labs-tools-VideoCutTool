@@ -60,6 +60,8 @@
 		"not op_mini all"
 	],
 	"devDependencies": {
+		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/react": "^13.4.0",
 		"eslint": "8.18.0",
 		"eslint-config-airbnb": "19.0.4",
 		"eslint-import-resolver-alias": "1.1.2",
@@ -70,6 +72,7 @@
 		"postcss-flexbugs-fixes": "^5.0.2",
 		"postcss-normalize": "^10.0.1",
 		"postcss-preset-env": "^7.7.1",
+		"react-test-renderer": "^18.2.0",
 		"stylelint": "14.9.1",
 		"stylelint-config-standard": "26.0.0",
 		"stylelint-scss": "4.2.0"

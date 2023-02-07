@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Home from './home';
+import Home from '../components/home';
 import { AppContext } from '../context';
 import { clearItems, getStoredItem } from '../utils/storage';
 import '@testing-library/jest-dom';
