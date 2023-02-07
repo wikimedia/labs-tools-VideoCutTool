@@ -386,30 +386,35 @@ $text-color: #b6e2fa;
 	.toast {
 		border-radius: 0;
 		display: grid;
-		grid-template-columns: 0.25fr 0.75fr;
 		border: 1px solid;
+		grid-template-areas: "icon header" "icon body" "icon footer";
 
 		.notification-icon {
-			grid-row: 1/3;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			font-size: 2em;
-			padding: 0.7em 0;
+			padding: 0.7em;
+			grid-area: icon;
 		}
 
 		.notification-header {
 			padding: 0.2em 1em;
 			display: flex;
 			align-items: center;
+			grid-area: header;
 		}
 
 		.notification-body {
 			padding: 0.2em 1em;
 			display: flex;
 			align-items: center;
+			grid-area: body;
 		}
 
+		.notification-footer{
+			grid-area: footer;
+		}
 		&[data-type='success'] {
 			$color: #28a745;
 			$text-color: darken($color, 30%);

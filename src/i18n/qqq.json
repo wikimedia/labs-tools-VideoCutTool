@@ -23,6 +23,8 @@
 	"logout-confirm-text": "Title of the logout confirmation popup",
 	"logout-confirm-yes": "Text of the \"Yes\" option on the logout confirmation popup\n{{Identical|Yes}}",
 	"new-video": "Text in front of a list of the url(s) of the uploaded video(s) \n* $1 - number of videos",
+	"notification-error-bug-call-to-action":"Bug reporting message",
+	"notifications-error-bug-report":"Platform to report bug",
 	"notifications-not-existing": "Title of tooltip when file is not existing",
 	"notifications-not-overwritable": "Title of tooltip when file is not existing",
 	"notifications-title": "Title of all notification popups",

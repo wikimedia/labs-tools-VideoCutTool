@@ -21,8 +21,9 @@ function Notification() {
 					show={notification.show}
 					data-type={notification.type}
 					// eslint-disable-next-line
-					{...(notification.autohide && notification.type === 'error' ? { autohide: false } :
-						{ delay: notification.delay, autohide: true })}
+					{...(notification.autohide && notification.type === 'error'
+						? { autohide: false }
+						: { delay: notification.delay, autohide: true })}
 				>
 					<div className="notification-icon">
 						{notification.type !== 'error' && <InfoCircleFill />}
@@ -33,30 +34,53 @@ function Notification() {
 							{notification.type !== 'error' && <Message id="notifications-title" />}
 							{notification.type === 'error' && <Message id="notifications-title-error" />}
 						</strong>
-						<button type="button" className="ms-2 mb-1 close" data-dismiss="notification-wrapper" aria-label="Close" onClick={() => onToastClose(index)}>
+						<button
+							type="button"
+							className="ms-2 mb-1 close"
+							data-dismiss="notification-wrapper"
+							aria-label="Close"
+							onClick={() => onToastClose(index)}
+						>
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div className="notification-body">
 						{!notification.messageId && notification.text}
 						{notification.messageId &&
-							notification.text &&
-							notification.text.startsWith('https://commons.wikimedia.org/wiki/File:') ? (
-								<a
-									className="link"
-									href={notification.text}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<Message id={notification.messageId} />
-								</a>
-							) : (
+						notification.text &&
+						notification.text.startsWith('https://commons.wikimedia.org/wiki/File:') ? (
+							<a
+								className="link"
+								href={notification.text}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								<Message id={notification.messageId} />
-							)}
+							</a>
+						) : (
+							<Message id={notification.messageId} />
+						)}
 						<div className="notification-timer">
 							<span />
 						</div>
 					</div>
+					{notification.type !== 'info' && (
+						<div className="notification-footer">
+							<Message
+								id="notification-error-bug-call-to-action"
+								placeholders={[
+									<a
+										href="https://phabricator.wikimedia.org/maniphest/task/edit/form/43/?projects=VideoCutTool"
+										target="_blank"
+										rel="noreferrer"
+									>
+										{' '}
+										<Message id="notifications-error-bug-report" />
+									</a>
+								]}
+							/>
+						</div>
+					)}
 				</Toast>
 			))}
 		</div>

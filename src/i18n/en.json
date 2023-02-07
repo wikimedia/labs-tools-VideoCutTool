@@ -14,6 +14,8 @@
 	"logout-confirm-text": "Are you sure?",
 	"logout-confirm-yes": "Yes",
 	"new-video": "Your New Video{{PLURAL:$1||s}} will be here:",
+	"notification-error-bug-call-to-action":"Not expecting this? Report this issue to $1",
+	"notifications-error-bug-report":"phabricator",
 	"notifications-not-existing": "File doesn't exist at Wikimedia Commons",
 	"notifications-not-overwritable": "You can't overwrite a video from a device",
 	"notifications-title": "Notification !",
