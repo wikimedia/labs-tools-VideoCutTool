@@ -161,26 +161,6 @@ function Results() {
 						<div className="video-results-header">
 							{video.title.length > 0 && <h5 title={video.title}>{video.title}</h5>}
 							{video.title.length === 0 && <h5>(No Title)</h5>}
-							<a
-								href={`${API_URL}/download/${video.path.replace('/public', '')}`}
-								className="btn btn-info me-4"
-							>
-								<Download />
-								<span className="button-title">
-									<Message id="step-result-choice-download" />
-								</span>
-							</a>
-
-							<Button
-								onClick={() => updateUploadState(index, !video.displayUploadToCommons)}
-								variant="info"
-							>
-								{video.displayUploadToCommons && <ChevronUp />}
-								{!video.displayUploadToCommons && <ChevronDown />}
-								<span className="button-title">
-									<Message id="step-result-choice-upload" />
-								</span>
-							</Button>
 						</div>
 						<p>Time Taken: {encodeTimer} </p>
 						<div
@@ -244,11 +224,17 @@ function Results() {
 
 									<Form.Control as="textarea" rows={15} defaultValue={video.text.join('\n')} />
 								</InputGroup>
-								<div className="upload-button d-flex justify-content-right">
+								<div className="upload-button d-flex justify-content-between">
 									<Button onClick={uploadVideos}>
 										<Upload />
 										<span className="button-title ms-3">
 											<Message id="upload-button" />
+										</span>
+									</Button>
+									<Button onClick={() => window.location.href = `${API_URL}/download/${video.path.replace('/public', '')}`}>
+										<Download />
+  										<span className="button-title ms-3">
+    										<Message id="step-result-choice-download" />
 										</span>
 									</Button>
 								</div>
