@@ -103,10 +103,6 @@ function Home() {
 							<span>Abdul Al-Hasany</span>
 						</a>{' '}
 						|
-						<a href="https://commons.wikimedia.org/wiki/Commons:VideoCutTool">
-							<span> Tutorial </span>
-						</a>
-						|
 						<a href="https://phabricator.wikimedia.org/project/view/4054/">
 							<span> Report issues </span>
 						</a>

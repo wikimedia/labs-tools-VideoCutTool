@@ -197,6 +197,7 @@ function Sidebar(props) {
 					</div>
 				))}
 			</div>
+			<Button variant="outline-secondary" onClick={()=> window.open('https://commons.wikimedia.org/wiki/Commons:VideoCutTool', '_blank', 'noreferrer')}>Documentation</Button>
 		</div>
 	);
 }
