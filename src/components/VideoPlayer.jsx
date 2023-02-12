@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { PlayFill, PauseFill } from 'react-bootstrap-icons';
 import { Spinner } from 'react-bootstrap';
 import { formatTime } from '../utils/time';
@@ -152,10 +152,8 @@ const VideoPlayer = forwardRef((props, forwardedRef) => {
 		window.addEventListener(events.POINTER_MOVE, onPlayHandleDrag);
 		window.addEventListener(events.POINTER_UP, onPlayHandleStop);
 
-		return function () {
-			window.removeEventListener(events.POINTER_MOVE, onPlayHandleDrag);
-			window.removeEventListener(events.POINTER_UP, onPlayHandleStop);
-		};
+		window.removeEventListener(events.POINTER_MOVE, onPlayHandleDrag);
+		window.removeEventListener(events.POINTER_UP, onPlayHandleStop);
 	});
 
 	const updateTimeOnClick = e => {

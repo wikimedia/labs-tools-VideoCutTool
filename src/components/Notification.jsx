@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Toast } from 'react-bootstrap';
 import { InfoCircleFill, ExclamationCircleFill } from 'react-bootstrap-icons';
 import { Message } from '@wikimedia/react.i18n';
@@ -20,8 +20,9 @@ function Notification() {
 					onClose={() => onToastClose(index)}
 					show={notification.show}
 					data-type={notification.type}
+					// eslint-disable-next-line
 					{...(notification.autohide && notification.type === 'error' ? { autohide: false } :
-					{ delay: notification.delay, autohide: true })}
+						{ delay: notification.delay, autohide: true })}
 				>
 					<div className="notification-icon">
 						{notification.type !== 'error' && <InfoCircleFill />}
@@ -37,7 +38,7 @@ function Notification() {
 						</button>
 					</div>
 					<div className="notification-body">
-						{notification.messageId && notification.text && notification.text.startsWith(`https://commons.wikimedia.org/wiki/File:`) ? <a className= "link" href={notification.text} target="_blank" rel="noopener noreferrer"><Message id={notification.messageId} /></a> : <Message id={notification.messageId} />}
+						{notification.messageId && notification.text && notification.text.startsWith('https://commons.wikimedia.org/wiki/File:') ? <a className="link" href={notification.text} target="_blank" rel="noopener noreferrer"><Message id={notification.messageId} /></a> : <Message id={notification.messageId} />}
 						{!notification.messageId && notification.text}
 						<div className="notification-timer">
 							<span />

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Spinner, ProgressBar } from 'react-bootstrap';
 import { Message } from '@wikimedia/react.i18n';
 import '../style/progress-bar.css';

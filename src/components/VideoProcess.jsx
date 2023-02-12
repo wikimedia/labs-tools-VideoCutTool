@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Message, BananaContext } from '@wikimedia/react.i18n';
 import axios from 'axios';
 import { AppContext } from '../context';
@@ -14,14 +14,14 @@ function VideoProcess(props) {
 	const { appState, updateAppState } = useContext(AppContext);
 
 	const { manipulations, trim, settings } = props;
-	const { video_url, file } = appState;
+	const { video_url: videoUrl, file } = appState;
 
 	const [progressInfo, setProgressInfo] = useState(null);
 	const [currentTask, setCurrentTask] = useState(banana.i18n('task-processing'));
 
 	const settingData = {
 		rotateValue: manipulations.rotate_value,
-		inputVideoUrl: video_url,
+		inputVideoUrl: videoUrl,
 		trimMode: trim.mode,
 		trims: trim.trims,
 		modified: settings.reduce((acc, setting) => {
@@ -98,7 +98,7 @@ function VideoProcess(props) {
 				}
 			})
 			.then(res => {
-				console.log('RES', res);
+				// console.log('RES', res);
 			})
 			.catch(error => {
 				const { response } = error;

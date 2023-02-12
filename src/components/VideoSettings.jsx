@@ -89,6 +89,7 @@ function VideoSettings(props) {
 	 * @param {string} type Type of setting (trim, mute .. etc)
 	 */
 	const updateSettings = (newSettings, type = currentSetting.type) => {
+		// eslint-disable-next-line
 		const storedSettings = maybeGetStoredSettings();
 		const cloneSettings = [...storedSettings];
 		const currentSettingIndex = settings.findIndex(setting => setting.type === type);

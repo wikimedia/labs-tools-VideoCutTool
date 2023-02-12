@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import '../DragResize.css';
 import { storeItem, getStoredItem } from '../utils/storage';
 
 function DragResize(props) {
-	const { rotateValue, cropUpdater, display, videoReady } = props;
+	const { rotateValue, cropUpdater, display, videoReady, boundsEl } = props;
 
 	// Set main variables
 	const isTouch = 'ontouchstart' in window;
@@ -31,10 +31,10 @@ function DragResize(props) {
 		}
 	});
 
-	// Helper methods to update state
-	const updateDragState = newDragState => {
-		setDragState({ ...dragState, ...newDragState });
-	};
+	// Helper methods
+	function roundAbs(number) {
+		return Math.round(Math.abs(number));
+	}
 
 	const updateBoxStyle = newBoxStyle => {
 		// Apply math.round and math.abs to each value
@@ -44,11 +44,12 @@ function DragResize(props) {
 
 		// Add px to each property
 		const newPositionWithPx = Object.keys(newBoxStyle).reduce((acc, key) => {
-			acc[key] = newBoxStyle[key] + 'px';
+			acc[key] = `${newBoxStyle[key]}px`;
 			return acc;
 		}, {});
 
 		// Merge values
+		// eslint-disable-next-line
 		const updateBoxStyle = {
 			full: {
 				...boxStyle.full,
@@ -63,21 +64,10 @@ function DragResize(props) {
 		storeItem('video-crop', updateBoxStyle);
 	};
 
-	// Helper methods
-	function roundAbs(number) {
-		return Math.round(Math.abs(number));
-	}
-
-	const updateResizeState = newResizeState => {
-		setResizeState({ ...resizeState, ...newResizeState });
-	};
-
-	const getPointerPosition = e => {
-		return {
-			clientX: isTouch ? e.changedTouches[0].clientX : e.clientX,
-			clientY: isTouch ? e.changedTouches[0].clientY : e.clientY
-		};
-	};
+	const getPointerPosition = e => ({
+		clientX: isTouch ? e.changedTouches[0].clientX : e.clientX,
+		clientY: isTouch ? e.changedTouches[0].clientY : e.clientY
+	});
 
 	// Toggle text selection for better UX when dragging/resizing
 	const disableSelection = disable => {
@@ -99,7 +89,7 @@ function DragResize(props) {
 			return;
 		}
 
-		const videoEl = document.querySelector(props.boundsEl);
+		const videoEl = document.querySelector(boundsEl);
 
 		// Convert Rect to object so it could be merged with other object using spread operator
 		const { top, right, bottom, left, width, height, x, y } = videoEl.getBoundingClientRect();
@@ -146,7 +136,7 @@ function DragResize(props) {
 		};
 
 		updateBoxStyle(updateBoxBounds);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [rotateValue, videoReady]);
 
 	// update parent state
@@ -179,16 +169,10 @@ function DragResize(props) {
 		initialY: 0
 	});
 
-	useEffect(() => {
-		window.addEventListener(events.POINTER_MOVE, onDrag);
-		window.addEventListener(events.POINTER_UP, onDragStop);
-
-		return () => {
-			window.removeEventListener(events.POINTER_MOVE, onDrag);
-			window.removeEventListener(events.POINTER_UP, onDragStop);
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dragState]);
+	// Helper methods to update state
+	const updateDragState = newDragState => {
+		setDragState({ ...dragState, ...newDragState });
+	};
 
 	const onDragStart = e => {
 		e.stopPropagation();
@@ -239,6 +223,15 @@ function DragResize(props) {
 		});
 	};
 
+	// Resize
+	const [resizeState, setResizeState] = useState({
+		resizing: false,
+		initialX: 0,
+		initialY: 0,
+		position: ''
+	});
+
+	// eslint-disable-next-line
 	const onDragStop = e => {
 		// e.stopPropagation is not working. Make sure drag is not fired
 		// when user is resizing
@@ -257,24 +250,20 @@ function DragResize(props) {
 		boxBounds.current = dragResizeEl.current.getBoundingClientRect();
 	};
 
-	// Resize
-	const [resizeState, setResizeState] = useState({
-		resizing: false,
-		initialX: 0,
-		initialY: 0,
-		position: ''
-	});
-
 	useEffect(() => {
-		window.addEventListener(events.POINTER_MOVE, onResize);
-		window.addEventListener(events.POINTER_UP, onResizeStop);
+		window.addEventListener(events.POINTER_MOVE, onDrag);
+		window.addEventListener(events.POINTER_UP, onDragStop);
 
 		return () => {
-			window.removeEventListener(events.POINTER_MOVE, onResize);
-			window.removeEventListener(events.POINTER_UP, onResizeStop);
+			window.removeEventListener(events.POINTER_MOVE, onDrag);
+			window.removeEventListener(events.POINTER_UP, onDragStop);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [resizeState]);
+		// eslint-disable-next-line
+	}, [dragState]);
+
+	const updateResizeState = newResizeState => {
+		setResizeState({ ...resizeState, ...newResizeState });
+	};
 
 	/**
 	 * Helper methods to update resize box to fit video bounds
@@ -393,6 +382,17 @@ function DragResize(props) {
 
 		boxBounds.current = dragResizeEl.current.getBoundingClientRect();
 	};
+
+	useEffect(() => {
+		window.addEventListener(events.POINTER_MOVE, onResize);
+		window.addEventListener(events.POINTER_UP, onResizeStop);
+
+		return () => {
+			window.removeEventListener(events.POINTER_MOVE, onResize);
+			window.removeEventListener(events.POINTER_UP, onResizeStop);
+		};
+		// eslint-disable-next-line
+	}, [resizeState]);
 
 	return (
 		<div

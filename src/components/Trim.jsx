@@ -203,12 +203,10 @@ function Trim(props) {
 	 * @param {object} e Event
 	 * @returns {object} X and Y positions
 	 */
-	const getPointerPosition = e => {
-		return {
-			clientX: isTouch ? e.changedTouches[0].clientX : e.clientX,
-			clientY: isTouch ? e.changedTouches[0].clientY : e.clientY
-		};
-	};
+	const getPointerPosition = e => ({
+		clientX: isTouch ? e.changedTouches[0].clientX : e.clientX,
+		clientY: isTouch ? e.changedTouches[0].clientY : e.clientY
+	});
 
 	// Restore saved items if exsits
 	useLayoutEffect(() => {
@@ -289,7 +287,7 @@ function Trim(props) {
 
 		// Start generating thumbnails
 		trimVideoEl.current.currentTime = 0.01;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [canplay]);
 
 	// Reset values if hash changes
@@ -308,7 +306,7 @@ function Trim(props) {
 
 		setTrimMode('single');
 
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+	// eslint-disable-next-line
 	}, [hash]);
 
 	/**
@@ -358,7 +356,7 @@ function Trim(props) {
 			mainVideoEl.current.removeEventListener('timeupdate', onMainVideoPlay);
 			window.removeEventListener(events.POINTER_DOWN, hideRangeControls);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [mainVideoEl.current, rangeAttr]);
 
 	/**
@@ -525,7 +523,7 @@ function Trim(props) {
 			window.removeEventListener(events.POINTER_MOVE, onDrag);
 			window.removeEventListener(events.POINTER_UP, onMoveStop);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [rangeAttr]);
 
 	/**
