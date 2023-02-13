@@ -4,6 +4,7 @@
 			"Akmaie Ajam",
 			"FF-11",
 			"FF11",
+			"McDutchie",
 			"Robby"
 		]
 	},
@@ -45,7 +46,7 @@
 	"task-processing": "Shows that the current task is \"processing\"",
 	"task-stage-downloading": "Shows that the current task is \"downloading\"",
 	"task-stage-manipulations": "Shows that the current task is in \"manipulations\" phase",
-	"task-stage-concating": "Shows that the current task is \"concating\"",
+	"task-stage-concating": "Shows that the current task is concatenating multiple videos into one",
 	"task-stage-converting_video_format": "Shows that the current task is \"converting video format\"",
 	"task-stage-cropping": "Shows that the current task is \"cropping\"",
 	"task-stage-losing_audio": "Shows that the current task is \"losing audio\"",
@@ -73,7 +74,7 @@
 	"upload-tab-video-url": "Title of the tab that lets the user select a video by url",
 	"upload-text": "Title of the text area where a text for the upload may be given",
 	"upload-upload-text": "Click or drag video to this area to upload",
-	"video-trim-from": "The trim from lable on a trim section",
+	"video-trim-from": "The trim from label on a trim section",
 	"video-trim-more": "Text of the button to add another trim",
 	"video-trim-more-concatenate": "Concatenate if multiple trims are added",
 	"video-trim-more-multiple": "Multiple videos if multiple trims are added",
