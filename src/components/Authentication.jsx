@@ -6,31 +6,26 @@ import { socket } from '../utils/socket';
 import { AppContext } from '../context';
 
 const onLogin = (apiUrl, updateAppState) => {
-    PopupTools.popup(
-        `${apiUrl}/login`,
-        'Wiki Connect',
-        { width: 1000, height: 600 },
-        (err, data) => {
-            if (!err) {
-            updateAppState({ user: data.user });
-            localStorage.setItem('user', JSON.stringify(data.user));
-            socket.emit('authenticate', data.user);
-            }
-        }
-    );
+	PopupTools.popup(`${apiUrl}/login`, 'Wiki Connect', { width: 1000, height: 600 }, (err, data) => {
+		if (!err) {
+			updateAppState({ user: data.user });
+			localStorage.setItem('user', JSON.stringify(data.user));
+			socket.emit('authenticate', data.user);
+		}
+	});
 };
 
-const onLogOut = (updateAppState) => {
-    localStorage.removeItem('user');
-    updateAppState({
-        user: null,
-        notification: {
-            type: 'info',
-            messageId: 'Logged out successfully'
-        }
-    });
+const onLogOut = updateAppState => {
+	localStorage.removeItem('user');
+	updateAppState({
+		user: null,
+		notification: {
+			type: 'info',
+			messageId: 'Logged out successfully'
+		}
+	});
 
-    document.querySelector('#logout-button').click();
+	document.querySelector('#logout-button').click();
 };
 
 function Authentication(props) {
@@ -66,15 +61,17 @@ function Authentication(props) {
 		</Popover>
 	);
 	return (
-		<div className="user-wrapper mt-4">
+		<div>
 			{!user && (
-				<Button variant="secondary" onClick={handleLogin} data-testid="login">
-					Login
-				</Button>
+				<div className="functionality-btn">
+					<Button variant="secondary" onClick={handleLogin} data-testid="login">
+						Login
+					</Button>
+				</div>
 			)}
 
 			{user && (
-				<div className="d-flex flex-column align-items-center">
+				<div className="functionality-btn">
 					<span style={{ color: 'white' }} data-testid="username">
 						Welcome,{' '}
 						<a
@@ -84,11 +81,13 @@ function Authentication(props) {
 							{user.username}
 						</a>
 					</span>
-					<OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popover}>
-						<Button className="mt-2" variant="success" id="logout-button" size="sm">
-							<Message id="logout" />
-						</Button>
-					</OverlayTrigger>
+					<span className="logout-btn">
+						<OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popover}>
+							<Button variant="success" id="logout-button" size="sm">
+								<Message id="logout" />
+							</Button>
+						</OverlayTrigger>
+					</span>
 				</div>
 			)}
 		</div>
