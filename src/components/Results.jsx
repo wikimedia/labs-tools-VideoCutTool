@@ -53,13 +53,32 @@ function Results() {
 			})
 			.split('/');
 
+		const user = localStorage.getItem('user');
+		const { username } = JSON.parse(user);
+		const actions = localStorage.getItem('video-settings');
+		const changes = JSON.parse(actions);
+		const rotation = localStorage.getItem('video-manipulations');
+		const rotationAmount = JSON.parse(rotation).rotate_value;
+		let subcomment = '';
+		if (changes[0].modified === true) subcomment += 'put on mute ';
+		if (changes[1].modified === true) {
+			if (rotationAmount === 0) subcomment += 'rotated right ';
+			else if (rotationAmount === 2) subcomment += 'rotated left ';
+			else subcomment += 'rotated upsidedown ';
+		}
+		if (changes[2].modified === true) subcomment += 'trimmed ';
+		if (changes[3].modified === true) subcomment += 'cropped ';
+		if (subcomment === '') {
+			subcomment += 'not edited ';
+		}
+		// To avoid merging actions into single words, add a space after each action name.
 		const videosWithDetails = videos.map((video, index) => {
 			const newTitle = title.split('.');
 			return {
 				path: video,
 				title: `${newTitle[0]}_edited_${index}.${newTitle[1]}`,
 				author,
-				comment,
+				comment: comment || `This video was ${subcomment.trimEnd()} and uploaded by ${username} with VideoCutTool`,
 				text: [
 					'=={{int:filedesc}}==',
 					`{{Information${comment?.length > 0 ? `\n|description=${comment}` : ''}`,
