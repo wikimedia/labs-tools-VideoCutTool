@@ -31,11 +31,11 @@ function convertTimeToMs(time) {
  */
 function deleteFiles(files) {
 	if (!Array.isArray(files)) {
-		fs.unlink(files, () => { });
+		fs.unlink(files, () => {});
 		return;
 	}
 	files.forEach(file => {
-		fs.unlink(file, () => { });
+		fs.unlink(file, () => {});
 	});
 }
 
@@ -55,7 +55,7 @@ function spawnAsyn(args, stage, videoId, resolveObj = {}, trimDuration = {}) {
 		videoId,
 		data: {
 			status: 'processing',
-			stage,
+			stage
 		}
 	});
 	return new Promise((resolve, reject) => {
@@ -331,7 +331,7 @@ async function convertVideoFormat({ videoId, videoPaths }) {
 				'-c:v',
 				'libvpx-vp9',
 				'-crf',
-				'30',
+				'23',
 				'-b:v',
 				'0',
 				'-b:a',
@@ -367,7 +367,6 @@ async function moveVideosToPublic(videoPaths) {
 	if (!Array.isArray(videoPaths)) {
 		videoPaths = [videoPaths];
 	}
-
 
 	videoPaths.forEach((video, index) => {
 		const videoName = `${currentDate}-${index}.${video.split('.').pop()}`;
