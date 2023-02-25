@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { Image, Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { CircleHalf, Globe2, X } from 'react-bootstrap-icons';
 import PopupTools from 'popup-tools';
@@ -14,6 +14,7 @@ function Sidebar(props) {
 
 	const [themeMode, setThemeMode] = useState('light');
 	const localeName = useRef(false);
+	const { apiUrl } = props;
 
 	useEffect(() => {
 		localeName.current = currentLocale.native_name;
@@ -38,7 +39,7 @@ function Sidebar(props) {
 	// Login redirect URL to the back-end server
 	const onLogin = () => {
 		PopupTools.popup(
-			`${props.apiUrl}/login`,
+			`${apiUrl}/login`,
 			'Wiki Connect',
 			{ width: 1000, height: 600 },
 			(err, data) => {
@@ -147,7 +148,8 @@ function Sidebar(props) {
 				{user && (
 					<div className="d-flex flex-column align-items-center">
 						<span style={{ color: 'white' }}>
-							Welcome,{' '}
+							Welcome,
+							{' '}
 							<a
 								className="text-white font-weight-bold"
 								href={`https://commons.wikimedia.org/wiki/user:${user.username}`}
@@ -197,7 +199,7 @@ function Sidebar(props) {
 					</div>
 				))}
 			</div>
-			<Button variant="outline-secondary" onClick={()=> window.open('https://commons.wikimedia.org/wiki/Commons:VideoCutTool', '_blank', 'noreferrer')}>Documentation</Button>
+			<Button variant="outline-secondary" onClick={() => window.open('https://commons.wikimedia.org/wiki/Commons:VideoCutTool', '_blank', 'noreferrer')}>Documentation</Button>
 		</div>
 	);
 }

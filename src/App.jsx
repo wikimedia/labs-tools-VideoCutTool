@@ -1,9 +1,7 @@
-import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import { AppProvider } from './context';
 import Home from './components/home';
-
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

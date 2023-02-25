@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap';
 import { List } from 'react-bootstrap-icons';
 
@@ -17,7 +17,7 @@ import '../style/dark-theme.css';
 
 const settings = require('../env')();
 
-const { backend_url } = settings;
+const { backend_url: backendUrl } = settings;
 
 socket.on('connect', () => {
 	console.log('check 2', socket.connected);
@@ -71,7 +71,7 @@ function Home() {
 
 	return (
 		<div id="main-container">
-			<Sidebar apiUrl={backend_url} />
+			<Sidebar apiUrl={backendUrl} />
 			<div id="content" className="flex-column">
 				<div className="logo-wrapper flex-sm-row">
 					<span className="menu-icon" onClick={toggleSidebar}>
@@ -86,7 +86,8 @@ function Home() {
 				<div className="footer-wrapper">
 					<div className="footer">
 						© 2019-
-						{new Date().getFullYear()}{' '}
+						{new Date().getFullYear()}
+						{' '}
 						<a
 							target="_blank"
 							rel="noreferrer"
@@ -94,14 +95,16 @@ function Home() {
 						>
 							<span>Gopa Vasanth</span>
 						</a>
-						,{' '}
+						,
+						{' '}
 						<a
 							target="_blank"
 							rel="noreferrer"
 							href="https://wikitech.wikimedia.org/wiki/User:Khr2003"
 						>
 							<span>Abdul Al-Hasany</span>
-						</a>{' '}
+						</a>
+						{' '}
 						|
 						<a href="https://phabricator.wikimedia.org/project/view/4054/">
 							<span> Report issues </span>

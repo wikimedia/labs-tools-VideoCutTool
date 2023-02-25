@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
 import { Message } from '@wikimedia/react.i18n';
 import { Form, FormLabel } from 'react-bootstrap';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import { AppContext } from '../context';
 
 function UrlBox(props) {
 	const { updateAppState } = useContext(AppContext);
-
+	const { title: requiredTitle } = props;
 	const allowedExtensions = 'mp4,webm,mov,flv,ogv';
 	const [mouseHover, setMouseHover] = useState(false);
 	const [title, setTitle] = useState('');
@@ -23,17 +23,6 @@ function UrlBox(props) {
 		e.preventDefault();
 	};
 
-	const dropped = e => {
-		e.preventDefault();
-		setMouseHover(false);
-		onFileUpload(e);
-	};
-
-	useEffect(() => {
-		setTitle(props.title);
-		checkFileExist(props.title);
-	}, [props.title]);
-
 	const onFileUpload = e => {
 		const files = (e.dataTransfer && e.dataTransfer.files) || e.nativeEvent.target.files;
 		if (files.length === 0) {
@@ -42,6 +31,7 @@ function UrlBox(props) {
 
 		const fileExt = files[0].name.split('.').pop();
 		if (allowedExtensions.split(',').indexOf(fileExt) === -1) {
+			// eslint-disable-next-line
 			alert('File extension not allowed');
 			return;
 		}
@@ -54,6 +44,12 @@ function UrlBox(props) {
 				title: files[0].name.replace(/\s/g, '_')
 			}
 		});
+	};
+
+	const dropped = e => {
+		e.preventDefault();
+		setMouseHover(false);
+		onFileUpload(e);
 	};
 
 	/**
@@ -129,6 +125,11 @@ function UrlBox(props) {
 				console.log(error);
 			});
 	};
+
+	useEffect(() => {
+		setTitle(requiredTitle);
+		checkFileExist(requiredTitle);
+	}, [requiredTitle]);
 
 	const onUrlInput = e => {
 		setTitle(e.target.value);

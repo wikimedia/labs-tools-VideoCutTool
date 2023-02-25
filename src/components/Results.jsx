@@ -1,12 +1,10 @@
 import axios from 'axios';
 
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup, ToggleButton, Form, InputGroup } from 'react-bootstrap';
 import {
 	Upload,
 	Download,
-	ChevronUp,
-	ChevronDown,
 	CardHeading,
 	CardText,
 	ChatLeftTextFill
@@ -22,12 +20,21 @@ const API_URL = ENV_SETTINGS.backend_url;
 
 function Results() {
 	const banana = useContext(BananaContext);
-	const { appState, updateAppState , hourTimer, minuteTimer, secondTimer,  setHourTimer, setMinuteTimer, setSecondTimer} = useContext(AppContext);
+	const {
+		appState,
+		updateAppState,
+		hourTimer,
+		minuteTimer,
+		secondTimer,
+		setHourTimer,
+		setMinuteTimer,
+		setSecondTimer
+	} = useContext(AppContext);
 	const { videos, user, video_details: videoDetails } = appState;
 	const [videoState, setVideoState] = useState([]);
 	const [showProgress, setShowProgress] = useState(false);
-	const [encodeTimer,setEncodeTimer] = useState("");
-	const [wantTitle,setWantTitle] = useState('');
+	const [encodeTimer, setEncodeTimer] = useState('');
+	const [wantTitle, setWantTitle] = useState('');
 
 	const updateVideoState = (newState, index) => {
 		const newVideoData = { ...videoState[index], ...newState };
@@ -71,18 +78,18 @@ function Results() {
 		setVideoState(videosWithDetails);
 	}, []);
 
-	useEffect(()=>{
+	useEffect(() => {
 		const endTimer = new Date();
 		let endHour = (endTimer.getHours() - hourTimer);
 		let endMinute = (endTimer.getMinutes() - minuteTimer);
 		let endSecond = (endTimer.getSeconds() - secondTimer);
-		if(endSecond < 0){
-			endMinute=endMinute-1;
-			endSecond=60+endSecond;
+		if (endSecond < 0) {
+			endMinute -= 1;
+			endSecond += 60;
 		}
-		if(endMinute < 0){
-			endHour=endHour-1;
-			endMinute=60+endMinute;
+		if (endMinute < 0) {
+			endHour -= 1;
+			endMinute += 60;
 		}
 		setEncodeTimer(`${endHour} hours: ${endMinute} minutes: ${endSecond} seconds`);
 		setHourTimer('');
@@ -100,10 +107,6 @@ function Results() {
 	const updateTitle = (index, title) => {
 		updateVideoState({ title }, index);
 		setWantTitle(title);
-	};
-
-	const updateUploadState = (index, status) => {
-		updateVideoState({ displayUploadToCommons: status }, index);
 	};
 
 	const uploadVideos = async () => {
@@ -162,7 +165,10 @@ function Results() {
 							{video.title.length > 0 && <h5 title={video.title}>{video.title}</h5>}
 							{video.title.length === 0 && <h5>(No Title)</h5>}
 						</div>
-						<p>Time Taken: {encodeTimer} </p>
+						<p>
+							Time Taken:
+							{encodeTimer}
+						</p>
 						<div
 							className={`video-results-body ${video.displayUploadToCommons === false && 'd-none'}`}
 						>
@@ -231,10 +237,10 @@ function Results() {
 											<Message id="upload-button" />
 										</span>
 									</Button>
-									<Button onClick={() => window.location.href = `${API_URL}/download/${video.path.replace('/public', '')}`}>
+									<Button onClick={() => { window.location.href = `${API_URL}/download/${video.path.replace('/public', '')}`; }}>
 										<Download />
-  										<span className="button-title ms-3">
-    										<Message id="step-result-choice-download" />
+										<span className="button-title ms-3">
+											<Message id="step-result-choice-download" />
 										</span>
 									</Button>
 								</div>

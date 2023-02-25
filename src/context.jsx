@@ -1,10 +1,10 @@
-import React, { createContext, useState } from 'react';
+import { createContext, useState, useMemo } from 'react';
 import { IntlProvider } from '@wikimedia/react.i18n';
 import { getLanguagesFromDir } from './utils/languages';
 
 export const AppContext = createContext();
 
-export const AppProvider = props => {
+export const AppProvider = function AppProvider(props) {
 	const { children } = props;
 	const defaultLocaleObj = {
 		locale: 'en-US',
@@ -60,14 +60,24 @@ export const AppProvider = props => {
 			notifications
 		});
 	};
-	const [timeToProcess,setTimeToProcess] = useState('');
 
-	const [hourTimer, setHourTimer] =useState('');
-	const [minuteTimer, setMinuteTimer] =useState('');
-	const [secondTimer, setSecondTimer] =useState('');
-	
+	const [hourTimer, setHourTimer] = useState('');
+	const [minuteTimer, setMinuteTimer] = useState('');
+	const [secondTimer, setSecondTimer] = useState('');
+	const contextValue = useMemo(() => ({
+		appState,
+		updateAppState,
+		updateNotification,
+		hourTimer,
+		setHourTimer,
+		minuteTimer,
+		setMinuteTimer,
+		secondTimer,
+		setSecondTimer
+	}), [appState, updateAppState, updateNotification, hourTimer, minuteTimer, secondTimer]);
+
 	return (
-		<AppContext.Provider value={{ appState, updateAppState, updateNotification, hourTimer, setHourTimer, minuteTimer, setMinuteTimer, secondTimer, setSecondTimer }}>
+		<AppContext.Provider value={contextValue}>
 			<IntlProvider locale={appState.current_locale.locale} messages={getLanguagesFromDir()}>
 				{children}
 			</IntlProvider>
