@@ -25,6 +25,7 @@ yarn-error.log*
 
 # server
 /server/node_modules
+/server/config.js
 /server/videos/*
 !/server/videos/.gitkeep
 /server/public/*
