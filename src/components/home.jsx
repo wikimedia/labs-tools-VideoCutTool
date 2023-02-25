@@ -106,12 +106,18 @@ function Home() {
 						</a>
 						{' '}
 						|
-						<a href="https://phabricator.wikimedia.org/project/view/4054/">
+						<a
+							target="_blank"
+							href="https://phabricator.wikimedia.org/project/view/4054/"
+						>
 							<span> Report issues </span>
 						</a>
 						|
-						<a href="https://github.com/gopavasanth/video-cut-tool">
-							<span> Github </span>
+						<a
+							target="_blank"
+							href="https://gerrit.wikimedia.org/r/admin/repos/labs/tools/VideoCutTool"
+						>
+							<span> Repository </span>
 						</a>
 					</div>
 				</div>
