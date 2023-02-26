@@ -170,12 +170,12 @@ function Results() {
 							{encodeTimer}
 						</p>
 						<div
-							className={`video-results-body ${video.displayUploadToCommons === false && 'd-none'}`}
+							className={`row ${video.displayUploadToCommons === false && 'd-none'}`}
 						>
-							<div className="video-player-wrapper">
+							<div className="video-player-wrapper col-md-7">
 								<VideoPlayer videoUrl={`${API_URL}/${video.path}`} />
 							</div>
-							<div className="video-options">
+							<div className="video-options col-md-5">
 								<div className="form-group">
 									<ButtonGroup className="mb-2">
 										<ToggleButton
