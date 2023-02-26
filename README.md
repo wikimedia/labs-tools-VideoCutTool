@@ -96,3 +96,5 @@ docker-compose -f .\docker-compose.prd.yml up -d
 VideoCutTool is created by Gopa Vasanth as a part of 2019 Google Summer of Code in the mentorship of Pratik Shetty, Hassan Amin and James Heilman.
 
 Khr2003 joined as a co-maintainer of the tool and revamped the code base.
+
+SODA joined as a co-mainter of the tool as a part of Google Summer of Code 2023 as a mentor to the project.

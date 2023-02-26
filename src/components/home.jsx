@@ -86,8 +86,7 @@ function Home() {
 				<div className="footer-wrapper">
 					<div className="footer">
 						© 2019-
-						{new Date().getFullYear()}
-						{' '}
+						{new Date().getFullYear()}{' '}
 						<a
 							target="_blank"
 							rel="noreferrer"
@@ -95,20 +94,19 @@ function Home() {
 						>
 							<span>Gopa Vasanth</span>
 						</a>
-						,
-						{' '}
+						,{' '}
 						<a
 							target="_blank"
 							rel="noreferrer"
-							href="https://wikitech.wikimedia.org/wiki/User:Khr2003"
+							href="https://www.mediawiki.org/wiki/User:Sohom_Datta"
 						>
-							<span>Abdul Al-Hasany</span>
-						</a>
-						{' '}
+							<span>Sohom Datta</span>
+						</a>{' '}
 						|
 						<a
 							target="_blank"
 							href="https://phabricator.wikimedia.org/project/view/4054/"
+							rel="noreferrer"
 						>
 							<span> Report issues </span>
 						</a>
@@ -116,6 +114,7 @@ function Home() {
 						<a
 							target="_blank"
 							href="https://gerrit.wikimedia.org/r/admin/repos/labs/tools/VideoCutTool"
+							rel="noreferrer"
 						>
 							<span> Repository </span>
 						</a>
