@@ -29,7 +29,7 @@ socket.on('connect_error', err => {
 
 function Home() {
 	const { appState, updateAppState } = useContext(AppContext);
-	const { current_step: currentStep, notifications } = appState;
+	const { current_step: currentStep, notifications } = appState || {};
 	const [showSidebar, setShowSidebar] = useState(false);
 	const [title, setTitle] = useState('');
 	useEffect(() => {
@@ -74,7 +74,7 @@ function Home() {
 			<Sidebar apiUrl={backendUrl} />
 			<div id="content" className="flex-column">
 				<div className="logo-wrapper flex-sm-row">
-					<span className="menu-icon" onClick={toggleSidebar}>
+					<span className="menu-icon" data-testid="sidebar-toggle-button" onClick={toggleSidebar}>
 						<List size="25" />
 					</span>
 					<Image alt="logo" src={logo} width="100" height="40" />
@@ -122,7 +122,7 @@ function Home() {
 				</div>
 			</div>
 
-			{notifications.length > 0 && <Notification />}
+			{notifications && notifications.length > 0 && <Notification />}
 		</div>
 	);
 }

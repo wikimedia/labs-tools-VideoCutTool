@@ -2,7 +2,7 @@ import { createContext, useState, useMemo } from 'react';
 import { IntlProvider } from '@wikimedia/react.i18n';
 import { getLanguagesFromDir } from './utils/languages';
 
-export const AppContext = createContext();
+export const AppContext = createContext('');
 
 export const AppProvider = function AppProvider(props) {
 	const { children } = props;

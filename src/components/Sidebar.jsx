@@ -10,15 +10,16 @@ import { socket } from '../utils/socket';
 
 function Sidebar(props) {
 	const { appState, updateAppState } = useContext(AppContext);
-	const { user, current_step: currentStep, current_locale: currentLocale } = appState;
+	const { user, current_step: currentStep, current_locale: currentLocale } = appState || {};
 
 	const [themeMode, setThemeMode] = useState('light');
 	const localeName = useRef(false);
 	const { apiUrl } = props;
 
 	useEffect(() => {
-		localeName.current = currentLocale.native_name;
-
+		if(currentLocale) {
+			localeName.current = currentLocale.native_name;
+		}
 		// Set theme (dark or light) on load
 		const theme = localStorage.getItem('theme') || 'light';
 		document.body.setAttribute('theme', theme);
