@@ -4,6 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"prestart": "node ./config.js",
 		"start": "node ./bin/www",
 		"serve": "nodemon index.js --legacy-watch --trace-warnings",
 		"start:prod": "pm2 node index.js",

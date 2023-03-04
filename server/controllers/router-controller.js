@@ -177,7 +177,10 @@ export const processVideo = async (req, res) => {
 
 		const videoDbObj = await VideoModel.create(videoData);
 		await videoDbObj.save();
-		await UserModel.findOneAndUpdate({ mediawikiId: user.mediawikiId }, { '$push': { videos: videoDbObj._id } });
+		await UserModel.findOneAndUpdate(
+			{ mediawikiId: user.mediawikiId },
+			{ $push: { videos: videoDbObj._id } }
+		);
 		const videoId = videoDbObj._id.toString();
 
 		videoIdResponse = JSON.stringify({ videoId: videoDbObj._id.toString() });
@@ -200,17 +203,25 @@ export const processVideo = async (req, res) => {
 
 		// Listen for a message from worker
 		worker.on('message', payload => {
-			console.log(payload)
+			console.log(payload);
 			if (payload.type.includes('frontend')) {
 				io.to(req.app.get('socketid')).emit('progress:update', payload.data);
 			}
 			if (payload.data.status === 'processing')
-				VideoModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(payload.videoId) }, { status: payload.data.status, stage: payload.data.stage }).exec();
+				VideoModel.findOneAndUpdate(
+					{ _id: mongoose.Types.ObjectId(payload.videoId) },
+					{ status: payload.data.status, stage: payload.data.stage }
+				).exec();
 			else if (payload.data.status === 'done')
-				VideoModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(payload.videoId) },
-					{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos }).exec();
+				VideoModel.findOneAndUpdate(
+					{ _id: mongoose.Types.ObjectId(payload.videoId) },
+					{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos }
+				).exec();
 			else
-				VideoModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(payload.videoId) }, { status: payload.data.status, errorData: payload.data.error }).exec();
+				VideoModel.findOneAndUpdate(
+					{ _id: mongoose.Types.ObjectId(payload.videoId) },
+					{ status: payload.data.status, errorData: payload.data.error }
+				).exec();
 		});
 
 		worker.on('error', error => {
@@ -221,10 +232,12 @@ export const processVideo = async (req, res) => {
 		return res.status(400).send('Something went wrong');
 	}
 
-	res.writeHead(200, {
-		'Content-Length': Buffer.byteLength(videoIdResponse),
-		'Content-Type': 'text/plain'
-	}).end(videoIdResponse);
+	res
+		.writeHead(200, {
+			'Content-Length': Buffer.byteLength(videoIdResponse),
+			'Content-Type': 'text/plain'
+		})
+		.end(videoIdResponse);
 };
 
 export const downloadVideo = (req, res) => {

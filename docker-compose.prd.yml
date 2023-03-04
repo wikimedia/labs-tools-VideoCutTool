@@ -15,6 +15,10 @@ services:
       - '4000:4000'
     environment:
       - NODE_ENV=production
+      - DB_CONNECTION_URL=mongodb://127.0.0.1:27017/video-cut-tool
+      - BACKEND_URL=https://videocuttool.wmcloud.org/api/
+    env_file:
+      - .env.prod
     networks:
       - my-network
     links:

@@ -41,6 +41,7 @@
 	},
 	"homepage": "https://videocuttool.wmcloud.org",
 	"scripts": {
+		"prestart": "node ./server/config.js",
 		"start": "react-scripts start",
 		"start:docker": "docker-compose -f .\\docker-compose.dev.yml up --build",
 		"build": "react-scripts build",

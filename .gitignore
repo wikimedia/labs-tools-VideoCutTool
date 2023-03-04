@@ -17,6 +17,8 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.env.dev
+.env.prod
 
 npm-debug.log*
 .pnpm-debug.log
@@ -25,7 +27,6 @@ yarn-error.log*
 
 # server
 /server/node_modules
-/server/config.js
 /server/videos/*
 !/server/videos/.gitkeep
 /server/public/*

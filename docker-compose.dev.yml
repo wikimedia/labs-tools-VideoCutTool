@@ -17,6 +17,10 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
+      - DB_CONNECTION_URL=mongodb://videocuttool-mongo:27017/video-cut-tool
+      - BACKEND_URL=http://videocuttool:4000/api/
+    env_file:
+      - .env.dev
     links:
       - mongo
     depends_on:

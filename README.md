@@ -10,7 +10,9 @@ You can learn more in the [VideoCutTool page](https://commons.wikimedia.org/wiki
 
 ## Installation
 
-### Get OAuth2 Credentials
+There are two ways, you can set it up on your local machine.
+
+### Get OAuth2.0 Credentials
 
 Go to:
 <https://meta.wikimedia.org/wiki/Special:OAuthConsumerRegistration/propose>.
@@ -22,48 +24,29 @@ Create an application with the following grants:
 - Upload new files.
 - Upload, replace, and move files.
 
-If it's for production, use call back URL as: <https://videocuttool.wmcloud.org/api/auth/mediawiki/callback>
+### Setting the CallBack URL
 
-Add the keys to `server/config.js` file under `CLIENT_ID` and `CLIENT_SECRET` after you clone the repo.
+If it's for production, use call back URL as:
+<https://videocuttool.wmcloud.org/api/auth/mediawiki/callback>
 
-### Connecting to Cloud VPS Servers
+If it's for development, use call back URL as:
+<http://localhost:4000/api/auth/mediawiki/callback>
 
-Cloud VPS Horizon URL: <https://horizon.wikimedia.org>
+### Creating .env file
 
-- videocuttool instance using `ssh -J <username>@primary.bastion.wmflabs.org <username>@videocuttool.videocuttool.eqiad1.wikimedia.cloud`
-- nc-videocuttool instance using `ssh -J <username>@primary.bastion.wmflabs.org <username>@nc-videocuttool.videocuttool.eqiad1.wikimedia.cloud`
+Store the obtained Client ID, and Client Secret, in the `.env` file, under the keys `CLIENT_ID`, and `CLIENT_SECRET` respectively.
 
-### Installing VideoCutTool in server
+Name the file as `.env.dev` if its for development, or `.env.prod` if its for production.
 
-Install the following utilities:
+Note: These files should follow the format, given in the `.env.example` file
 
-- git
-- node version v16.15.1
-- npm version v8.12.1
-- ffmpeg
-- mongodb
-- nginx
-
-### Database
-
-- View the users list using the following commands:
-  - Connect to mongo using shell - `mongo`
-  - `show databases`
-  - `use video-cut-tool`
-  - `db.users.find({}, {"_id":0 })`
-- View the list of videos being edited/that have been processed:
-  - Connect to mongo using shell - `mongo`
-  - `show databases`
-  - `use video-cut-tool`
-  - `db.videos.find({}, {"_id":0 })`
-
-### Install Docker
+### Running locally
 
 The tool uses Docker to install and run everything with a single command.
 
 Install Docker from this link: <https://docs.docker.com/get-docker/>
 
-### Clone Repo
+#### Clone Repo
 
 Run these commands to clone the code from the remote repo:
 
@@ -73,12 +56,18 @@ git clone "https://gerrit.wikimedia.org/r/labs/tools/VideoCutTool"
 cd ./VideoCutTool
 ```
 
-### Run environment
+#### Run environment
 
-Run this command inside VideoCutTool to start development Docker container:
+Run this command inside VideoCutTool to start development Docker container, if you operating system is Windows
 
 ```
 docker-compose -f .\docker-compose.dev.yml up --build
+```
+
+If your operating system is other than Windows (Linux/Mac), run this command instead
+
+```
+docker-compose -f ./docker-compose.dev.yml up --build
 ```
 
 The first time you run it will take some time (4-8 minutes depending on your internet speed) because it will pull the necessary images from Docker and install NPM packages. Once it is up and running changes will be hot loaded.
@@ -91,10 +80,55 @@ To run production you can run this command:
 docker-compose -f .\docker-compose.prd.yml up -d
 ```
 
+for windows
+
+and
+
+```
+docker-compose -f ./docker-compose.prd.yml up -d
+```
+
+for other operating systems.
+
+You are now good to go, and should have successfully set up the tool on your local machine for development. If you encounter any error while setting this up locally, do checkout our tickets on [phabricator](https://phabricator.wikimedia.org/tag/videocuttool/), if you could find something relevant there.
+
+### Connecting to Cloud VPS Servers
+
+If you want to set up cloud services for production, follow here:
+
+Cloud VPS Horizon URL: <https://horizon.wikimedia.org>
+
+- videocuttool instance using `ssh -J <username>@primary.bastion.wmflabs.org <username>@videocuttool.videocuttool.eqiad1.wikimedia.cloud`
+- nc-videocuttool instance using `ssh -J <username>@primary.bastion.wmflabs.org <username>@nc-videocuttool.videocuttool.eqiad1.wikimedia.cloud`
+
+#### Installing VideoCutTool in cloud server
+
+Install the following utilities:
+
+- git
+- node version v16.15.1
+- npm version v8.12.1
+- ffmpeg
+- mongodb
+- nginx
+
+#### Database
+
+- View the users list using the following commands:
+  - Connect to mongo using shell - `mongo`
+  - `show databases`
+  - `use video-cut-tool`
+  - `db.users.find({}, {"_id":0 })`
+- View the list of videos being edited/that have been processed:
+  - Connect to mongo using shell - `mongo`
+  - `show databases`
+  - `use video-cut-tool`
+  - `db.videos.find({}, {"_id":0 })`
+
 ## Credits
 
 VideoCutTool is created by Gopa Vasanth as a part of 2019 Google Summer of Code in the mentorship of Pratik Shetty, Hassan Amin and James Heilman.
 
 Khr2003 joined as a co-maintainer of the tool and revamped the code base.
 
-SODA joined as a co-mainter of the tool as a part of Google Summer of Code 2023 as a mentor to the project.
+Sohom Datta (@soda on phabricator.wikimedia.org) joined as a co-maintainer of the tool for Google Summer of Code 2023 as a mentor to the project.
