@@ -107,7 +107,6 @@ function Home() {
 							target="_blank"
 							rel="noreferrer"
 							href="https://phabricator.wikimedia.org/project/view/4054/"
-							rel="noreferrer"
 						>
 							<span> Report issues </span>
 						</a>
@@ -116,7 +115,6 @@ function Home() {
 							target="_blank"
 							rel="noreferrer"
 							href="https://gerrit.wikimedia.org/r/admin/repos/labs/tools/VideoCutTool"
-							rel="noreferrer"
 						>
 							<span> Repository </span>
 						</a>
