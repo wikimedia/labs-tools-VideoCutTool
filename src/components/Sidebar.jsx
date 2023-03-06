@@ -18,7 +18,7 @@ function Sidebar(props) {
 	const { apiUrl } = props;
 
 	useEffect(() => {
-		if(currentLocale) {
+		if (currentLocale) {
 			localeName.current = currentLocale.native_name;
 		}
 		// Set theme (dark or light) on load
@@ -127,7 +127,18 @@ function Sidebar(props) {
 					</div>
 				))}
 			</div>
-			<Button variant="outline-secondary" onClick={() => window.open('https://commons.wikimedia.org/wiki/Commons:VideoCutTool', '_blank', 'noreferrer')}>Documentation</Button>
+			<Button
+				variant="outline-secondary"
+				onClick={() => {
+					window.open(
+						'https://commons.wikimedia.org/wiki/Commons:VideoCutTool',
+						'_blank',
+						'noreferrer'
+					);
+				}}
+			>
+				Documentation
+			</Button>
 		</div>
 	);
 }
