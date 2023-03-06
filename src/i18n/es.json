@@ -3,7 +3,8 @@
 		"authors": [
 			"Fitoschido",
 			"Lys534",
-			"MarleneR329"
+			"MarleneR329",
+			"Pedro Zimmer"
 		]
 	},
 	"404-go-back": "Ir a la página principal",
@@ -16,6 +17,8 @@
 	"logout-confirm-no": "No",
 	"logout-confirm-text": "¿Seguro?",
 	"logout-confirm-yes": "Sí",
+	"notification-error-bug-call-to-action": "¿No esperabas esto? Reporta este problema a $1",
+	"notifications-error-bug-report": "Phabricator",
 	"notifications-not-existing": "El archivo no existe en Wikimedia Commons",
 	"preview-text": "Previsualizar",
 	"preview-title": "Previsualizar mis cambios",

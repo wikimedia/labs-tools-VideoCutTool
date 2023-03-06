@@ -19,6 +19,8 @@
 	"logout-confirm-text": "Ste prepričani?",
 	"logout-confirm-yes": "Da",
 	"new-video": "{{PLURAL:$1|Vaš|Vaša|Vaši}} {{PLURAL:$1|novi video|nova videa|novi videi}} bodo tukaj:",
+	"notification-error-bug-call-to-action": "Niste pričakovali tega? Prijavite to težavo na $1",
+	"notifications-error-bug-report": "phabricator",
 	"notifications-not-existing": "V Wikimedijini zbirki ta datoteka ne obstaja",
 	"notifications-not-overwritable": "Videoposnetka iz naprave ne morete prepisati",
 	"notifications-title": "Obvestilo!",

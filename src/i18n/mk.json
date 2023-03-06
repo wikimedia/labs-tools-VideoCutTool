@@ -19,6 +19,8 @@
 	"logout-confirm-text": "Дали сте сигурни?",
 	"logout-confirm-yes": "Да",
 	"new-video": "{{PLURAL:$1|Вашето ново видео ќе стои|Вашите нови видеа ќе стојат}} овде:",
+	"notification-error-bug-call-to-action": "Не го очекувавте ова? Пријавете го проблемов на $1",
+	"notifications-error-bug-report": "Фабрикатор",
 	"notifications-not-existing": "Податотеката не постои на Ризницата",
 	"notifications-not-overwritable": "Не можете да презапишете врз видео од уред",
 	"notifications-title": "Известување !",

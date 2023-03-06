@@ -22,6 +22,8 @@
 	"logout-confirm-text": "Êtes-vous sûr{{GENDER:||e}} ?",
 	"logout-confirm-yes": "Oui",
 	"new-video": "{{PLURAL:$1|Votre nouvelle vidéo sera|Vos nouvelles vidéos seront}} ici :",
+	"notification-error-bug-call-to-action": "Vous ne vous attendiez pas à cela ? Signalez ce problème sur $1.",
+	"notifications-error-bug-report": "Phabricator",
 	"notifications-not-existing": "Le fichier n’existe pas sur Wikimedia Commons",
 	"notifications-not-overwritable": "Vous ne pouvez pas écraser une vidéo depuis un appareil",
 	"notifications-title": "Notification !",

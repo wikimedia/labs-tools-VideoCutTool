@@ -4,7 +4,8 @@
 			"LaMagiaaa",
 			"MathXplore",
 			"Omotecho",
-			"Tamaki Wakita"
+			"Tamaki Wakita",
+			"もなー(偽物)"
 		]
 	},
 	"404-go-back": "メインページへ移動する",
@@ -22,6 +23,8 @@
 	"logout-confirm-text": "本当によろしいですか?",
 	"logout-confirm-yes": "はい",
 	"new-video": "新しい動画を{{PLURAL:$1||s}} はここに保存されます：",
+	"notification-error-bug-call-to-action": "予想どおりになりませんか？この問題を$1に報告する",
+	"notifications-error-bug-report": "ファブリケーター",
 	"notifications-not-existing": "ファイルがウィキメディア コモンズに存在しません",
 	"notifications-not-overwritable": "端末から動画の上書きはできません",
 	"notifications-title": "お知らせ",

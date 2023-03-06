@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"YaronSh",
 			"ישראל קלר"
 		]
@@ -20,6 +21,8 @@
 	"logout-confirm-text": "באמת?",
 	"logout-confirm-yes": "כן",
 	"new-video": "{{PLURAL:$1|הסרטון החדש שלך יהיה|הסרטונים החדשים שלך יהיו}} כאן:",
+	"notification-error-bug-call-to-action": "לא מצפה לזה? אפשר דווח על הבעיה הזאת ל$1",
+	"notifications-error-bug-report": "פבריקטור",
 	"notifications-not-existing": "הקובץ לא קיים בוויקישיתוף",
 	"notifications-not-overwritable": "אי אפשר לשכתב על סרטון מהתקן",
 	"notifications-title": "התראה!",

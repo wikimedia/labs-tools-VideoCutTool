@@ -12,6 +12,8 @@
 	"logout-confirm-no": "Не",
 	"logout-confirm-text": "Јесте ли сигурни?",
 	"logout-confirm-yes": "Да",
+	"notification-error-bug-call-to-action": "Нисте очекивали ово? Пријавите проблем на $1",
+	"notifications-error-bug-report": "Фабрикатор",
 	"notifications-not-existing": "Датотека не постоји на Викимедијиној Остави",
 	"notifications-title": "Обавештење!",
 	"notifications-title-error": "Грешка!",

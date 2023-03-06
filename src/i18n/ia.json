@@ -19,6 +19,8 @@
 	"logout-confirm-text": "Es tu secur?",
 	"logout-confirm-yes": "Si",
 	"new-video": "Tu nove video{{PLURAL:$1||s}} essera hic:",
+	"notification-error-bug-call-to-action": "Es isto inexpectate? Reporta le problema sur $1",
+	"notifications-error-bug-report": "Phabricator",
 	"notifications-not-existing": "File non existe sur Wikimedia Commons",
 	"notifications-not-overwritable": "Non es possibile superscriber un video desde un apparato",
 	"notifications-title": "Notification!",

@@ -19,6 +19,8 @@
 	"logout-confirm-text": "您確定嗎？",
 	"logout-confirm-yes": "是",
 	"new-video": "您的新影片{{PLURAL:$1||}}會在此：",
+	"notification-error-bug-call-to-action": "預期情況不是這樣？將此問題回報給$1",
+	"notifications-error-bug-report": "phabricator",
 	"notifications-not-existing": "檔案不存在維基共享資源上",
 	"notifications-not-overwritable": "您無法從裝置覆寫影片",
 	"notifications-title": "通知！",

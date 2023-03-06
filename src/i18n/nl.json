@@ -19,6 +19,8 @@
 	"logout-confirm-text": "Weet u het zeker?",
 	"logout-confirm-yes": "Ja",
 	"new-video": "Uw nieuwe video{{PLURAL:$1||'s}} komen hier:",
+	"notification-error-bug-call-to-action": "Verwacht u dit niet? Meld dit probleem bij $1",
+	"notifications-error-bug-report": "Phabricator",
 	"notifications-not-existing": "Bestand bestaat niet op Wikimedia Commons",
 	"notifications-not-overwritable": "U kunt een video van een apparaat niet overschrijven",
 	"notifications-title": "Melding!",
