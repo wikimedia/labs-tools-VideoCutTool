@@ -64,7 +64,7 @@ function Results() {
 					'=={{int:filedesc}}==',
 					`{{Information${comment?.length > 0 ? `\n|description=${comment}` : ''}`,
 					`|date=${`${year}-${month}-${day}`}`,
-					`|source={{own}}${author?.length > 0 ? `\n|author=[[User:${author}|${author}]]` : ''}`,
+					`|source={{Derived from|1=${title}}}${author?.length > 0 ? `\n|author=[[User:${author}|${author}]]` : ''}`,
 					'}}\n',
 					'=={{int:license-header}}==',
 					'{{self|cc-by-sa-4.0}}\n',
