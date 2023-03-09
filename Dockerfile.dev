@@ -10,17 +10,12 @@ WORKDIR /app
 
 # Frontend
 # Copy the package.json to workdir
-COPY package.json ./
+COPY package.json .
+COPY package-lock.json .
 COPY server/package.json ./server/
-COPY server/package-lock.json ./server
-
-
-# Run npm install - install the npm dependencies
-RUN npm install --legacy-peer-deps --loglevel verbose
+COPY server/package-lock.json ./server/
 
 RUN npm ci --legacy-peer-deps --loglevel verbose
-
-RUN cd server && npm install --legacy-peer-deps --loglevel verbose
 
 EXPOSE 3000 4000 8081
 

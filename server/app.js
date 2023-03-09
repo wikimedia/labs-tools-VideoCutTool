@@ -1,45 +1,20 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import path from 'path';
-import cors from 'cors';
-// import bodyParser from 'body-parser';
-import logger from 'morgan';
-import cookieParser from 'cookie-parser';
-import fileUpload from 'express-fileupload';
-import session from 'express-session';
-import PopupTools from 'popup-tools';
+const express = require('express');
+const path = require('path');
+const cors = require('cors');
+const logger = require('morgan');
+const fileUpload = require('express-fileupload');
+const session = require('express-session');
+const PopupTools = require('popup-tools');
 
-import { processVideo, uploadVideos, downloadVideo } from './controllers/router-controller.js';
-import config from './config.js';
-import UserModel from './models/User.js';
-import auth from './auth.js';
-import VideoModel from './models/Video.js';
-
-function connectMongoDB(retry = 0) {
-	const option = {
-		socketTimeoutMS: 30000,
-		keepAlive: true,
-		useNewUrlParser: true,
-		useUnifiedTopology: true
-	};
-
-	mongoose
-		.connect(config.DB_CONNECTION_URL, option)
-		.then(() => console.log('MongoDB Connected'))
-		.catch(err => {
-			console.log('error', '--------------------');
-			console.log(err.message);
-			console.log(config.DB_CONNECTION_URL);
-			console.log(`Reconnecting to MongoDB ${retry}`);
-		});
-}
-
-connectMongoDB();
+const { randomUUID } = require('crypto');
+const { processVideo, uploadVideos, downloadVideo } = require('./controllers/router-controller.js');
+const config = require('./config.js');
+const User = require('./models/User.js');
+const auth = require('./auth.js');
+const Video = require('./models/Video.js');
+const Settings = require('./models/Settings.js');
 
 const app = express();
-
-const __dirname =
-	process.env.NODE_ENV === 'production' ? `${path.resolve()}/` : `${path.resolve()}/`;
 
 app.use('/api/public', express.static(path.join(__dirname, 'public')));
 
@@ -64,7 +39,7 @@ app.use(cors());
 
 app.use(
 	session({
-		secret: 'OAuth Session',
+		secret: randomUUID(),
 		saveUninitialized: true
 	})
 );
@@ -80,23 +55,17 @@ app.get('/api/', (req, res) => {
 
 app.get('/api/user/:mediawiki_user_id', async (req, res) => {
 	const userId = req.params.mediawiki_user_id;
-	const userDoc = await UserModel.findOne({ mediawikiId: userId });
-	const videoList = userDoc.videos.map(videoIds => videoIds.toString());
+	const user = await User.findOne({ where: { mediawikiId: userId }, include: Video });
 	res.send({
-		username: userDoc.username,
+		username: user.username,
 		mediawiki_id: userId,
-		videos: videoList
+		videos: user.Videos
 	});
 });
 
-app.get('/api/video/:video_id', async (req, res) => {
-	const { video_id } = req.params;
-	const videoData = await VideoModel.findOne(
-		{
-			_id: mongoose.Types.ObjectId(video_id)
-		},
-		{ _id: 0 }
-	);
+app.get('/api/video/:videoId', async (req, res) => {
+	const { videoId } = req.params;
+	const videoData = await Video.findOne({ where: { id: videoId }, include: Settings });
 	res.send(videoData);
 });
 
@@ -105,7 +74,7 @@ app.get('/api/error', (req, res) => {
 });
 
 app.get('/test-auth', (req, res) => {
-	+res.sendFile(path.join(`${__dirname}/test-auth.html`));
+	res.sendFile(path.join(`${__dirname}/test-auth.html`));
 });
 
 app.get('/api/login', (req, res) => {
@@ -122,23 +91,24 @@ app.get('/api/login', (req, res) => {
 app.get('/api/auth/mediawiki/callback', auth, async (req, res) => {
 	const {
 		refresh_token: refreshToken,
-		profile,
-		profile: { sub }
+		profile: { sub, username }
 	} = res.locals;
 
-	const userProfile = JSON.parse(JSON.stringify(profile));
-	userProfile.refreshToken = refreshToken;
+	const userRow = {
+		mediawikiId: sub,
+		username,
+		refreshToken
+	};
 	try {
-		await UserModel.updateOne({ mediawikiId: sub }, userProfile, { upsert: true });
-		const userDoc = await UserModel.findOne({ mediawikiId: sub }).exec();
-		const { _id, mediawikiId, username, socketId } = userDoc;
-		const returnUserDocData = {
-			_id,
+		await User.upsert(userRow);
+		const user = await User.findOne({ where: { mediawikiId: sub } });
+		const { mediawikiId, socketId } = user;
+		const returnUserData = {
 			mediawikiId,
 			username,
 			socketId
 		};
-		res.end(PopupTools.popupResponse({ user: returnUserDocData }));
+		res.end(PopupTools.popupResponse({ user: returnUserData }));
 	} catch (err) {
 		console.log('************');
 		console.log(err);
@@ -176,4 +146,4 @@ app.use((err, req, res) => {
 	res.render('error');
 });
 
-export default app;
+module.exports = app;

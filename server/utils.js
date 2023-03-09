@@ -1,13 +1,9 @@
-import fs from 'fs';
-import path from 'path';
-import { spawn } from 'child_process';
-import { parentPort } from 'worker_threads';
-import axios from 'axios';
+const fs = require('fs');
+const path = require('path');
+const { spawn } = require('child_process');
+const { parentPort } = require('worker_threads');
 
 const fsPromises = fs.promises;
-
-const __dirname =
-	process.env.NODE_ENV === 'production' ? `${path.resolve()}/` : `${path.resolve()}/`;
 
 /**
  * Convert time to milliseconds
@@ -382,7 +378,7 @@ async function moveVideosToPublic(videoPaths) {
 	return videos;
 }
 
-export default {
+module.exports = {
 	deleteFiles,
 	downloadVideo,
 	concatVideos,

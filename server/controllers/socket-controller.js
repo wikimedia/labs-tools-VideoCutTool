@@ -1,13 +1,13 @@
-import UserModel from '../models/User.js';
+const User = require('../models/User.js');
 
-export default (socket, io) => {
+module.exports = (socket, io) => {
 	socket.on('authenticate', data => {
-		UserModel.updateOne({ mediawikiId: data.mediawikiId }, { $set: { socketId: socket.id } })
+		User.update({ socketId: socket.id }, { where: { mediawikiId: data.mediawikiId } })
 			.then(() => {
 				console.log('update socket id');
 			})
 			.catch(err => {
-				console.log('error updating socket id');
+				console.log('error updating socket id', err);
 			});
 	});
 };

@@ -14,31 +14,20 @@ services:
       - '80:80'
       - '4000:4000'
     environment:
-      - NODE_ENV=production
-      - DB_CONNECTION_URL=mongodb://127.0.0.1:27017/video-cut-tool
-      - BACKEND_URL=https://videocuttool.wmcloud.org/api/
+      NODE_ENV: production
+      DATABASE_URL: postgres://videocuttool:videocuttool@127.0.0.1:5432/videocuttool
+      BACKEND_URL: https://videocuttool.wmcloud.org/api/
     env_file:
       - .env.prod
-    networks:
-      - my-network
-    links:
-      - mongodb
-    depends_on:
-      - mongodb
-  mongodb:
-    image: 'mongo:4'
-    command: ["--bind_ip_all"]
-    # environment:
-    #   - MONGO_INITDB_ROOT_USERNAME=admin
-    #   - MONGO_INITDB_ROOT_PASSWORD=<YOUR_PASSWORD>
-    ports:
-      - 27017:27017
-    restart: always
-    # volumes:
-    #   - ./mongodb/db:/data/db
-    networks:
-      - my-network
-
-networks:
-  my-network:
-    driver: bridge
+    depend_on:
+      - database
+  database:
+    restart: unless-stopped
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: videocuttool
+      POSTGRES_USER: videocuttool
+      POSTGRES_DB: videocuttool
+      PGDATA: /var/lib/postgresql/data/pg_data
+    volumes:
+      - ./postgres:/var/lib/postgresql/data

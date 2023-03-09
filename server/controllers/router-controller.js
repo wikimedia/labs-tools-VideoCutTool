@@ -1,26 +1,23 @@
-import path from 'path';
-import axios from 'axios';
-import { Worker } from 'worker_threads';
-import fs from 'fs';
-import FormData from 'form-data';
-import UserModel from '../models/User.js';
-import config from '../config.js';
-import utils from '../utils.js';
-import VideoModel from '../models/Video.js';
-import mongoose from 'mongoose';
+const path = require('path');
+const axios = require('axios');
+const { Worker } = require('worker_threads');
+const fs = require('fs');
+const FormData = require('form-data');
+const { randomUUID } = require('crypto');
+const User = require('../models/User.js');
+const config = require('../config.js');
+const utils = require('../utils.js');
+const Video = require('../models/Video.js');
+const Settings = require('../models/Settings.js');
 
-const __dirname = path.resolve();
-
-export const uploadVideos = async (req, res) => {
+const uploadVideos = async (req, res) => {
 	const BASE_URL = 'https://commons.wikimedia.org/w/api.php';
 	const { CLIENT_ID, CLIENT_SECRET } = config;
 	const { user } = req.body;
 
 	try {
 		// Get refresh token from user records
-		const userData = await UserModel.findOne({ mediawikiId: user.mediawikiId }).select(
-			'+refreshToken'
-		);
+		const userData = await User.findOne({ attributes: ['refreshToken'], where: { mediawikiId: user.mediawikiId } });
 
 		// Get access token to retrive CSRF token
 		const { refreshToken } = userData;
@@ -43,9 +40,9 @@ export const uploadVideos = async (req, res) => {
 		const { access_token: accessToken, refresh_token: newRefreshToken } = getAccessToken.data;
 
 		// Update database with the new refresh token
-		await UserModel.updateOne(
-			{ mediawikiId: user.mediawikiId },
-			{ $set: { refreshToken: newRefreshToken } }
+		await User.update(
+			{ refreshToken: newRefreshToken },
+			{ where: { mediawikiId: user.mediawikiId } },
 		);
 
 		// Get CSRF token
@@ -128,7 +125,7 @@ export const uploadVideos = async (req, res) => {
 	}
 };
 
-export const processVideo = async (req, res) => {
+const processVideo = async (req, res) => {
 	const io = req.app.get('socketio');
 
 	const uploadedFile = req.files?.file;
@@ -141,6 +138,7 @@ export const processVideo = async (req, res) => {
 			const videoExtension = name.split('.').pop().toLowerCase();
 			videoDownloadPath = path.join(
 				__dirname,
+				'..',
 				'videos',
 				`video_${Date.now()}_${parseInt(Math.random() * 10000, 10)}.${videoExtension}`
 			);
@@ -157,35 +155,37 @@ export const processVideo = async (req, res) => {
 
 		const user = JSON.parse(req.body.user);
 
-		await UserModel.findOneAndUpdate({ mediawikiId: user.mediawikiId }, user, { upsert: true });
-		const userDoc = await UserModel.findOne({ mediawikiId: user.mediawikiId });
+		await User.upsert(user);
+		const userDoc = await User.findOne({ mediawikiId: user.mediawikiId });
 
 		const videoData = {
+			id: randomUUID(),
 			url: inputVideoUrl,
 			videoDownloadPath,
-			uploadedBy: userDoc._id,
+			uploadedBy: userDoc.mediawikiId,
 			status: 'downloading',
 			videoName,
-			settings: {
-				trims,
-				trimMode,
-				crop,
-				modified,
-				rotateValue
-			}
+			UserMediawikiId: user.mediawikiId,
 		};
 
-		const videoDbObj = await VideoModel.create(videoData);
+		const SettingsData = {
+			trims,
+			trimMode,
+			crop,
+			modified,
+			rotateValue,
+			VideoId: videoData.id
+		};
+
+		const videoDbObj = await Video.create(videoData);
 		await videoDbObj.save();
-		await UserModel.findOneAndUpdate(
-			{ mediawikiId: user.mediawikiId },
-			{ $push: { videos: videoDbObj._id } }
-		);
-		const videoId = videoDbObj._id.toString();
+		const videoSettingsDbObj = await Settings.create(SettingsData);
+		await videoSettingsDbObj.save();
+		const videoId = videoData.id;
 
-		videoIdResponse = JSON.stringify({ videoId: videoDbObj._id.toString() });
+		videoIdResponse = JSON.stringify({ videoId: videoData.id });
 
-		const worker = new Worker(path.resolve(__dirname, 'worker.js'), {
+		const worker = new Worker(path.resolve(__dirname, '../worker.js'), {
 			workerData: {
 				_id: videoId,
 				inputVideoUrl,
@@ -202,26 +202,27 @@ export const processVideo = async (req, res) => {
 		});
 
 		// Listen for a message from worker
-		worker.on('message', payload => {
+		worker.on('message', async payload => {
 			console.log(payload);
 			if (payload.type.includes('frontend')) {
 				io.to(req.app.get('socketid')).emit('progress:update', payload.data);
 			}
-			if (payload.data.status === 'processing')
-				VideoModel.findOneAndUpdate(
-					{ _id: mongoose.Types.ObjectId(payload.videoId) },
-					{ status: payload.data.status, stage: payload.data.stage }
-				).exec();
-			else if (payload.data.status === 'done')
-				VideoModel.findOneAndUpdate(
-					{ _id: mongoose.Types.ObjectId(payload.videoId) },
-					{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos }
-				).exec();
-			else
-				VideoModel.findOneAndUpdate(
-					{ _id: mongoose.Types.ObjectId(payload.videoId) },
-					{ status: payload.data.status, errorData: payload.data.error }
-				).exec();
+			if (payload.data.status === 'processing') {
+				await Video.update(
+					{ status: payload.data.status, stage: payload.data.stage },
+					{ where: { id: payload.videoId } }
+				);
+			} else if (payload.data.status === 'done') {
+				Video.update(
+					{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos },
+					{ where: { id: payload.videoId } }
+				);
+			} else {
+				Video.update(
+					{ status: payload.data.status, errorData: payload.data.error },
+					{ where: { id: payload.videoId } }
+				);
+			}
 		});
 
 		worker.on('error', error => {
@@ -232,7 +233,7 @@ export const processVideo = async (req, res) => {
 		return res.status(400).send('Something went wrong');
 	}
 
-	res
+	return res
 		.writeHead(200, {
 			'Content-Length': Buffer.byteLength(videoIdResponse),
 			'Content-Type': 'text/plain'
@@ -240,9 +241,15 @@ export const processVideo = async (req, res) => {
 		.end(videoIdResponse);
 };
 
-export const downloadVideo = (req, res) => {
+const downloadVideo = (req, res) => {
 	const file = `public/${req.params.videopath}`;
 
 	// Set disposition and send it.
 	res.download(file);
+};
+
+module.exports = {
+	downloadVideo,
+	processVideo,
+	uploadVideos
 };

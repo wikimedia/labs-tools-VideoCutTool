@@ -43,7 +43,7 @@
 	"scripts": {
 		"prestart": "node ./server/config.js",
 		"start": "react-scripts start",
-		"start:docker": "docker-compose -f .\\docker-compose.dev.yml up --build",
+		"start:docker": "docker-compose -f ./docker-compose.dev.yml up --build",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"test_coverage": "react-scripts test --coverage",
