@@ -285,10 +285,11 @@ $text-color: #b6e2fa;
 			}
 
 			h5 {
-				margin-right: auto;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
+				max-width: 100%;
+				word-wrap: break-word;
+				word-break: break-all;
+				overflow: visible;
+				white-space: normal;
 			}
 		}
 
