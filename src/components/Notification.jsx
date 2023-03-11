@@ -44,9 +44,9 @@ function Notification() {
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					{notification.messageId &&
-					<div className="notification-body">
-					{notification.text && notification.text.startsWith('https://commons.wikimedia.org/wiki/File:') ? (
+					{notification.messageId && (
+						<div className="notification-body">
+							{notification.text && notification.text.startsWith('https://commons.wikimedia.org/wiki/File:') ? (
 								<a
 									className="link"
 									href={notification.text}
@@ -58,10 +58,11 @@ function Notification() {
 							) : (
 								<Message id={notification.messageId} />
 							)}
-						<div className="notification-timer">
-							<span />
+							<div className="notification-timer">
+								<span />
+							</div>
 						</div>
-					</div>}
+					)}
 					{notification.type !== 'info' && (
 						<div className="notification-footer">
 							<Message
