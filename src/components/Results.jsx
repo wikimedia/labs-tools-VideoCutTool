@@ -95,6 +95,7 @@ function Results() {
 			};
 		});
 		setVideoState(videosWithDetails);
+		setWantTitle(videosWithDetails[0].title);
 	}, []);
 
 	useEffect(() => {
