@@ -63,7 +63,7 @@ function Notification() {
 							</div>
 						</div>
 					)}
-					{notification.type !== 'info' && (
+					{notification.type === 'error' && (
 						<div className="notification-footer">
 							<Message
 								id="notification-error-bug-call-to-action"

@@ -112,7 +112,7 @@ function VideoSettings(props) {
 		// gets the settings where 	`modified=true`,
 		// to get number of features enabled
 
-		let modifiedSettings = cloneSettings.filter(setting => setting.modified);
+		const modifiedSettings = cloneSettings.filter(setting => setting.modified);
 		if (modifiedSettings.length !== 0) {
 			setIsModified(true);
 			setChanges([
