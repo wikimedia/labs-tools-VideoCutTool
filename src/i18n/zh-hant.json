@@ -7,6 +7,7 @@
 	"404-go-back": "前往首頁",
 	"404-image-description": "404 錯誤，找不到頁面",
 	"error": "發生錯誤",
+	"enabled-features": "已啟用$1",
 	"file-not-existing": "檔案不存在",
 	"footer-authors": "$1 與 $2",
 	"languages": "語言",

@@ -10,6 +10,7 @@
 	"404-go-back": "Aller à la page principale",
 	"404-image-description": "Erreur 404 : page non trouvée",
 	"error": "Quelque chose s’est mal passé",
+	"enabled-features": "$1 activé",
 	"file-not-existing": "Le fichier n’existe pas",
 	"footer-authors": "$1 et $2",
 	"languages": "Langues",

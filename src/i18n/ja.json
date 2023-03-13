@@ -11,6 +11,7 @@
 	"404-go-back": "メインページへ移動する",
 	"404-image-description": "404エラー、ページが見つかりません",
 	"error": "エラーが発生しました",
+	"enabled-features": "$1を有効化しました",
 	"file-not-existing": "ファイルが存在しません。",
 	"footer-authors": "$1と$2",
 	"languages": "言語",

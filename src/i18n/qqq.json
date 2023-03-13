@@ -12,7 +12,7 @@
 	"404-go-back": "Text of button on the 404 error page",
 	"404-image-description": "Text for the alt attribute of the image on the 404 error page",
 	"error": "Error message shown if something went wrong on submit",
-	"enabled-features":"Shows the enabled features from the video settings pallete",
+	"enabled-features": "Shows the enabled features from the video settings pallete",
 	"file-not-existing": "Error notification text shown if file is not existing",
 	"footer-authors": "Authors displayed on Footer.\n* $1 and $2 - Author names",
 	"languages": "Title of the dropdown to select a language\n{{Identical|Language}}",

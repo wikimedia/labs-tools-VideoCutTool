@@ -10,6 +10,7 @@
 	"404-go-back": "Перейти на Главную страницу",
 	"404-image-description": "404 Страница не найдена",
 	"error": "Что-то пошло не так",
+	"enabled-features": "Включено $1",
 	"file-not-existing": "Файл не существует",
 	"footer-authors": "$1 и $2",
 	"languages": "Языки",
