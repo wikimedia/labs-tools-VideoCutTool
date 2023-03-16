@@ -6,6 +6,7 @@
 			"FF-11",
 			"FF11",
 			"Gebu",
+			"Icke",
 			"Joanau",
 			"ManuelFranz"
 		]
@@ -13,6 +14,7 @@
 	"404-go-back": "Zur Hauptseite gehen",
 	"404-image-description": "404 Seite nicht gefunden",
 	"error": "Etwas ist schief gelaufen",
+	"enabled-features": "Eingeschaltet $1",
 	"file-not-existing": "Datei ist nicht vorhanden",
 	"footer-authors": "$1 und $2",
 	"languages": "Sprachen",
@@ -25,6 +27,8 @@
 	"logout-confirm-text": "Bist du sicher?",
 	"logout-confirm-yes": "Ja",
 	"new-video": "{{PLURAL:$1|Dein neues Video|Deine neuen Videos}} werden hier sein:",
+	"notification-error-bug-call-to-action": "Hast du das nicht erwartet? Dieses Problem melden für $1",
+	"notifications-error-bug-report": "Hersteller",
 	"notifications-not-existing": "Die Datei existiert nicht auf Wikimedia Commons",
 	"notifications-not-overwritable": "Du kannst ein Video von einem Gerät nicht überschreiben",
 	"notifications-title": "Benachrichtigung !",
