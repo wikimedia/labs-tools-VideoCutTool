@@ -10,7 +10,7 @@ You can learn more in the [VideoCutTool page](https://commons.wikimedia.org/wiki
 
 ## Installation
 
-There are two ways, you can set it up on your local machine.
+To set up the tool on your local machine, follow these steps
 
 ### Get OAuth2.0 Credentials
 
@@ -92,6 +92,8 @@ for other operating systems.
 
 You are now good to go, and should have successfully set up the tool on your local machine for development. If you encounter any error while setting this up locally, do checkout our tickets on [phabricator](https://phabricator.wikimedia.org/tag/videocuttool/), if you could find something relevant there.
 
+> Note: If are facing errors specific to `mediawikiId`, please have a look [here](https://phabricator.wikimedia.org/T331247)
+
 ### Connecting to Cloud VPS Servers
 
 If you want to set up cloud services for production, follow here:
@@ -102,6 +104,8 @@ Cloud VPS Horizon URL: <https://horizon.wikimedia.org>
 - nc-videocuttool instance using `ssh -J <username>@primary.bastion.wmflabs.org <username>@nc-videocuttool.videocuttool.eqiad1.wikimedia.cloud`
 
 #### Installing VideoCutTool in cloud server
+
+To install the tool in the cloud server (production), follow here
 
 Install the following utilities:
 
