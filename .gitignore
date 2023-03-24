@@ -19,6 +19,7 @@
 .env.production.local
 .env.dev
 .env.prod
+*.css.map
 
 npm-debug.log*
 .pnpm-debug.log

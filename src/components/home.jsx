@@ -4,7 +4,7 @@ import { List } from 'react-bootstrap-icons';
 
 import UrlBox from './UrlBox';
 import Results from './Results';
-import Sidebar from './Sidebar';
+import Header from './Header';
 import VideoSettings from './VideoSettings';
 import { AppContext } from '../context';
 import { socket } from '../utils/socket';
@@ -30,7 +30,7 @@ socket.on('connect_error', err => {
 function Home() {
 	const { appState, updateAppState } = useContext(AppContext);
 	const { current_step: currentStep, notifications } = appState || {};
-	const [showSidebar, setShowSidebar] = useState(false);
+	const [showHeader, setShowHeader] = useState(false);
 	const [title, setTitle] = useState('');
 	useEffect(() => {
 		// Clear localstorage
@@ -63,18 +63,18 @@ function Home() {
 		}
 	}, []);
 
-	const toggleSidebar = () => {
-		const status = !showSidebar;
+	const toggleHeader = () => {
+		const status = !showHeader;
 		document.body.setAttribute('data-sidebar', status ? 'show' : 'hide');
-		setShowSidebar(status);
+		setShowHeader(status);
 	};
 
 	return (
 		<div id="main-container">
-			<Sidebar apiUrl={backendUrl} />
+			<Header apiUrl={backendUrl} />
 			<div id="content" className="flex-column">
 				<div className="logo-wrapper flex-sm-row">
-					<span className="menu-icon" data-testid="sidebar-toggle-button" onClick={toggleSidebar}>
+					<span className="menu-icon" data-testid="sidebar-toggle-button" onClick={toggleHeader}>
 						<List size="25" />
 					</span>
 					<Image alt="logo" src={logo} width="100" height="40" />
