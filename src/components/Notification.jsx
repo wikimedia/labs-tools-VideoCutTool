@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Toast } from 'react-bootstrap';
-import { InfoCircleFill, ExclamationCircleFill } from 'react-bootstrap-icons';
+import { InfoCircleFill, ExclamationCircleFill, ExclamationTriangleFill, CheckCircleFill } from 'react-bootstrap-icons';
 import { Message } from '@wikimedia/react.i18n';
 import { AppContext } from '../context';
 
@@ -21,18 +21,22 @@ function Notification() {
 					show={notification.show}
 					data-type={notification.type}
 					// eslint-disable-next-line
-					{...(notification.autohide && notification.type === 'error'
-						? { autohide: false }
-						: { delay: notification.delay, autohide: true })}
+					{...(notification.autohide && notification.type !== 'error'
+						? { delay: notification.delay, autohide: true }
+						: { autohide: false })}
 				>
 					<div className="notification-icon">
-						{notification.type !== 'error' && <InfoCircleFill />}
+						{notification.type === 'info' && <InfoCircleFill />}
+						{notification.type === 'warning' && <ExclamationTriangleFill />}
 						{notification.type === 'error' && <ExclamationCircleFill />}
+						{notification.type === 'success' && <CheckCircleFill />}
 					</div>
 					<div className="notification-header">
 						<strong className="me-auto">
-							{notification.type !== 'error' && <Message id="notifications-title" />}
+							{notification.type === 'info' && <Message id="notifications-title" />}
+							{notification.type === 'warning' && <Message id="notification-title-warning" />}
 							{notification.type === 'error' && <Message id="notifications-title-error" />}
+							{notification.type === 'success' && <Message id="notification-title-success" />}
 						</strong>
 						<button
 							type="button"
@@ -80,6 +84,20 @@ function Notification() {
 							/>
 						</div>
 					)}
+					<div className="notification-footer">
+						{notification.type === "warning" &&
+							<Message id="notification-warning-call-to-action" />
+						}
+						{notification.type === "success" && (
+							<a
+								href={notification.text}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<Message id="task-uploaded-wikimedia-commons" />
+							</a>
+						)}
+					</div>
 				</Toast>
 			))}
 		</div>
