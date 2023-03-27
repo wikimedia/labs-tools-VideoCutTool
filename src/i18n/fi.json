@@ -3,6 +3,7 @@
 		"authors": [
 			"Joquliina",
 			"Nike",
+			"Pyscowicz",
 			"Veikk0.ma"
 		]
 	},
@@ -21,9 +22,12 @@
 	"logout-confirm-text": "Oletko varma?",
 	"logout-confirm-yes": "Kyllä",
 	"new-video": "{{PLURAL:$1|Uusi|Uudet}} videosi tulevat olemaan täällä:",
+	"notifications-error-bug-report": "phabricator",
 	"notifications-not-existing": "Tiedostoa ei ole Wikimedia Commonsissa",
 	"notifications-not-overwritable": "Et voi ylikirjoittaa tiedosta laitteelta",
 	"notifications-title": "Ilmoitus!",
+	"notifications-title-error": "Virhe!",
+	"notifications-wait": "Videotasi käsitellään. Odota, kunnes uusi video on luotu",
 	"preview-text": "Esikatsele",
 	"preview-title": "Esikatsele muutokset",
 	"setting-audio": "Poista ääni",
@@ -36,9 +40,22 @@
 	"step-video-settings": "Videoasetukset",
 	"step-video-settings-title": "Vaihe 2: Määrittele videoasetukset",
 	"step-video-url": "Videon verkko-osoite",
+	"task-processing": "käsitellään",
+	"task-stage-downloading": "ladataan",
 	"task-uploaded-wikimedia-commons": "Tallennettu Wikimedia Commonsiin",
 	"task-uploading": "tallennetaan",
 	"task-uploading-wikimedia-commons": "tallennetaan Wikimedia Commonsiin",
+	"trim-total-duration": "Kokonaiskesto",
+	"theme-darkmode": "Tumma",
+	"theme-lightmode": "Vaalea",
+	"progress-bitrate": "Tiedonsiirtonopeus",
 	"progress-speed": "Nopeus",
-	"undo": "Kumoa"
+	"progress-time": "Aika",
+	"undo": "Kumoa",
+	"upload-action-overwrite": "Ylikirjoita",
+	"upload-button": "Tallenna Commonsiin",
+	"upload-text": "Teksti",
+	"video-trim-more": "Lisää enemmän",
+	"video-trim-title": "VideoTrim-asetukset",
+	"welcome": "Tervetuloa, $1"
 }
