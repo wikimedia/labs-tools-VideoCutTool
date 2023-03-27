@@ -424,7 +424,7 @@
 
 #notification-wrapper {
   position: fixed;
-  top: 2%;
+  top: 4rem;
   right: 1%;
   min-width: 250px;
   z-index: 50;
