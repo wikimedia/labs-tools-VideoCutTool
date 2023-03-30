@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Gopavasanth",
+			"V Bhavya",
 			"Veeven"
 		]
 	},
@@ -20,6 +21,7 @@
 	"logout-confirm-text": "నిశ్చయించుకున్నారా?",
 	"logout-confirm-yes": "అవును",
 	"new-video": "మీ కొత్త వీడియో{{PLURAL:$1||లు}} ఇక్కడ ఉంటుంది:",
+	"notifications-error-bug-report": "ఫాబ్రికేటర్",
 	"notifications-not-existing": "వికీమీడియా కామన్స్‌లో ఫైల్ లేదు",
 	"notifications-not-overwritable": "మీరు పరికరం నుండి వీడియోని ఓవర్‌రైట్ చేయలేరు",
 	"notifications-title": "గమనింపులు",
