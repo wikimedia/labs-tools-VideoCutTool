@@ -174,7 +174,7 @@
 					transition: all 0.2s ease-in-out;
 					pointer-events: none;
 
-					> span {
+					>span {
 						display: flex;
 						cursor: pointer;
 						padding: 0.3em;
@@ -228,6 +228,7 @@
 			position: relative;
 			width: 100%;
 			margin-bottom: 2.5em;
+			align-items: center;
 
 			.timelime-controls-play,
 			.timeline-controls-delete {
@@ -326,6 +327,7 @@
 		}
 
 		.video-range-box .handle-wrapper {
+
 			.right-handle-wrapper,
 			.left-handle-wrapper {
 				width: 5px;
