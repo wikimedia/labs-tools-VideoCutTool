@@ -347,7 +347,7 @@
 }
 #results-container .video-results-wrapper .video-results-header h5 {
   margin-right: auto;
-  white-space: nowrap;
+  white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
 }
