@@ -11,12 +11,10 @@ services:
       - ./public:/app/public
       - /app/node_modules/
       - /app/server/node_modules/
-    ports:
-      - '3000:3000'
-      - '4000:4000'
     environment:
       - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
+      - FAST_REFRESH=true
       - DB_CONNECTION_URL=postgresql://videocuttool:videocuttool@database:5432/videocuttool
       - BACKEND_URL=http://videocuttool:4000/api/
     env_file:
@@ -35,6 +33,14 @@ services:
       PGDATA: /var/lib/postgresql/data/pg_data
     volumes:
       - ./postgres:/var/lib/postgresql/data
-
+  nginx:
+    restart: always
+    depends_on:
+      - videocuttool
+    image: nginx:latest
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
 volumes:
   exclude:

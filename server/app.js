@@ -16,7 +16,7 @@ const Settings = require('./models/Settings.js');
 
 const app = express();
 
-app.use('/api/public', express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -53,7 +53,7 @@ app.get('/api/', (req, res) => {
 	res.json({ data: 'Back-end is up' });
 });
 
-app.get('/api/user/:mediawiki_user_id', async (req, res) => {
+app.get('/user/:mediawiki_user_id', async (req, res) => {
 	const userId = req.params.mediawiki_user_id;
 	const user = await User.findOne({ where: { mediawikiId: userId }, include: Video });
 	res.send({
@@ -63,13 +63,13 @@ app.get('/api/user/:mediawiki_user_id', async (req, res) => {
 	});
 });
 
-app.get('/api/video/:videoId', async (req, res) => {
+app.get('/video/:videoId', async (req, res) => {
 	const { videoId } = req.params;
 	const videoData = await Video.findOne({ where: { id: videoId }, include: Settings });
 	res.send(videoData);
 });
 
-app.get('/api/error', (req, res) => {
+app.get('/error', (req, res) => {
 	res.render('error', { error_message: req.session.error_message });
 });
 
@@ -77,7 +77,7 @@ app.get('/test-auth', (req, res) => {
 	res.sendFile(path.join(`${__dirname}/test-auth.html`));
 });
 
-app.get('/api/login', (req, res) => {
+app.get('/login', (req, res) => {
 	const baseUrl = 'https://commons.wikimedia.org';
 	const endpoint = '/w/rest.php/oauth2/authorize';
 
@@ -88,7 +88,7 @@ app.get('/api/login', (req, res) => {
 	res.send(res.redirect(url));
 });
 
-app.get('/api/auth/mediawiki/callback', auth, async (req, res) => {
+app.get('/auth/mediawiki/callback', auth, async (req, res) => {
 	const {
 		refresh_token: refreshToken,
 		profile: { sub, username }
@@ -118,14 +118,14 @@ app.get('/api/auth/mediawiki/callback', auth, async (req, res) => {
 	}
 });
 
-app.get('/api/logout', (req, res) => {
+app.get('/logout', (req, res) => {
 	delete req.session.user;
 	res.redirect('/');
 });
 
-app.post('/api/process', processVideo);
-app.post('/api/upload', uploadVideos);
-app.get('/api/download/:videopath', downloadVideo);
+app.post('/process', processVideo);
+app.post('/upload', uploadVideos);
+app.get('/download/:videopath', downloadVideo);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

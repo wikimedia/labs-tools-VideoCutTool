@@ -3,7 +3,7 @@ FROM node:16
 
 # Install FFMPEG library
 RUN apt update -y
-RUN apt install ffmpeg -y
+RUN apt install ffmpeg -y nginx
 
 # Set the workdir /app
 WORKDIR /app
@@ -15,11 +15,14 @@ COPY package-lock.json .
 COPY index.html .
 COPY vite.config.js .
 COPY server/package.json ./server/
-COPY server/package-lock.json ./server/
+COPY server/package-lock.json ./server
+
+ENV CHOKIDAR_USEPOLLING=true
+ENV WATCHPACK_POLLING=true
 
 RUN npm ci --legacy-peer-deps --loglevel verbose
 
-EXPOSE 3000 4000 8081
+EXPOSE 3000 4000
 
 # Start the application
 CMD ["npm", "run", "dev"]

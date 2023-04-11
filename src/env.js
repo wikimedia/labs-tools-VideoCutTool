@@ -15,9 +15,9 @@ const ENV_SETTINGS = () => {
 				path: '/',
 				home_page: '/',
 				not_found_path: '/*',
-				backend_url: 'http://localhost:4000/api',
+				backend_url: '/api',
 				socket_io_path: '/socket.io',
-				socket_io_url: 'http://localhost:4000'
+				socket_io_url: 'http://localhost:8000'
 			};
 	}
 };
