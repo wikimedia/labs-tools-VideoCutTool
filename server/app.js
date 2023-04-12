@@ -16,7 +16,9 @@ const Settings = require('./models/Settings.js');
 
 const app = express();
 
-app.use('/public', express.static(path.join(__dirname, 'public')));
+const MemoryStore = require('memorystore')(session)
+
+app.use('/api/public', express.static(path.join(__dirname, 'public')));
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -36,12 +38,19 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 
 // Use CORS and File Upload modules here
 app.use(cors());
-
+const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+const sessionSecret = process.env.SESSION_SECRET || randomUUID();
 app.use(
-	session({
-		secret: randomUUID(),
-		saveUninitialized: true
-	})
+   session({
+     cookie: {
+       maxAge: ONE_YEAR_MS,
+     },
+     store: new MemoryStore({
+       checkPeriod: ONE_YEAR_MS,
+     }),
+     saveUninitialized: true,
+     secret: sessionSecret,
+   })
 );
 
 /* GET home page. */
