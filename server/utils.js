@@ -174,7 +174,7 @@ async function downloadVideo(url, videoInfo) {
  * @returns {obj} Promise object
  */
 async function manipulateVideo({ videoId, videoPath }, manipulations) {
-	const { disable_audio, rotate, crop, trim } = manipulations;
+	const { disable_audio, rotate, crop, trim, volume } = manipulations;
 
 	let cmdArray = [];
 	if (trim !== true) {
@@ -183,6 +183,10 @@ async function manipulateVideo({ videoId, videoPath }, manipulations) {
 
 	if (disable_audio !== undefined) {
 		cmdArray.push('-an');
+	}
+
+	if (volume !== undefined) {
+		cmdArray = ['-i', `${videoPath}`, '-filter:a', `volume=${volume / 100}`];
 	}
 
 	const videoFilters = [];

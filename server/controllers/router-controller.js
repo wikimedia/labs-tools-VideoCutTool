@@ -180,9 +180,8 @@ const processVideo = async (req, res) => {
 			});
 		}
 
-		const { crop, inputVideoUrl, trimMode, trims, modified, rotateValue, videoName } = JSON.parse(
-			req.body.data
-		);
+		const { crop, inputVideoUrl, trimMode, trims, modified, rotateValue, videoName, volume } =
+			JSON.parse(req.body.data);
 
 		try {
 			const user = JSON.parse(req.body.user);
@@ -205,6 +204,7 @@ const processVideo = async (req, res) => {
 				crop,
 				modified,
 				rotateValue,
+				volume,
 				VideoId: videoData.id
 			};
 
@@ -227,7 +227,8 @@ const processVideo = async (req, res) => {
 						trimMode,
 						crop,
 						modified,
-						rotateValue
+						rotateValue,
+						volume
 					}
 				}
 			});

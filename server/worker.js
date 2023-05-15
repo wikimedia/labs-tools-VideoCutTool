@@ -8,7 +8,7 @@ async function process() {
 		inputVideoUrl,
 		videoName,
 		videoDownloadPath,
-		settings: { trims, trimMode, crop, modified, rotateValue },
+		settings: { trims, trimMode, crop, modified, rotateValue, volume }
 	} = workerData;
 
 	const videoId = _id;
@@ -43,10 +43,13 @@ async function process() {
 		if (modified.crop === true) {
 			manipulations.crop = crop;
 		}
+		if (modified.volume === true) {
+			manipulations.volume = volume;
+		}
 
 		let newVideoPath = null;
 		const hasManipulations = Object.keys(manipulations).length > 0;
-		// Manipulate video if audio disable, rotation or cropping is set and trim is not set
+		// Manipulate video if audio disable, rotation or cropping or volume change is set and trim is not set
 		if (hasManipulations && modified.trim !== true) {
 			const manipulationsVideoInfo = {
 				videoPath,
@@ -54,6 +57,7 @@ async function process() {
 			};
 
 			const manipulateStage = await utils.manipulateVideo(manipulationsVideoInfo, manipulations);
+
 			newVideoPath = manipulateStage.newVideoPath;
 		}
 
