@@ -549,6 +549,25 @@ $text-color: #b6e2fa;
 				border-bottom: 0px;
 			}
 		}
+
+		&[data-type='warning'] {
+			$color: #FFCC00;
+			$text-color: darken($color, 30%);
+			$border-color: darken($color, 10%);
+
+			border-color: $text-color;
+
+			.notification-icon {
+				background-color: $color !important;
+				color: $text-color;
+			}
+
+			.notification-header,
+			.notification-body {
+				color: $text-color;
+				border-bottom: 0px;
+			}
+		}
 	}
 }
 

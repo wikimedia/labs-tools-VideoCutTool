@@ -149,7 +149,6 @@ function Results() {
 				updateAppState({
 					notification: {
 						type: 'success',
-						messageId: 'task-uploaded-wikimedia-commons',
 						text: `https://commons.wikimedia.org/wiki/File:${wantTitle}`
 					},
 					// Reset UI
@@ -160,7 +159,7 @@ function Results() {
 			} else {
 				updateAppState({
 					notification: {
-						type: 'error',
+						type: 'warning',
 						text: data.message
 					}
 				});
