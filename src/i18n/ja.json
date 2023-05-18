@@ -30,6 +30,8 @@
 	"notifications-not-overwritable": "端末から動画の上書きはできません",
 	"notifications-title": "お知らせ",
 	"notifications-title-error": "エラー",
+	"notification-title-success": "成功",
+	"notification-title-warning": "警告",
 	"notifications-wait": "投稿された動画は処理中です。新しい動画の生成まで少しお待ちください",
 	"preview-text": "プレビュー",
 	"preview-title": "変更をプレビュー",
