@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap-icons';
 import { Spinner, Button, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { formatTime } from '../utils/time';
-import '../style/trim.css';
+import '../style/trim.scss';
 import { storeItem, getStoredItem } from '../utils/storage';
 
 function Trim(props) {
@@ -306,7 +306,7 @@ function Trim(props) {
 
 		setTrimMode('single');
 
-	// eslint-disable-next-line
+		// eslint-disable-next-line
 	}, [hash]);
 
 	/**

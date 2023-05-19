@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import '../DragResize.css';
+import '../style/DragResize.scss';
 import { storeItem, getStoredItem } from '../utils/storage';
 
 function DragResize(props) {

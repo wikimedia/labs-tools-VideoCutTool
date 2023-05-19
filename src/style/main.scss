@@ -59,35 +59,43 @@ $text-color: #b6e2fa;
 		display: none;
 		color: $text-color;
 	}
-	.user-wrapper{
+
+	.user-wrapper {
 		display: flex;
 		align-items: center;
 	}
-	.functionality-btn{
+
+	.functionality-btn {
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
 	}
-	.logout-btn{
+
+	.logout-btn {
 		margin-left: 1em;
 	}
-	.dropdown{
+
+	.dropdown {
 		margin-left: 1em;
 	}
-	.dropdown-item{
+
+	.dropdown-item {
 		display: flex;
 		justify-content: center;
 		padding: 0.5vw;
 	}
-	.site{
+
+	.site {
 		position: relative;
 		display: flex;
 		justify-content: space-evenly;
 		top: 15vh;
-		border-top:1.5px solid rgba(255, 255, 255, 0.2);
+		border-top: 1.5px solid rgba(255, 255, 255, 0.2);
 		padding-top: 2vw;
 	}
-	.site-options,.site-options-phone {
+
+	.site-options,
+	.site-options-phone {
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
@@ -139,6 +147,7 @@ $text-color: #b6e2fa;
 
 			&.active {
 				opacity: 1;
+
 				&::after {
 					position: absolute;
 					right: 0;
@@ -153,18 +162,22 @@ $text-color: #b6e2fa;
 			}
 		}
 	}
-	.site-options-phone{
+
+	.site-options-phone {
 		display: none;
 	}
-	.darkmode-button-phone{
+
+	.darkmode-button-phone {
 		display: none;
 	}
-	.dark-mode-toggle{
+
+	.dark-mode-toggle {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		margin-top: 0.5vh;
-		.darkmode-label{
+
+		.darkmode-label {
 			cursor: pointer;
 			width: 60px;
 			height: 30px;
@@ -173,35 +186,42 @@ $text-color: #b6e2fa;
 			border-radius: 200px;
 			position: relative;
 		}
-		.darkmode-label:after{
+
+		.darkmode-label:after {
 			content: "";
 			width: 30px;
 			height: 30px;
 			position: absolute;
 			top: -2px;
-			left:-1.8px;
-			background-color: darken($content-bg,40%);
+			left: -1.8px;
+			background-color: darken($content-bg, 40%);
 			border-radius: 180px;
 			transition: 0.3s;
 		}
-		#darkmode-input{
+
+		#darkmode-input {
 			display: none;
 		}
-		#darkmode-input:checked + .darkmode-label:after{
+
+		#darkmode-input:checked+.darkmode-label:after {
 			transition: 0.3s;
 			transform: translateX(30px);
 		}
-		.darkmode-icon, .lightmode-icon{
+
+		.darkmode-icon,
+		.lightmode-icon {
 			width: 30px;
 			height: 30px;
 			position: absolute;
 			top: -2px;
 		}
-		.lightmode-icon{
+
+		.lightmode-icon {
 			left: 28px;
 		}
 	}
-	.documentation-btn{
+
+	.documentation-btn {
 		display: none;
 	}
 }
@@ -237,7 +257,7 @@ $text-color: #b6e2fa;
 	background-color: $content-bg;
 	transition: background-color 0.3s ease-in-out;
 
-	> div:not(.logo-wrapper):not(.footer-wrapper) {
+	>div:not(.logo-wrapper):not(.footer-wrapper) {
 		width: 100%;
 		height: 100%;
 		display: flex;
@@ -329,7 +349,7 @@ $text-color: #b6e2fa;
 		}
 	}
 
-	> div {
+	>div {
 		width: 100%;
 	}
 
@@ -490,9 +510,10 @@ $text-color: #b6e2fa;
 			grid-area: body;
 		}
 
-		.notification-footer{
+		.notification-footer {
 			grid-area: footer;
 		}
+
 		&[data-type='success'] {
 			$color: #28a745;
 			$text-color: darken($color, 30%);
@@ -592,25 +613,30 @@ $text-color: #b6e2fa;
 		transition: all 0.3s ease-in-out;
 		flex-direction: column;
 		justify-content: space-between;
-		.user-wrapper{
+
+		.user-wrapper {
 			display: flex;
 			flex-direction: column;
 			position: absolute;
 			top: 5vh;
 			padding: 0 0 0 4vw;
 		}
-		.site-options-phone{
+
+		.site-options-phone {
 			width: inherit;
 		}
-		.functionality-btn{
+
+		.functionality-btn {
 			flex-direction: column;
 			padding-top: 1vw;
 			height: 10vh;
 			justify-content: space-between;
 		}
-		.logout-btn{
+
+		.logout-btn {
 			margin-left: 0;
 		}
+
 		.logo-wrapper {
 			display: none;
 		}
@@ -618,18 +644,22 @@ $text-color: #b6e2fa;
 		.close-sidebar {
 			display: block;
 		}
-		.site-options-phone{
+
+		.site-options-phone {
 			display: flex;
 			justify-content: center;
 			color: $text-color;
 		}
-		.darkmode-button-phone{
+
+		.darkmode-button-phone {
 			display: block;
 		}
-		.dropdown{
+
+		.dropdown {
 			display: none;
 		}
-		.documentation-btn{
+
+		.documentation-btn {
 			display: flex;
 		}
 	}
@@ -638,7 +668,7 @@ $text-color: #b6e2fa;
 		height: 100vh;
 		transition: all 0.3s ease-in-out;
 
-		> div:not(.logo-wrapper) {
+		>div:not(.logo-wrapper) {
 			padding: 2em;
 		}
 
