@@ -29,7 +29,6 @@ test('displays the logout button when user is loggged in', () => {
 		</AppContext.Provider>
 	);
 	expect(queryByTestId('login')).not.toBeInTheDocument();
-	expect(queryByTestId('username')).toHaveTextContent(`Welcome, ${user.username}`);
 });
 
 test('to test when onLogin function is called the username is stored in localStorage', async () => {
@@ -53,7 +52,14 @@ test('to test when onLogin function is called the username is stored in localSto
 	);
 
 	expect(mockUpdateAppState).toHaveBeenCalledTimes(1);
-	expect(mockUpdateAppState).toHaveBeenCalledWith({ user: mockData.user });
+	expect(mockUpdateAppState).toHaveBeenCalledWith({
+		user: mockData.user,
+		notification: {
+			type: 'info',
+			messageId: 'welcome',
+			text: mockData.user.username
+		}
+	});
 	expect(localStorage.setItem).toHaveBeenCalledTimes(1);
 	expect(localStorage.setItem).toHaveBeenCalledWith('user', JSON.stringify(mockData.user));
 	expect(localStorage.getItem('user')).toBe(JSON.stringify(mockData.user));
@@ -81,7 +87,7 @@ test('onLogOut updates app state and removes user from local storage', () => {
 		user: null,
 		notification: {
 			type: 'info',
-			messageId: 'Logged out successfully'
+			messageId: 'logout-message'
 		}
 	});
 	expect(mockClick).toHaveBeenCalled();

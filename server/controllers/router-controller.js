@@ -10,7 +10,7 @@ const Settings = require('../models/Settings.js');
 const { blob } = require('stream/consumers');
 
 const uploadVideos = async (req, res) => {
-	const BASE_URL = 'https://commons.wikimedia.org/w/api.php';
+	const BASE_URL = 'https://commons.wikimedia.org/w/api.php?';
 	const { CLIENT_ID, CLIENT_SECRET } = config;
 	const { user } = req.body;
 
@@ -51,7 +51,12 @@ const uploadVideos = async (req, res) => {
 		);
 
 		// Get CSRF token
-		const fetchCSRFToken = await fetch(`${BASE_URL}?action=query&meta=tokens&format=json`, {
+		const csrfParams = {
+			action: 'query',
+			meta: 'tokens',
+			format: 'json'
+		};
+		const fetchCSRFToken = await fetch(BASE_URL + new URLSearchParams(csrfParams), {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'multipart/form-data',
@@ -90,26 +95,51 @@ const uploadVideos = async (req, res) => {
 				body: uploadParams
 			});
 		});
-
 		// Using allSettled to make sure we run the code after successful attempts
-		const responseAll = await Promise.allSettled(concurrentRequests);
+		const responses = await Promise.allSettled(concurrentRequests);
+
+		// awaiting the json() method on each response
+		const responseAll = await Promise.allSettled(responses.map(val => val.value.json()));
 
 		// Check for errors (processing errors, not server errors)
-		responseAll.forEach(async response => {
-			const res = await response.value.json();
-			const { upload, error } = res;
-
+		responseAll.forEach(response => {
+			const result = response.value;
+			const { upload, error } = result;
+			if (error) {
+				let err = new Error(error.info);
+				err.type = 'Error';
+				err.status = 400;
+				err.success = false;
+				throw err;
+			}
 			// If warning exist then show the relevant message
-			if (upload && upload.result === 'Warning') {
+			else if (upload && upload.result === 'Warning') {
 				const {
-					warnings: { exists }
+					warnings: { exists, badfilename, duplicate }
 				} = upload;
 
-				if (exists !== undefined) {
-					throw new Error('File with the same name already exists');
+				// for multiple warnings, show them all to the user
+				const warningsArray = [];
+				if (exists !== undefined) warningsArray.push('warning-exists');
+
+				if (badfilename !== undefined) warningsArray.push('warning-badfilename');
+
+				if (duplicate !== undefined) warningsArray.push('warning-duplicate');
+
+				if (upload.warnings['duplicate-archive'] !== undefined)
+					warningsArray.push('warning-duplicate-archive');
+
+				if (warningsArray.length > 0) {
+					const warning = new Error('Warning');
+					warning.warnings = warningsArray;
+					warning.success = false;
+					warning.status = 201;
+					warning.type = 'Warning';
+					throw warning;
 				}
 			}
 		});
+		// If no errors, return success
 
 		// Delete files after upload
 		videos.forEach(video => {
@@ -117,15 +147,12 @@ const uploadVideos = async (req, res) => {
 			utils.deleteFiles(publicVideoPath);
 		});
 
-		res.json({ success: true });
+		return res.status(200).send({ success: true });
 	} catch (error) {
-		const { response } = error;
-		if (response) {
-			const { data, status } = response;
-			console.log('ERROR', data);
-			return res.json({ success: false, message: 'An error has occurred', status });
-		}
-		res.json({ success: false, message: error.message }); // 'An error occurred'
+		// catching all the errors and sending them to the client
+		const { message, status, type, success, warnings } = error;
+		console.log('ERROR', message);
+		return res.status(status).send({ success, message, type, warnings });
 	}
 };
 
@@ -157,84 +184,96 @@ const processVideo = async (req, res) => {
 			req.body.data
 		);
 
-		const user = JSON.parse(req.body.user);
+		try {
+			const user = JSON.parse(req.body.user);
 
-		await User.upsert(user);
-		const userDoc = await User.findOne({ mediawikiId: user.mediawikiId });
-
-		const videoData = {
-			id: randomUUID(),
-			url: inputVideoUrl,
-			videoDownloadPath,
-			uploadedBy: userDoc.mediawikiId,
-			status: 'downloading',
-			videoName,
-			UserMediawikiId: user.mediawikiId
-		};
-
-		const SettingsData = {
-			trims,
-			trimMode,
-			crop,
-			modified,
-			rotateValue,
-			VideoId: videoData.id
-		};
-
-		const videoDbObj = await Video.create(videoData);
-		await videoDbObj.save();
-		const videoSettingsDbObj = await Settings.create(SettingsData);
-		await videoSettingsDbObj.save();
-		const videoId = videoData.id;
-
-		videoIdResponse = JSON.stringify({ videoId: videoData.id });
-
-		const worker = new Worker(path.resolve(__dirname, '../worker.js'), {
-			workerData: {
-				_id: videoId,
-				inputVideoUrl,
+			await User.upsert(user);
+			const userDoc = await User.findOne({ mediawikiId: user.mediawikiId });
+			const videoData = {
+				id: randomUUID(),
+				url: inputVideoUrl,
 				videoDownloadPath,
+				uploadedBy: userDoc.mediawikiId,
+				status: 'downloading',
 				videoName,
-				settings: {
-					trims,
-					trimMode,
-					crop,
-					modified,
-					rotateValue
+				UserMediawikiId: user.mediawikiId
+			};
+
+			const SettingsData = {
+				trims,
+				trimMode,
+				crop,
+				modified,
+				rotateValue,
+				VideoId: videoData.id
+			};
+
+			const videoDbObj = await Video.create(videoData);
+			await videoDbObj.save();
+			const videoSettingsDbObj = await Settings.create(SettingsData);
+			await videoSettingsDbObj.save();
+			const videoId = videoData.id;
+
+			videoIdResponse = JSON.stringify({ videoId: videoData.id });
+
+			const worker = new Worker(path.resolve(__dirname, '../worker.js'), {
+				workerData: {
+					_id: videoId,
+					inputVideoUrl,
+					videoDownloadPath,
+					videoName,
+					settings: {
+						trims,
+						trimMode,
+						crop,
+						modified,
+						rotateValue
+					}
 				}
-			}
-		});
+			});
 
-		// Listen for a message from worker
-		worker.on('message', async payload => {
-			console.log(payload);
-			if (payload.type.includes('frontend')) {
-				io.to(req.app.get('socketid')).emit('progress:update', payload.data);
-			}
-			if (payload.data.status === 'processing') {
-				await Video.update(
-					{ status: payload.data.status, stage: payload.data.stage },
-					{ where: { id: payload.videoId } }
-				);
-			} else if (payload.data.status === 'done') {
-				Video.update(
-					{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos },
-					{ where: { id: payload.videoId } }
-				);
-			} else {
-				Video.update(
-					{ status: payload.data.status, errorData: payload.data.error },
-					{ where: { id: payload.videoId } }
-				);
-			}
-		});
+			// Listen for a message from worker
+			worker.on('message', async payload => {
+				console.log(payload);
+				if (payload.type.includes('frontend')) {
+					io.to(req.app.get('socketid')).emit('progress:update', payload.data);
+				}
+				if (payload.data.status === 'processing') {
+					await Video.update(
+						{ status: payload.data.status, stage: payload.data.stage },
+						{ where: { id: payload.videoId } }
+					);
+				} else if (payload.data.status === 'done') {
+					Video.update(
+						{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos },
+						{ where: { id: payload.videoId } }
+					);
+				} else {
+					Video.update(
+						{ status: payload.data.status, errorData: payload.data.error },
+						{ where: { id: payload.videoId } }
+					);
+				}
+			});
 
-		worker.on('error', error => {
-			console.log('WORKER ERROR', error);
-		});
+			worker.on('error', error => {
+				console.log('WORKER ERROR', error);
+				const workerError = new Error('error-worker');
+				workerError.success = false;
+				workerError.status = 400;
+				throw workerError;
+			});
+		} catch (err) {
+			console.log(err);
+			const e = new Error('login-alert-preview');
+			e.success = false;
+			e.status = 400;
+			throw e;
+		}
 	} catch (err) {
 		console.log(err);
-		return res.status(400).send('Something went wrong');
+		const { status, message, success } = err;
+		return res.status(status).send({ success, message });
 	}
 
 	return res

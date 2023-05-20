@@ -15,7 +15,7 @@ describe('Notification component', () => {
 				<Notification />
 			</AppContext.Provider>
 		);
-		expect(screen.getByText('notifications-title')).toBeInTheDocument();
+		expect(screen.getByText('notifications-title-info')).toBeInTheDocument();
 		expect(screen.getByText('testId')).toBeInTheDocument();
 		const closeBtn = screen.getByRole('button', 'Close');
 		expect(closeBtn).toBeInTheDocument();
@@ -33,14 +33,26 @@ describe('Notification component', () => {
 				<Notification />
 			</AppContext.Provider>
 		);
-		expect(screen.getByText('notifications-title')).toBeInTheDocument();
+		expect(screen.getByText('notifications-title-info')).toBeInTheDocument();
 	});
-	it('Testing the commons link is displayed if present in notification.text', () => {
+	it('Testing the commons link is displayed if present in notification.link', () => {
 		const mockUpdateNotification = vi.fn();
-		const mockText = 'https://commons.wikimedia.org/wiki/File:';
+		const mockLink = 'https://commons.wikimedia.org/wiki/File:';
 		const mockNotification = [
-			{ messageId: 'testId1', text: mockText, type: 'info', autohide: true },
-			{ messageId: 'testId2', text: mockText + 'mockfilename', type: 'info', autohide: true }
+			{
+				footerId: 'testId1 $1',
+				link: mockLink,
+				linkTitle: 'Wikimedia Commons',
+				type: 'info',
+				autohide: true
+			},
+			{
+				footerId: 'testId2 $1',
+				link: mockLink + 'mockfilename',
+				linkTitle: 'Wikimedia Commons',
+				type: 'info',
+				autohide: true
+			}
 		];
 		const mockAppState = { notifications: mockNotification };
 		render(
@@ -50,15 +62,26 @@ describe('Notification component', () => {
 				<Notification />
 			</AppContext.Provider>
 		);
-		expect(screen.getAllByText('notifications-title')).toHaveLength(2);
-		expect(screen.getByText('testId1')).toHaveAttribute('href', mockText);
-		expect(screen.getByText('testId2')).toHaveAttribute('href', mockText + 'mockfilename');
+		expect(screen.getAllByText('notifications-title-info')).toHaveLength(2);
+		expect(screen.getByText('testId1').querySelector('a')).toHaveAttribute('href', mockLink);
+		expect(screen.getByText('testId2').querySelector('a')).toHaveAttribute(
+			'href',
+			mockLink + 'mockfilename'
+		);
 	});
 	it('Testing the notification footer if notification type is not info', () => {
 		const mockUpdateNotification = vi.fn();
-		const mockText = 'https://commons.wikimedia.org/wiki/File:';
+		const mockLink =
+			'https://phabricator.wikimedia.org/maniphest/task/edit/form/43/?projects=VideoCutTool';
 		const mockNotification = [
-			{ messageId: 'testId', text: mockText, type: 'error', autohide: true }
+			{
+				messageId: 'testId',
+				link: mockLink,
+				linkTitle: 'Phabricator',
+				footerId: 'testId1 $1',
+				type: 'error',
+				autohide: true
+			}
 		];
 		const mockAppState = { notifications: mockNotification };
 		render(
@@ -70,7 +93,7 @@ describe('Notification component', () => {
 		);
 		expect(screen.getByText('notifications-title-error')).toBeInTheDocument();
 		expect(screen.getByText('testId')).toBeInTheDocument();
-		expect(screen.getByText('testId')).toHaveAttribute('href', mockText);
-		expect(screen.getByText('notification-error-bug-call-to-action')).toBeInTheDocument();
+		expect(screen.getByText('testId1')).toBeInTheDocument();
+		expect(screen.getByText('testId1').querySelector('a')).toHaveAttribute('href', mockLink);
 	});
 });

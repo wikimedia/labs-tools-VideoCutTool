@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap';
 import { List } from 'react-bootstrap-icons';
+import { Message } from '@wikimedia/react.i18n';
 
 import UrlBox from './UrlBox';
 import Results from './Results';
@@ -10,13 +11,13 @@ import { AppContext } from '../context';
 import { socket } from '../utils/socket';
 import Notification from './Notification';
 import { clearItems, getStoredItem } from '../utils/storage';
+import ENV_SETTINGS from '../env';
 
 import logo from '../logo.svg';
 import '../style/main.scss';
 import '../style/dark-theme.scss';
-import ENV_SETTINGS from '../env';
 
-const { backend_url: backendUrl } = ENV_SETTINGS();
+const { backend_url: backendUrl, phab_link } = ENV_SETTINGS();
 
 socket.on('connect', () => {
 	console.log('check 2', socket.connected);
@@ -101,21 +102,21 @@ function Home() {
 						>
 							<span>Sohom Datta</span>
 						</a>{' '}
-						|
-						<a
-							target="_blank"
-							rel="noreferrer"
-							href="https://phabricator.wikimedia.org/project/view/4054/"
-						>
-							<span> Report issues </span>
-						</a>
-						|
+						|{' '}
+						<a target="_blank" rel="noreferrer" href={`${phab_link}`}>
+							<span>
+								<Message id="report-issues" />
+							</span>
+						</a>{' '}
+						|{' '}
 						<a
 							target="_blank"
 							rel="noreferrer"
 							href="https://gerrit.wikimedia.org/r/admin/repos/labs/tools/VideoCutTool"
 						>
-							<span> Repository </span>
+							<span>
+								<Message id="repository" />
+							</span>
 						</a>
 					</div>
 				</div>

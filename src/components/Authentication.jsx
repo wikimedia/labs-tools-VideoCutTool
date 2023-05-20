@@ -41,7 +41,7 @@ function Authentication(props) {
 			{!user && (
 				<div className="functionality-btn">
 					<Button variant="secondary" onClick={handleLogin} data-testid="login">
-						Login
+						<Message id="login" />
 					</Button>
 				</div>
 			)}
@@ -49,13 +49,17 @@ function Authentication(props) {
 			{user && (
 				<div className="functionality-btn">
 					<span style={{ color: 'white' }} data-testid="username">
-						Welcome,{' '}
-						<a
-							className="text-white font-weight-bold"
-							href={`https://commons.wikimedia.org/wiki/user:${user.username}`}
-						>
-							{user.username}
-						</a>
+						<Message
+							id="welcome"
+							placeholders={[
+								<a
+									className="text-white font-weight-bold"
+									href={`https://commons.wikimedia.org/wiki/user:${user.username}`}
+								>
+									{user.username}
+								</a>
+							]}
+						/>
 					</span>
 					<span className="logout-btn">
 						<OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popover}>
