@@ -29,10 +29,10 @@ function UrlBox(props) {
 			return;
 		}
 
-		const fileExt = files[0].name.split('.').pop();
+		const fileExt = files[0].name.split('.').pop().toLowerCase();
 		if (allowedExtensions.split(',').indexOf(fileExt) === -1) {
 			// eslint-disable-next-line
-			alert('File extension not allowed');
+			alert('File extension not allowed. Currently we allow only ' + allowedExtensions + ' files.');
 			return;
 		}
 
