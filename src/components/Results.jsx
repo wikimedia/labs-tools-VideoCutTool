@@ -2,13 +2,7 @@ import axios from 'axios';
 
 import { useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup, ToggleButton, Form, InputGroup } from 'react-bootstrap';
-import {
-	Upload,
-	Download,
-	CardHeading,
-	CardText,
-	ChatLeftTextFill
-} from 'react-bootstrap-icons';
+import { Upload, Download, CardHeading, CardText, ChatLeftTextFill } from 'react-bootstrap-icons';
 import { Message, BananaContext } from '@wikimedia/react.i18n';
 import { AppContext } from '../context';
 import VideoPlayer from './VideoPlayer';
@@ -74,16 +68,21 @@ function Results() {
 		// To avoid merging actions into single words, add a space after each action name.
 		const videosWithDetails = videos.map((video, index) => {
 			const newTitle = title.split('.');
+			const newExtension = video.split('.');
 			return {
 				path: video,
-				title: `${newTitle[0]}_edited_${index}.${newTitle[1]}`,
+				title: `${newTitle[0]}_edited_${index}.${newExtension[1]}`,
 				author,
-				comment: comment || `This video was ${subcomment.trimEnd()} and uploaded by ${username} with VideoCutTool`,
+				comment:
+					comment ||
+					`This video was ${subcomment.trimEnd()} and uploaded by ${username} with VideoCutTool`,
 				text: [
 					'=={{int:filedesc}}==',
 					`{{Information${comment?.length > 0 ? `\n|description=${comment}` : ''}`,
 					`|date=${`${year}-${month}-${day}`}`,
-					`|source={{Derived from|1=${title}}}${author?.length > 0 ? `\n|author=[[User:${author}|${author}]]` : ''}`,
+					`|source={{Derived from|1=${title}}}${
+						author?.length > 0 ? `\n|author=[[User:${author}|${author}]]` : ''
+					}`,
 					'}}\n',
 					'=={{int:license-header}}==',
 					'{{self|cc-by-sa-4.0}}\n',
@@ -100,9 +99,9 @@ function Results() {
 
 	useEffect(() => {
 		const endTimer = new Date();
-		let endHour = (endTimer.getHours() - hourTimer);
-		let endMinute = (endTimer.getMinutes() - minuteTimer);
-		let endSecond = (endTimer.getSeconds() - secondTimer);
+		let endHour = endTimer.getHours() - hourTimer;
+		let endMinute = endTimer.getMinutes() - minuteTimer;
+		let endSecond = endTimer.getSeconds() - secondTimer;
 		if (endSecond < 0) {
 			endMinute -= 1;
 			endSecond += 60;
@@ -188,9 +187,7 @@ function Results() {
 							Time Taken:
 							{encodeTimer}
 						</p>
-						<div
-							className={`row ${video.displayUploadToCommons === false && 'd-none'}`}
-						>
+						<div className={`row ${video.displayUploadToCommons === false && 'd-none'}`}>
 							<div className="video-player-wrapper col-md-7">
 								<VideoPlayer videoUrl={`${API_URL}/${video.path}`} />
 							</div>
@@ -256,7 +253,14 @@ function Results() {
 											<Message id="upload-button" />
 										</span>
 									</Button>
-									<Button onClick={() => { window.location.href = `${API_URL}/download/${video.path.replace('/public', '')}`; }}>
+									<Button
+										onClick={() => {
+											window.location.href = `${API_URL}/download/${video.path.replace(
+												'/public',
+												''
+											)}`;
+										}}
+									>
 										<Download />
 										<span className="button-title ms-3">
 											<Message id="step-result-choice-download" />
