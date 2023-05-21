@@ -19,11 +19,12 @@ module.exports = {
 		Atomics: 'readonly',
 		SharedArrayBuffer: 'readonly'
 	},
+
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true
 		},
-		ecmaVersion: 2018
+		ecmaVersion: 2021
 	},
 	plugins: ['react', 'react-hooks'],
 	settings: {
@@ -34,6 +35,7 @@ module.exports = {
 		}
 	},
 	rules: {
+		'import/extensions': 0,
 		'linebreak-style': 0,
 		'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 		'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

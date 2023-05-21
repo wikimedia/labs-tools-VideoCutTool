@@ -1,8 +1,11 @@
-import { Server } from 'socket.io';
-import { createServer } from 'http';
-import app from './app.js';
-import config from './config.js';
-import socketController from './controllers/socket-controller.js';
+const { Server } = require('socket.io');
+const { createServer } = require('http');
+const app = require('./app.js');
+const config = require('./config.js');
+const socketController = require('./controllers/socket-controller.js');
+const User = require('./models/User.js');
+const Video = require('./models/Video.js');
+const Settings = require('./models/Settings.js');
 
 const server = createServer(app);
 const { PORT } = config;
@@ -66,7 +69,10 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-function onListening() {
+async function onListening() {
+	await User.sync();
+	await Video.sync();
+	await Settings.sync();
 	const addr = server.address();
 	const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
 	console.log(`Listening on ${bind}`);

@@ -33,5 +33,5 @@ yarn-error.log*
 /server/public/*
 !/server/public/.gitkeep
 /server/tmp
-
-/mongo-data
+mongo-data
+postgres/pg_data

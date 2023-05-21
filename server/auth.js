@@ -1,7 +1,7 @@
-import axios from 'axios';
-import config from './config.js';
+const axios = require('axios');
+const config = require('./config.js');
 
-export default async (req, res, next) => {
+module.exports = async (req, res, next) => {
 	const { code } = req.query;
 	const { CLIENT_ID, CLIENT_SECRET } = config;
 

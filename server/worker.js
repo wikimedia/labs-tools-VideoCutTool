@@ -1,9 +1,6 @@
-import { parentPort, workerData } from 'worker_threads';
-import fs from 'fs';
-import VideoModel from './models/Video.js';
-import utils from './utils.js';
-import pkg from 'mongoose'
-const { Types } = pkg;
+const { parentPort, workerData } = require('worker_threads');
+const fs = require('fs');
+const utils = require('./utils.js');
 
 async function process() {
 	const {

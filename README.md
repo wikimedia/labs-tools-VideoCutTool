@@ -56,18 +56,31 @@ git clone "https://gerrit.wikimedia.org/r/labs/tools/VideoCutTool"
 cd ./VideoCutTool
 ```
 
+#### Database
+
+##### On a development system
+
+- View the users list using the following commands:
+  - Connect to postgresql using `psql --host=0.0.0.0 --port=5435 --dbname=videocuttool --username=videocuttool`
+  - Enter the password (by default it is set to `videocuttool`)
+  - Run `select * from Users;`
+- View the list of videos being edited/that have been processed:
+  - Connect to postgresql using `psql --host=0.0.0.0 --port=5435 --dbname=videocuttool --username=videocuttool`
+  - Enter the password (by default it is set to `videocuttool`)
+  - Run `select * from Videos;`
+
 #### Run environment
 
 Run this command inside VideoCutTool to start development Docker container, if you operating system is Windows
 
 ```
-docker-compose -f .\docker-compose.dev.yml up --build
+docker-compose -f .\docker-compose.dev.yml up --build -V
 ```
 
 If your operating system is other than Windows (Linux/Mac), run this command instead
 
 ```
-docker-compose -f ./docker-compose.dev.yml up --build
+docker-compose -f ./docker-compose.dev.yml up --build -V
 ```
 
 The first time you run it will take some time (4-8 minutes depending on your internet speed) because it will pull the necessary images from Docker and install NPM packages. Once it is up and running changes will be hot loaded.
@@ -110,24 +123,7 @@ To install the tool in the cloud server (production), follow here
 Install the following utilities:
 
 - git
-- node version v16.15.1
-- npm version v8.12.1
-- ffmpeg
-- mongodb
-- nginx
-
-#### Database
-
-- View the users list using the following commands:
-  - Connect to mongo using shell - `mongo`
-  - `show databases`
-  - `use video-cut-tool`
-  - `db.users.find({}, {"_id":0 })`
-- View the list of videos being edited/that have been processed:
-  - Connect to mongo using shell - `mongo`
-  - `show databases`
-  - `use video-cut-tool`
-  - `db.videos.find({}, {"_id":0 })`
+- docker
 
 ## Credits
 
