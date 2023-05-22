@@ -3,6 +3,7 @@
 		"authors": [
 			"Hedda",
 			"Joseph",
+			"MrSchipunov",
 			"MuratTheTurkish",
 			"SaldırganSincap"
 		]
@@ -26,7 +27,10 @@
 	"notifications-not-overwritable": "Bir cihazdaki videonun üzerine yazamazsınız",
 	"notifications-title": "Bildirim !",
 	"notifications-title-error": "Hata!",
+	"notification-title-success": "Başarılı!",
+	"notification-title-warning": "Uyarı!",
 	"notifications-wait": "Videonuz işleniyor. Lütfen yeni video oluşturulana kadar bekleyin",
+	"notification-warning-call-to-action": "Dosya adı zaten var. Farklı bir ad seçin veya Üzerine Yaz'ı kullanın.",
 	"preview-text": "Ön izleme",
 	"preview-title": "Değişikliklerimi ön izle",
 	"setting-audio": "Sesi Kaldır",

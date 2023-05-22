@@ -4,6 +4,7 @@
 			"Fitoschido",
 			"Lys534",
 			"MarleneR329",
+			"No se",
 			"Pedro Zimmer"
 		]
 	},
@@ -20,6 +21,9 @@
 	"notification-error-bug-call-to-action": "¿No esperabas esto? Reporta este problema a $1",
 	"notifications-error-bug-report": "Phabricator",
 	"notifications-not-existing": "El archivo no existe en Wikimedia Commons",
+	"notification-title-success": "¡Éxito!",
+	"notification-title-warning": "¡Atención!",
+	"notification-warning-call-to-action": "El nombre del archivo ya existe. Elija un nombre diferente o use Sobrescribir.",
 	"preview-text": "Previsualizar",
 	"preview-title": "Previsualizar mis cambios",
 	"step-result": "Resultado",
