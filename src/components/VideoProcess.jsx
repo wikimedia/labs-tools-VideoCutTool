@@ -4,10 +4,9 @@ import axios from 'axios';
 import { AppContext } from '../context';
 import { socket } from '../utils/socket';
 import ProgressBar from './ProgressBar';
+import ENV_SETTINGS from '../env';
 
-const ENV_SETTINGS = require('../env')();
-
-const API_URL = ENV_SETTINGS.backend_url;
+const API_URL = ENV_SETTINGS().backend_url;
 
 function VideoProcess(props) {
 	const banana = useContext(BananaContext);

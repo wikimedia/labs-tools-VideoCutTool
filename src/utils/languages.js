@@ -1,13 +1,14 @@
 function getLanguagesFromDir() {
-	const context = require.context('../i18n', true, /.json$/);
+	// get all json files from i18n directory using vite
+	const context = import.meta.glob('../i18n/*.json', { eager: true });
 	const languages = {};
-	context.keys().forEach(key => {
-		const fileName = key.replace('./', '');
-		const resource = context(key);
+	Object.keys(context).forEach(key => {
+		const fileName = key.replace('../i18n/', '');
+		const resource = context[key];
 		const namespace = fileName.replace('.json', '').replace('-', '');
 
 		if (namespace !== 'qqq') {
-			languages[namespace] = { ...resource };
+			languages[namespace] = { ...resource.default };
 		}
 	});
 	return languages;

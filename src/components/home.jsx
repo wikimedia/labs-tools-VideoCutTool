@@ -14,10 +14,9 @@ import { clearItems, getStoredItem } from '../utils/storage';
 import logo from '../logo.svg';
 import '../style/main.css';
 import '../style/dark-theme.css';
+import ENV_SETTINGS from '../env';
 
-const settings = require('../env')();
-
-const { backend_url: backendUrl } = settings;
+const { backend_url: backendUrl } = ENV_SETTINGS();
 
 socket.on('connect', () => {
 	console.log('check 2', socket.connected);

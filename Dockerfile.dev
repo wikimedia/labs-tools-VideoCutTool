@@ -12,6 +12,8 @@ WORKDIR /app
 # Copy the package.json to workdir
 COPY package.json .
 COPY package-lock.json .
+COPY index.html .
+COPY vite.config.js .
 COPY server/package.json ./server/
 COPY server/package-lock.json ./server/
 

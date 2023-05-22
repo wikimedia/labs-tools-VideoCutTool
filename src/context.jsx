@@ -64,17 +64,20 @@ export const AppProvider = function AppProvider(props) {
 	const [hourTimer, setHourTimer] = useState('');
 	const [minuteTimer, setMinuteTimer] = useState('');
 	const [secondTimer, setSecondTimer] = useState('');
-	const contextValue = useMemo(() => ({
-		appState,
-		updateAppState,
-		updateNotification,
-		hourTimer,
-		setHourTimer,
-		minuteTimer,
-		setMinuteTimer,
-		secondTimer,
-		setSecondTimer
-	}), [appState, updateAppState, updateNotification, hourTimer, minuteTimer, secondTimer]);
+	const contextValue = useMemo(
+		() => ({
+			appState,
+			updateAppState,
+			updateNotification,
+			hourTimer,
+			setHourTimer,
+			minuteTimer,
+			setMinuteTimer,
+			secondTimer,
+			setSecondTimer
+		}),
+		[appState, updateAppState, updateNotification, hourTimer, minuteTimer, secondTimer]
+	);
 
 	return (
 		<AppContext.Provider value={contextValue}>

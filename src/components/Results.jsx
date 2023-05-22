@@ -7,10 +7,9 @@ import { Message, BananaContext } from '@wikimedia/react.i18n';
 import { AppContext } from '../context';
 import VideoPlayer from './VideoPlayer';
 import ProgressBar from './ProgressBar';
+import ENV_SETTINGS from '../env';
 
-const ENV_SETTINGS = require('../env')();
-
-const API_URL = ENV_SETTINGS.backend_url;
+const API_URL = ENV_SETTINGS().backend_url;
 
 function Results() {
 	const banana = useContext(BananaContext);
