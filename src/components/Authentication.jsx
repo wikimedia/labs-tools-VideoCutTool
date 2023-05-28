@@ -71,4 +71,3 @@ function Authentication(props) {
 }
 
 export default Authentication;
-export { onLogin, onLogOut };

@@ -2,9 +2,9 @@ import { createContext, useState, useMemo } from 'react';
 import { IntlProvider } from '@wikimedia/react.i18n';
 import { getLanguagesFromDir } from './utils/languages';
 
-export const AppContext = createContext('');
+const AppContext = createContext('');
 
-export const AppProvider = function AppProvider(props) {
+const AppProvider = function AppProvider(props) {
 	const { children } = props;
 	const defaultLocaleObj = {
 		locale: 'en-US',
@@ -87,3 +87,4 @@ export const AppProvider = function AppProvider(props) {
 		</AppContext.Provider>
 	);
 };
+export { AppContext, AppProvider };
