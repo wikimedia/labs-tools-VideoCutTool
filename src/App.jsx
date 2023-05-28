@@ -4,8 +4,7 @@ import { AppProvider } from './context';
 import Home from './components/home';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const ENV_SETTINGS = require('./env')();
+import ENV_SETTINGS from './env';
 
 function App() {
 	return (
@@ -13,8 +12,8 @@ function App() {
 			<AppProvider>
 				<BrowserRouter>
 					<Routes>
-						<Route exact path={ENV_SETTINGS.path} element={<Home />} title="VideoCutTool" />
-						<Route path={ENV_SETTINGS.not_found_path} element={<Navigate to="/" />} />
+						<Route exact path={ENV_SETTINGS().path} element={<Home />} title="VideoCutTool" />
+						<Route path={ENV_SETTINGS().not_found_path} element={<Navigate to="/" />} />
 					</Routes>
 				</BrowserRouter>
 			</AppProvider>

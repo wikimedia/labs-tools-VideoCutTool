@@ -1,4 +1,4 @@
-module.exports = () => {
+const ENV_SETTINGS = () => {
 	switch (process.env.NODE_ENV) {
 		case 'production':
 			return {
@@ -21,3 +21,4 @@ module.exports = () => {
 			};
 	}
 };
+export default ENV_SETTINGS;
