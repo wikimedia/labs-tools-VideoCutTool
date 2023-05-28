@@ -12,8 +12,8 @@ import Notification from './Notification';
 import { clearItems, getStoredItem } from '../utils/storage';
 
 import logo from '../logo.svg';
-import '../style/main.css';
-import '../style/dark-theme.css';
+import '../style/main.scss';
+import '../style/dark-theme.scss';
 import ENV_SETTINGS from '../env';
 
 const { backend_url: backendUrl } = ENV_SETTINGS();

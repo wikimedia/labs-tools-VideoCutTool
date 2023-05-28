@@ -20,6 +20,7 @@
 .env.dev
 .env.prod
 *.css.map
+*.css
 
 npm-debug.log*
 .pnpm-debug.log

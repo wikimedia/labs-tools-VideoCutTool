@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 're
 import { PlayFill, PauseFill } from 'react-bootstrap-icons';
 import { Spinner } from 'react-bootstrap';
 import { formatTime } from '../utils/time';
-import '../style/video-player.css';
+import '../style/video-player.scss';
 
 const VideoPlayer = forwardRef((props, forwardedRef) => {
 	const { videoUrl, children } = props;
