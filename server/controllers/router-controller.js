@@ -61,7 +61,7 @@ const uploadVideos = async (req, res) => {
 		// Loop throug the videos and create an array axios requests
 		const concurrentRequests = videos.map(video => {
 			const { title, path: publicVideoPath, selectedOptionName, comment, text } = video;
-			const filePath = path.join(__dirname, publicVideoPath);
+			const filePath = path.join(__dirname, '..', publicVideoPath);
 			const file = fs.createReadStream(filePath);
 
 			const uploadParams = new FormData();
@@ -165,7 +165,7 @@ const processVideo = async (req, res) => {
 			uploadedBy: userDoc.mediawikiId,
 			status: 'downloading',
 			videoName,
-			UserMediawikiId: user.mediawikiId,
+			UserMediawikiId: user.mediawikiId
 		};
 
 		const SettingsData = {
