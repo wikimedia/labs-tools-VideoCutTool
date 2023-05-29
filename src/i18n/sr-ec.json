@@ -17,6 +17,8 @@
 	"notifications-not-existing": "Датотека не постоји на Викимедијиној Остави",
 	"notifications-title": "Обавештење!",
 	"notifications-title-error": "Грешка!",
+	"notification-title-success": "Успешно!",
+	"notification-title-warning": "Упозорење!",
 	"step-result": "Резултат",
 	"step-video-settings": "Подешавања видеа",
 	"step-video-url": "URL видеа",
