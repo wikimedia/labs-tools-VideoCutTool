@@ -1,5 +1,5 @@
 # Install node
-FROM node:16
+FROM node:18
 
 # Install FFMPEG library
 RUN apt update -y
