@@ -1,4 +1,3 @@
-const axios = require('axios');
 const config = require('./config.js');
 
 module.exports = async (req, res, next) => {
@@ -13,31 +12,34 @@ module.exports = async (req, res, next) => {
 	params.append('client_secret', CLIENT_SECRET);
 
 	try {
-		const fetchDataRes = await axios.request({
+		const fetchData = await fetch('https://commons.wikimedia.org/w/rest.php/oauth2/access_token', {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
-			url: '/w/rest.php/oauth2/access_token',
-			method: 'post',
-			baseURL: 'https://commons.wikimedia.org',
-			data: params
+			body: params
 		});
+		const fetchDataRes = await fetchData.json();
 
-		const { access_token: accessToken, refresh_token: refreshToken } = fetchDataRes.data;
+		const { access_token: accessToken, refresh_token: refreshToken } = fetchDataRes;
 		res.locals.refresh_token = refreshToken;
 
-		const userData = await axios.request({
-			headers: { Authorization: `Bearer ${accessToken}` },
-			url: '/w/rest.php/oauth2/resource/profile',
-			method: 'get',
-			baseURL: 'https://commons.wikimedia.org'
-		});
-		res.locals.profile = userData.data;
+		const getUserData = await fetch(
+			'https://commons.wikimedia.org/w/rest.php/oauth2/resource/profile',
+			{
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${accessToken}`
+				}
+			}
+		);
+		const userData = await getUserData.json();
+		res.locals.profile = userData;
 
 		next();
 	} catch (err) {
-		const error = err.toJSON();
-		req.session.error_message = error.message;
+		console.log(err);
+		req.session.error_message = err.message;
 		res.redirect('/error');
 	}
 };

@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import { useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup, ToggleButton, Form, InputGroup } from 'react-bootstrap';
 import { Upload, Download, CardHeading, CardText, ChatLeftTextFill } from 'react-bootstrap-icons';
@@ -8,6 +6,7 @@ import { AppContext } from '../context';
 import VideoPlayer from './VideoPlayer';
 import ProgressBar from './ProgressBar';
 import ENV_SETTINGS from '../env';
+import { uploadVideos } from '../utils/video';
 
 const API_URL = ENV_SETTINGS().backend_url;
 
@@ -127,50 +126,8 @@ function Results() {
 		setWantTitle(title);
 	};
 
-	const uploadVideos = async () => {
-		setShowProgress(true);
-		const uploadData = {
-			upload: true,
-			videos: videoState,
-			user
-		};
-
-		try {
-			const uploadResponse = await axios.post(`${API_URL}/upload`, uploadData);
-			setShowProgress(false);
-
-			const { data } = uploadResponse;
-
-			const { success } = data;
-
-			if (success === true) {
-				updateAppState({
-					notification: {
-						type: 'success',
-						text: `https://commons.wikimedia.org/wiki/File:${wantTitle}`
-					},
-					// Reset UI
-					current_step: 1,
-					current_sub_step: '',
-					video_url: ''
-				});
-			} else {
-				updateAppState({
-					notification: {
-						type: 'warning',
-						text: data.message
-					}
-				});
-			}
-		} catch (err) {
-			setShowProgress(false);
-			updateAppState({
-				notification: {
-					type: 'error',
-					text: err.message
-				}
-			});
-		}
+	const uploadVideo = async () => {
+		await uploadVideos(setShowProgress, videoState, user, wantTitle, updateAppState);
 	};
 
 	return (
@@ -246,7 +203,7 @@ function Results() {
 									<Form.Control as="textarea" rows={15} defaultValue={video.text.join('\n')} />
 								</InputGroup>
 								<div className="upload-button d-flex justify-content-between">
-									<Button onClick={uploadVideos}>
+									<Button onClick={uploadVideo}>
 										<Upload />
 										<span className="button-title ms-3">
 											<Message id="upload-button" />

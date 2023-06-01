@@ -1,14 +1,13 @@
 const path = require('path');
-const axios = require('axios');
 const { Worker } = require('worker_threads');
 const fs = require('fs');
-const FormData = require('form-data');
 const { randomUUID } = require('crypto');
 const User = require('../models/User.js');
 const config = require('../config.js');
 const utils = require('../utils.js');
 const Video = require('../models/Video.js');
 const Settings = require('../models/Settings.js');
+const { blob } = require('stream/consumers');
 
 const uploadVideos = async (req, res) => {
 	const BASE_URL = 'https://commons.wikimedia.org/w/api.php';
@@ -17,7 +16,10 @@ const uploadVideos = async (req, res) => {
 
 	try {
 		// Get refresh token from user records
-		const userData = await User.findOne({ attributes: ['refreshToken'], where: { mediawikiId: user.mediawikiId } });
+		const userData = await User.findOne({
+			attributes: ['refreshToken'],
+			where: { mediawikiId: user.mediawikiId }
+		});
 
 		// Get access token to retrive CSRF token
 		const { refreshToken } = userData;
@@ -28,63 +30,64 @@ const uploadVideos = async (req, res) => {
 		params.append('client_id', CLIENT_ID);
 		params.append('client_secret', CLIENT_SECRET);
 
-		const getAccessToken = await axios.request({
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			url: '/w/rest.php/oauth2/access_token',
-			method: 'post',
-			baseURL: 'https://commons.wikimedia.org',
-			data: params
-		});
-		const { access_token: accessToken, refresh_token: newRefreshToken } = getAccessToken.data;
+		const getAccessToken = await fetch(
+			'https://commons.wikimedia.org/w/rest.php/oauth2/access_token',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: params
+			}
+		);
+
+		const tokenData = await getAccessToken.json();
+		const { access_token: accessToken, refresh_token: newRefreshToken } = tokenData;
 
 		// Update database with the new refresh token
 		await User.update(
 			{ refreshToken: newRefreshToken },
-			{ where: { mediawikiId: user.mediawikiId } },
+			{ where: { mediawikiId: user.mediawikiId } }
 		);
 
 		// Get CSRF token
-		const getCSRFToken = await axios.request({
+		const fetchCSRFToken = await fetch(`${BASE_URL}?action=query&meta=tokens&format=json`, {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'multipart/form-data',
 				Authorization: `Bearer ${accessToken}`
-			},
-			url: `${BASE_URL}?action=query&meta=tokens&format=json`,
-			method: 'post'
+			}
 		});
 
-		const csrfToken = getCSRFToken.data.query.tokens.csrftoken;
+		const getCSRFToken = await fetchCSRFToken.json();
+		const csrfToken = getCSRFToken.query.tokens.csrftoken;
 		const { videos } = req.body;
 
-		// Loop throug the videos and create an array axios requests
-		const concurrentRequests = videos.map(video => {
+		// Loop through the videos and create an array of requests
+		// this will allow us to upload multiple videos at once
+		const concurrentRequests = videos.map(async video => {
 			const { title, path: publicVideoPath, selectedOptionName, comment, text } = video;
 			const filePath = path.join(__dirname, '..', publicVideoPath);
-			const file = fs.createReadStream(filePath);
-
+			const file = await blob(fs.createReadStream(filePath));
 			const uploadParams = new FormData();
+
+			uploadParams.append('token', csrfToken);
 			uploadParams.append('file', file, { knownLength: fs.statSync(filePath).size });
 			uploadParams.append('filename', title);
 			uploadParams.append('text', text.join('\r\n'));
-			uploadParams.append('token', csrfToken);
 			uploadParams.append('comment', comment);
 
-			let url = `${BASE_URL}?action=upload&format=json`;
+			let url = `${BASE_URL}?&action=upload&format=json`;
 			if (selectedOptionName === 'overwrite') {
 				url += '&ignorewarnings=true';
 			}
 
-			return axios({
+			return fetch(url, {
+				method: 'POST',
 				headers: {
-					'Content-Length': uploadParams.getLengthSync(),
-					Authorization: `Bearer ${accessToken}`,
-					...uploadParams.getHeaders()
+					Authorization: `Bearer ${accessToken}`
 				},
-				method: 'post',
-				url,
-				data: uploadParams
+				body: uploadParams
 			});
 		});
 
@@ -92,11 +95,12 @@ const uploadVideos = async (req, res) => {
 		const responseAll = await Promise.allSettled(concurrentRequests);
 
 		// Check for errors (processing errors, not server errors)
-		responseAll.forEach(response => {
-			const { upload } = response.value.data;
+		responseAll.forEach(async response => {
+			const res = await response.value.json();
+			const { upload, error } = res;
 
 			// If warning exist then show the relevant message
-			if (upload.result === 'Warning') {
+			if (upload && upload.result === 'Warning') {
 				const {
 					warnings: { exists }
 				} = upload;

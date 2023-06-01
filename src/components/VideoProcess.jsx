@@ -1,12 +1,9 @@
 import { useState, useContext, useEffect } from 'react';
 import { Message, BananaContext } from '@wikimedia/react.i18n';
-import axios from 'axios';
 import { AppContext } from '../context';
 import { socket } from '../utils/socket';
 import ProgressBar from './ProgressBar';
-import ENV_SETTINGS from '../env';
-
-const API_URL = ENV_SETTINGS().backend_url;
+import { processVideo } from '../utils/video';
 
 function VideoProcess(props) {
 	const banana = useContext(BananaContext);
@@ -90,39 +87,10 @@ function VideoProcess(props) {
 		formData.append('user', JSON.stringify(appState.user));
 		formData.append('file', file);
 
-		axios
-			.post(`${API_URL}/process`, formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
-			})
-			.then(res => {
-				// console.log('RES', res);
-			})
-			.catch(error => {
-				const { response } = error;
-				// backend response
-				if (response) {
-					updateAppState({
-						current_sub_step: '',
-						notification: {
-							text: response.data,
-							type: 'error'
-						}
-					});
-				}
-
-				// Other errors (like network errors)
-				if (error.message) {
-					updateAppState({
-						current_sub_step: '',
-						notification: {
-							text: error.message,
-							type: 'error'
-						}
-					});
-				}
-			});
+		const process = async () => {
+			await processVideo(formData, updateAppState);
+		};
+		process();
 	}, []);
 
 	return (

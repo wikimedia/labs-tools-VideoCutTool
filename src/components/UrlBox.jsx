@@ -1,8 +1,8 @@
 import { useState, useRef, useContext, useEffect } from 'react';
 import { Message } from '@wikimedia/react.i18n';
 import { Form, FormLabel } from 'react-bootstrap';
-import axios from 'axios';
 import { AppContext } from '../context';
+import { checkFileExist } from '../utils/video';
 
 function UrlBox(props) {
 	const { updateAppState } = useContext(AppContext);
@@ -52,88 +52,14 @@ function UrlBox(props) {
 		onFileUpload(e);
 	};
 
-	/**
-	 * Get video date from either commons site or user uploads
-	 *
-	 * @param {string} videoUrl Video Path
-	 * @returns
-	 */
-	const retrieveVideoData = videoUrl => {
-		const splitUrl = videoUrl.split('/');
-		if (!videoUrl.includes('commons.wikimedia.org')) {
-			return;
-		}
-		axios
-			.get(
-				`https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=videoinfo&titles=${
-					splitUrl[splitUrl.length - 1]
-				}&viprop=user%7Curl%7Ccanonicaltitle%7Ccomment%7Curl&origin=*`
-			)
-			.then(response => {
-				const { pages } = response.data.query;
-				if (Object.keys(pages)[0] !== '-1') {
-					const { user, canonicaltitle, comment, url } = pages[Object.keys(pages)[0]].videoinfo[0];
-					updateAppState({
-						current_step: 2,
-						video_url: url,
-						video_details: {
-							author: user,
-							title: decodeURIComponent(canonicaltitle.slice(5)).replace(/\s/g, '_'),
-							comment
-						}
-					});
-				}
-			});
-	};
-
-	/**
-	 * Check that video exist on commons site
-	 *
-	 * @param {string} filePath Video path
-	 * @returns {void}
-	 */
-	const checkFileExist = filePath => {
-		// First check if pattern File:(filename) exists
-		const matchPath = filePath.match(/File:(.*)$/);
-		if (matchPath === null) {
-			return;
-		}
-
-		const fileName = matchPath[0];
-		const baseUrl = 'https://commons.wikimedia.org/w/api.php?';
-		const params = {
-			action: 'query',
-			titles: fileName,
-			format: 'json',
-			formatversion: 2,
-			origin: '*'
-		};
-		axios
-			.get(baseUrl, {
-				params
-			})
-			.then(response => {
-				const pageObj = response.data.query.pages[0];
-				if ('missing' in pageObj) {
-					return;
-				}
-
-				// File exists, retrieve video data
-				retrieveVideoData(filePath);
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
-
 	useEffect(() => {
 		setTitle(requiredTitle);
-		checkFileExist(requiredTitle);
+		checkFileExist(requiredTitle, updateAppState);
 	}, [requiredTitle]);
 
 	const onUrlInput = e => {
 		setTitle(e.target.value);
-		checkFileExist(e.target.value);
+		checkFileExist(e.target.value, updateAppState);
 	};
 
 	return (
