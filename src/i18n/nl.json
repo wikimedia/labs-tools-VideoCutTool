@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"HanV",
 			"McDutchie"
 		]
 	},
@@ -26,7 +27,10 @@
 	"notifications-not-overwritable": "U kunt een video van een apparaat niet overschrijven",
 	"notifications-title": "Melding!",
 	"notifications-title-error": "Fout!",
+	"notification-title-success": "Succes!",
+	"notification-title-warning": "Waarschuwing!",
 	"notifications-wait": "Uw video wordt verwerkt. Wacht tot de nieuwe video is gegenereerd.",
+	"notification-warning-call-to-action": "Bestandsnaam bestaat al. Kies een andere naam of gebruik Overschrijven.",
 	"preview-text": "Voorvertoning",
 	"preview-title": "Wijzigingen controleren",
 	"setting-audio": "Audio verwijderen",
