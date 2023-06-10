@@ -43,16 +43,16 @@ app.use(cors());
 const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 const sessionSecret = process.env.SESSION_SECRET || randomUUID();
 app.use(
-   session({
-     cookie: {
-       maxAge: ONE_YEAR_MS,
-     },
-     store: new MemoryStore({
-       checkPeriod: ONE_YEAR_MS,
-     }),
-     saveUninitialized: true,
-     secret: sessionSecret,
-   })
+	session({
+		cookie: {
+			maxAge: ONE_YEAR_MS
+		},
+		store: new MemoryStore({
+			checkPeriod: ONE_YEAR_MS
+		}),
+		saveUninitialized: true,
+		secret: sessionSecret
+	})
 );
 
 /* GET home page. */
@@ -113,11 +113,10 @@ app.get('/auth/mediawiki/callback', auth, async (req, res) => {
 	try {
 		await User.upsert(userRow);
 		const user = await User.findOne({ where: { mediawikiId: sub } });
-		const { mediawikiId, socketId } = user;
+		const { mediawikiId } = user;
 		const returnUserData = {
 			mediawikiId,
-			username,
-			socketId
+			username
 		};
 		res.end(PopupTools.popupResponse({ user: returnUserData }));
 	} catch (err) {

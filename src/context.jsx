@@ -20,6 +20,7 @@ const AppProvider = function AppProvider(props) {
 		file: null,
 		user: null,
 		socket: null,
+		socketId: null,
 		current_locale: JSON.parse(localStorage.getItem('localeObj')) || defaultLocaleObj,
 		current_locale_object: {
 			locale: 'en-US',

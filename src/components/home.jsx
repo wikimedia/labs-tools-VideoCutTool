@@ -10,7 +10,7 @@ import VideoSettings from './VideoSettings';
 import { AppContext } from '../context';
 import { socket } from '../utils/socket';
 import Notification from './Notification';
-import { clearItems, getStoredItem } from '../utils/storage';
+import { clearItems, getStoredItem, storeItem } from '../utils/storage';
 import ENV_SETTINGS from '../env';
 
 import logo from '../logo.svg';
@@ -18,8 +18,12 @@ import '../style/main.scss';
 import '../style/dark-theme.scss';
 
 const { backend_url: backendUrl, phab_link, base_wiki_url } = ENV_SETTINGS();
+const currentUser = getStoredItem('user');
 
 socket.on('connect', () => {
+	if (currentUser) {
+		socket.emit('join', currentUser);
+	}
 	console.log('check 2', socket.connected);
 });
 
@@ -32,6 +36,21 @@ function Home() {
 	const { current_step: currentStep, notifications } = appState || {};
 	const [showHeader, setShowHeader] = useState(false);
 	const [title, setTitle] = useState('');
+	const [currentUser, setCurrentUser] = useState(getStoredItem('user') || null);
+
+	socket.on('update', data => {
+		const { socketId, ...rest } = data;
+		storeItem('user', rest);
+		setCurrentUser(rest);
+		updateAppState({ socketId });
+		const location = window.location.href;
+		if (location.indexOf('?') !== -1) {
+			setTitle(`${base_wiki_url}/wiki/File:${location.split('?')[1].split('=')[1]}`);
+		} else {
+			setTitle('');
+		}
+	});
+
 	useEffect(() => {
 		// Clear localstorage
 		clearItems([
@@ -45,23 +64,12 @@ function Home() {
 		// Update socket reference
 		updateAppState({ socket });
 
-		try {
-			const userLocalStorage = getStoredItem('user');
-
-			if (userLocalStorage) {
-				updateAppState({ user: userLocalStorage });
-			}
-		} catch (e) {
+		if (currentUser) {
+			updateAppState({ user: currentUser });
+		} else {
 			updateAppState({ user: null });
 		}
-
-		const location = window.location.href;
-		if (location.indexOf('?') !== -1) {
-			setTitle(`${base_wiki_url}/wiki/File:${location.split('?')[1].split('=')[1]}`);
-		} else {
-			setTitle('');
-		}
-	}, []);
+	}, [currentUser]);
 
 	const toggleHeader = () => {
 		const status = !showHeader;

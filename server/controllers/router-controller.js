@@ -238,7 +238,7 @@ const processVideo = async (req, res) => {
 			worker.on('message', async payload => {
 				console.log(payload);
 				if (payload.type.includes('frontend')) {
-					io.to(req.app.get('socketid')).emit('progress:update', payload.data);
+					io.to(user.socketId).emit('progress:update', payload.data);
 				}
 				if (payload.data.status === 'processing') {
 					await Video.update(

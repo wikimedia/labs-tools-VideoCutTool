@@ -12,7 +12,7 @@ function VideoProcess(props) {
 	const { appState, updateAppState } = useContext(AppContext);
 
 	const { manipulations, trim, settings } = props;
-	const { video_url: videoUrl, file } = appState;
+	const { video_url: videoUrl, file, socketId } = appState;
 
 	const [progressInfo, setProgressInfo] = useState(null);
 	const [currentTask, setCurrentTask] = useState(banana.i18n('task-processing'));
@@ -91,7 +91,7 @@ function VideoProcess(props) {
 
 		const formData = new FormData();
 		formData.append('data', JSON.stringify(settingData));
-		formData.append('user', JSON.stringify(appState.user));
+		formData.append('user', JSON.stringify({ ...appState.user, socketId }));
 		formData.append('file', file);
 
 		const process = async () => {
