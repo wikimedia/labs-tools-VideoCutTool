@@ -7,7 +7,7 @@ export default defineConfig({
 		host: true,
 		strictPort: true,
 		hmr: {
-			clientPort: 8000,
+			Port: 8000,
 			path: 'vite-hmr'
 		}
 	},
