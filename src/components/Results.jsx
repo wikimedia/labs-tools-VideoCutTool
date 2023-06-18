@@ -9,6 +9,7 @@ import ENV_SETTINGS from '../env';
 import { uploadVideos } from '../utils/video';
 
 const API_URL = ENV_SETTINGS().backend_url;
+const fileNameRegex = /^(.*)\.[a-zA-Z0-9]+$/;
 
 function Results() {
 	const banana = useContext(BananaContext);
@@ -51,6 +52,9 @@ function Results() {
 		const changes = JSON.parse(actions);
 		const rotation = localStorage.getItem('video-manipulations');
 		const rotationAmount = JSON.parse(rotation).rotate_value;
+		const titleArr = fileNameRegex.exec(title);
+		const newTitle = titleArr[1];
+
 		let subcomment = '';
 		if (changes[0].modified === true) subcomment += 'put on mute ';
 		if (changes[1].modified === true) {
@@ -65,11 +69,10 @@ function Results() {
 		}
 		// To avoid merging actions into single words, add a space after each action name.
 		const videosWithDetails = videos.map((video, index) => {
-			const newTitle = title.split('.');
 			const newExtension = video.split('.');
 			return {
 				path: video,
-				title: `${newTitle[0]}_edited_${index}.${newExtension[1]}`,
+				title: `${newTitle}_edited_${index}.${newExtension[1]}`,
 				author,
 				comment:
 					comment ||
