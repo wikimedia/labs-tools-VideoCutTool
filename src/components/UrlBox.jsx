@@ -1,11 +1,13 @@
 import { useState, useRef, useContext, useEffect } from 'react';
 import { Message } from '@wikimedia/react.i18n';
 import { Form, FormLabel } from 'react-bootstrap';
-import { AppContext } from '../context';
+import { GlobalContext } from '../context/GlobalContext';
+import { VideoDetailsContext } from '../context/VideoDetailsContext';
 import { checkFileExist } from '../utils/video';
 
 function UrlBox(props) {
-	const { updateAppState } = useContext(AppContext);
+	const { updateAppState } = useContext(GlobalContext);
+	const { setVideoDetails, setVideoUrl,setFile,setCurrentStep } = useContext(VideoDetailsContext);
 	const { title: requiredTitle } = props;
 	const allowedExtensions = 'mp4,webm,mov,flv,ogv';
 	const [mouseHover, setMouseHover] = useState(false);
@@ -35,14 +37,11 @@ function UrlBox(props) {
 			alert('File extension not allowed. Currently we allow only ' + allowedExtensions + ' files.');
 			return;
 		}
-
-		updateAppState({
-			current_step: 2,
-			video_url: URL.createObjectURL(files[0]),
-			file: files[0],
-			video_details: {
-				title: files[0].name.replace(/\s/g, '_')
-			}
+		setCurrentStep(2);
+		setFile(files[0]);
+		setVideoUrl(URL.createObjectURL(files[0]));
+		setVideoDetails({
+			title: files[0].name.replace(/\s/g, '_')
 		});
 	};
 
@@ -54,12 +53,12 @@ function UrlBox(props) {
 
 	useEffect(() => {
 		setTitle(requiredTitle);
-		checkFileExist(requiredTitle, updateAppState);
+		checkFileExist(requiredTitle, updateAppState,setVideoDetails, setVideoUrl,setCurrentStep,setCurrentStep);
 	}, [requiredTitle]);
 
 	const onUrlInput = e => {
 		setTitle(e.target.value);
-		checkFileExist(e.target.value, updateAppState);
+		checkFileExist(e.target.value, updateAppState,setVideoDetails, setVideoUrl,setCurrentStep);
 	};
 
 	return (

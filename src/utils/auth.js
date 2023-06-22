@@ -1,16 +1,16 @@
 import PopupTools from 'popup-tools';
 
-const onLogin = (apiUrl, updateAppState) => {
+const onLogin = (apiUrl, setCurrentUser,updateAppState) => {
 	PopupTools.popup(`${apiUrl}/login`, 'Wiki Connect', { width: 1000, height: 600 }, (err, data) => {
 		if (!err) {
 			updateAppState({
-				user: data.user,
 				notification: {
 					type: 'info',
 					messageId: 'welcome',
 					text: data.user.username
 				}
 			});
+			setCurrentUser(data.user);
 			localStorage.setItem('user', JSON.stringify(data.user));
 		} else {
 			updateAppState({
@@ -23,10 +23,10 @@ const onLogin = (apiUrl, updateAppState) => {
 	});
 };
 
-const onLogOut = updateAppState => {
+const onLogOut = (updateAppState, setCurrentUser) => {
 	localStorage.removeItem('user');
+	setCurrentUser(null);
 	updateAppState({
-		user: null,
 		notification: {
 			type: 'info',
 			messageId: 'logout-message'

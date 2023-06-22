@@ -3,13 +3,15 @@ import { Image } from 'react-bootstrap';
 import { List } from 'react-bootstrap-icons';
 import { Message } from '@wikimedia/react.i18n';
 
-import UrlBox from './UrlBox';
+import UrlBox from '../components/UrlBox';
 import Results from './Results';
-import Header from './Header';
-import VideoSettings from './VideoSettings';
-import { AppContext } from '../context';
+import Header from '../components/Header';
+import VideoSettings from '../pages/VideoSettings';
+import { GlobalContext } from '../context/GlobalContext';
+import { VideoDetailsContext } from '../context/VideoDetailsContext';
+import { UserContext } from '../context/UserContext';
 import { socket } from '../utils/socket';
-import Notification from './Notification';
+import Notification from '../components/Notification';
 import { clearItems, getStoredItem, storeItem } from '../utils/storage';
 import ENV_SETTINGS from '../env';
 
@@ -32,17 +34,19 @@ socket.on('connect_error', err => {
 });
 
 function Home() {
-	const { appState, updateAppState } = useContext(AppContext);
-	const { current_step: currentStep, notifications } = appState || {};
+	const { appState, updateAppState } = useContext(GlobalContext);
+	const { notifications } = appState || {};
+	const { currentStep } = useContext(VideoDetailsContext);
+	const { currentUser, setCurrentUser } = useContext(UserContext);
 	const [showHeader, setShowHeader] = useState(false);
 	const [title, setTitle] = useState('');
-	const [currentUser, setCurrentUser] = useState(getStoredItem('user') || null);
 
 	socket.on('update', data => {
 		const { socketId, ...rest } = data;
 		storeItem('user', rest);
 		setCurrentUser(rest);
-		updateAppState({ socketId });
+		updateAppState({ socketId:socketId });
+		console.log(socketId)
 		const location = window.location.href;
 		if (location.indexOf('?') !== -1) {
 			setTitle(`${base_wiki_url}/wiki/File:${location.split('?')[1].split('=')[1]}`);
@@ -62,14 +66,25 @@ function Home() {
 		]);
 
 		// Update socket reference
-		updateAppState({ socket });
+		updateAppState({ socket: socket.id });
 
-		if (currentUser) {
-			updateAppState({ user: currentUser });
-		} else {
-			updateAppState({ user: null });
+		try {
+			const userLocalStorage = getStoredItem('user');
+
+			if (userLocalStorage) {
+				setCurrentUser(localStorage);
+			}
+		} catch (e) {
+			setCurrentUser(null);
 		}
-	}, [currentUser]);
+
+		const location = window.location.href;
+		if (location.indexOf('?') !== -1) {
+			setTitle(`https://commons.wikimedia.org/wiki/File:${location.split('?')[1].split('=')[1]}`);
+		} else {
+			setTitle('');
+		}
+	}, []);
 
 	const toggleHeader = () => {
 		const status = !showHeader;
@@ -89,7 +104,7 @@ function Home() {
 					<h1 className="text-white">VideoCutTool</h1>
 				</div>
 				{currentStep === 1 && <UrlBox title={title} />}
-				{currentStep === 2 && <VideoSettings user={appState.user} />}
+				{currentStep === 2 && <VideoSettings />}
 				{currentStep === 3 && <Results />}
 				<div className="footer-wrapper">
 					<div className="footer">

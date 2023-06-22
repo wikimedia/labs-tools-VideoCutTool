@@ -1,42 +1,23 @@
 import { useState, useContext, useEffect } from 'react';
 import { Message, BananaContext } from '@wikimedia/react.i18n';
-import { AppContext } from '../context';
+import { GlobalContext } from '../context/GlobalContext';
+import { VideoDetailsContext } from '../context/VideoDetailsContext';
 import { socket } from '../utils/socket';
 import ProgressBar from './ProgressBar';
-import { processVideo } from '../utils/video';
 import ENV_SETTINGS from '../env';
 
 function VideoProcess(props) {
-	const banana = useContext(BananaContext);
 	const { phab_link } = ENV_SETTINGS();
-	const { appState, updateAppState } = useContext(AppContext);
+	const banana = useContext(BananaContext);
+	const { updateAppState } = useContext(GlobalContext);
+	const { setVideos, setProcessTime, setCurrentSubStep,setCurrentStep} = useContext(VideoDetailsContext);
 
-	const { manipulations, trim, settings } = props;
-	const { video_url: videoUrl, file, socketId } = appState;
+	const { settings } = props;
 
 	const [progressInfo, setProgressInfo] = useState(null);
 	const [currentTask, setCurrentTask] = useState(banana.i18n('task-processing'));
 
-	const volumeInt = parseInt(manipulations.volume);
-	const settingData = {
-		rotateValue: manipulations.rotate_value,
-		inputVideoUrl: videoUrl,
-		trimMode: trim.mode,
-		trims: trim.trims,
-		volume: volumeInt,
-		modified: settings.reduce((acc, setting) => {
-			const { type, modified } = setting;
-			acc[type] = modified;
-			return acc;
-		}, {}),
-		crop: {
-			width: manipulations.crop_width,
-			height: manipulations.crop_height,
-			x: manipulations.crop_x,
-			y: manipulations.crop_y
-		}
-	};
-
+	
 	const isSettingModified = settingType => {
 		const findSetting = settings.filter(setting => setting.type === settingType);
 		return findSetting[0].modified;
@@ -75,10 +56,12 @@ function VideoProcess(props) {
 
 				setCurrentTask(currentTaskString);
 			} else if (status === 'done') {
-				updateAppState({ current_step: 3, videos: progressData.videos });
+				setCurrentStep(3)
+				setVideos(progressData.videos);
+				setProcessTime(progressData.timeTaken);
 			} else if (status === 'error') {
+				setCurrentSubStep('')
 				updateAppState({
-					current_sub_step: '',
 					notification: {
 						type: 'error',
 						messageId: 'error-process',
@@ -88,16 +71,6 @@ function VideoProcess(props) {
 				});
 			}
 		});
-
-		const formData = new FormData();
-		formData.append('data', JSON.stringify(settingData));
-		formData.append('user', JSON.stringify({ ...appState.user, socketId }));
-		formData.append('file', file);
-
-		const process = async () => {
-			await processVideo(formData, updateAppState);
-		};
-		process();
 	}, []);
 
 	return (

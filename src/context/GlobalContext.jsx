@@ -1,10 +1,10 @@
 import { createContext, useState, useMemo } from 'react';
 import { IntlProvider } from '@wikimedia/react.i18n';
-import { getLanguagesFromDir } from './utils/languages';
+import { getLanguagesFromDir } from '../utils/languages';
 
-const AppContext = createContext('');
+const GlobalContext = createContext('');
 
-const AppProvider = function AppProvider(props) {
+const GlobalContextProvider = function GlobalContextProvider(props) {
 	const { children } = props;
 	const defaultLocaleObj = {
 		locale: 'en-US',
@@ -13,20 +13,10 @@ const AppProvider = function AppProvider(props) {
 	};
 
 	const initialAppState = {
-		videos: [],
-		current_step: 1,
-		current_sub_step: '',
-		video_url: '',
-		file: null,
-		user: null,
+		themeMode: localStorage.getItem('theme') || 'light',
 		socket: null,
 		socketId: null,
 		current_locale: JSON.parse(localStorage.getItem('localeObj')) || defaultLocaleObj,
-		current_locale_object: {
-			locale: 'en-US',
-			native_name: 'English'
-		},
-		video_details: {},
 		notifications: []
 	};
 	const [appState, setAppState] = useState(initialAppState);
@@ -62,30 +52,21 @@ const AppProvider = function AppProvider(props) {
 		});
 	};
 
-	const [hourTimer, setHourTimer] = useState('');
-	const [minuteTimer, setMinuteTimer] = useState('');
-	const [secondTimer, setSecondTimer] = useState('');
 	const contextValue = useMemo(
 		() => ({
 			appState,
 			updateAppState,
-			updateNotification,
-			hourTimer,
-			setHourTimer,
-			minuteTimer,
-			setMinuteTimer,
-			secondTimer,
-			setSecondTimer
+			updateNotification
 		}),
-		[appState, updateAppState, updateNotification, hourTimer, minuteTimer, secondTimer]
+		[appState, updateAppState, updateNotification]
 	);
 
 	return (
-		<AppContext.Provider value={contextValue}>
+		<GlobalContext.Provider value={contextValue}>
 			<IntlProvider locale={appState.current_locale.locale} messages={getLanguagesFromDir()}>
 				{children}
 			</IntlProvider>
-		</AppContext.Provider>
+		</GlobalContext.Provider>
 	);
 };
-export { AppContext, AppProvider };
+export { GlobalContext, GlobalContextProvider };

@@ -112,9 +112,12 @@ async function process() {
 	}
 }
 
+const startTime = Date.now();
 process().then(async videos => {
 	// Move videos to public folder
 	const videosWithNewPaths = await utils.moveVideosToPublic(videos.convertFormat);
+	const endTime = Date.now();
+	const duration = endTime - startTime;
 
 	parentPort.postMessage({
 		type: 'server-side-and-frontend-update',
@@ -122,7 +125,8 @@ process().then(async videos => {
 		data: {
 			videoId: videos.videoId,
 			status: 'done',
-			videos: videosWithNewPaths
+			videos: videosWithNewPaths,
+			timeTaken: duration
 		}
 	});
 });

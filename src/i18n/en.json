@@ -8,6 +8,7 @@
 	"enabled-features":"Enabled $1",
 	"file-not-existing": "File Does Not Exist",
 	"footer-authors": "$1 and $2",
+	"guide-to-use":"Guide to use",
 	"languages": "Languages",
 	"login": "Login",
 	"login-alert": "Please log in to use the tool",

@@ -1,8 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import Home from '../components/home';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import Home from '../pages/home';
 import { vi } from 'vitest';
-import { AppContext } from '../context';
+import { GlobalContext } from '../context/GlobalContext';
+import { UserContext } from '../context/UserContext';
+import { VideoDetailsContext } from '../context/VideoDetailsContext';
 import { clearItems, getStoredItem } from '../utils/storage';
 
 vi.mock('../utils/storage', () => ({
@@ -25,11 +27,36 @@ describe('Home component', () => {
 	it('should toggle sidebar on click', () => {
 		const mockUpdateAppState = vi.fn();
 		const mockAppState = { current_step: 1, notifications: [] };
+		const setCurrentUser = vi.fn();
+		const currentUser = null;
+		const file = null;
+		const setFile = vi.fn();
+		const videos = [];
+		const setVideos = vi.fn();
+		const videoDetails = {};
+		const setVideoDetails = vi.fn();
+		const videoUrl = '';
+		const setVideoUrl = vi.fn();
 
 		render(
-			<AppContext.Provider value={{ appState: mockAppState, updateAppState: mockUpdateAppState }}>
-				<Home />
-			</AppContext.Provider>
+			<GlobalContext.Provider value={{ appState: mockAppState, updateAppState: mockUpdateAppState }}>
+				<UserContext.Provider value={{ currentUser, setCurrentUser }}>
+					<VideoDetailsContext.Provider
+						value={{
+							file,
+							setFile,
+							videos,
+							setVideos,
+							videoDetails,
+							setVideoDetails,
+							videoUrl,
+							setVideoUrl
+						}}
+					>
+						<Home />
+					</VideoDetailsContext.Provider>
+				</UserContext.Provider>
+			</GlobalContext.Provider>
 		);
 
 		const sidebarToggleButton = screen.getByTestId('sidebar-toggle-button');
@@ -42,10 +69,35 @@ describe('Home component', () => {
 	it('should render without crashing', () => {
 		const appState = { current_step: 1 };
 		const updateAppState = vi.fn();
+		const setCurrentUser = vi.fn();
+		const currentUser = null;
+		const file = null;
+		const setFile = vi.fn();
+		const videos = [];
+		const setVideos = vi.fn();
+		const videoDetails = {};
+		const setVideoDetails = vi.fn();
+		const videoUrl = '';
+		const setVideoUrl = vi.fn();
 		render(
-			<AppContext.Provider value={{ appState, updateAppState }}>
-				<Home />
-			</AppContext.Provider>
+			<GlobalContext.Provider value={{ appState, updateAppState }}>
+				<UserContext.Provider value={{ currentUser, setCurrentUser }}>
+					<VideoDetailsContext.Provider
+						value={{
+							file,
+							setFile,
+							videos,
+							setVideos,
+							videoDetails,
+							setVideoDetails,
+							videoUrl,
+							setVideoUrl
+						}}
+					>
+						<Home />
+					</VideoDetailsContext.Provider>
+				</UserContext.Provider>
+			</GlobalContext.Provider>
 		);
 		expect(screen.getAllByText('VideoCutTool')).toBeTruthy();
 	});
@@ -54,10 +106,35 @@ describe('Home component', () => {
 		const mockClearItems = vi.fn();
 		clearItems.mockImplementation(mockClearItems);
 		getStoredItem.mockImplementation(() => null);
+		const setCurrentUser = vi.fn();
+		const currentUser = null;
+		const file = null;
+		const setFile = vi.fn();
+		const videos = [];
+		const setVideos = vi.fn();
+		const videoDetails = {};
+		const setVideoDetails = vi.fn();
+		const videoUrl = '';
+		const setVideoUrl = vi.fn();
 		render(
-			<AppContext.Provider value={{ appState: {}, updateAppState: vi.fn() }}>
-				<Home />
-			</AppContext.Provider>
+			<GlobalContext.Provider value={{ appState: {}, updateAppState: vi.fn() }}>
+				<UserContext.Provider value={{ currentUser, setCurrentUser }}>
+					<VideoDetailsContext.Provider
+						value={{
+							file,
+							setFile,
+							videos,
+							setVideos,
+							videoDetails,
+							setVideoDetails,
+							videoUrl,
+							setVideoUrl
+						}}
+					>
+						<Home />
+					</VideoDetailsContext.Provider>
+				</UserContext.Provider>
+			</GlobalContext.Provider>
 		);
 		expect(mockClearItems).toHaveBeenCalledWith([
 			'video-manipulations',
@@ -74,11 +151,36 @@ describe('Home component', () => {
 		const mockLocation = { href: 'http://example.com' };
 		const originalWindow = global.window;
 		window.location = mockLocation;
+		const setCurrentUser = vi.fn();
+		const currentUser = null;
+		const file = null;
+		const setFile = vi.fn();
+		const videos = [];
+		const setVideos = vi.fn();
+		const videoDetails = {};
+		const setVideoDetails = vi.fn();
+		const videoUrl = '';
+		const setVideoUrl = vi.fn();
 		vi.spyOn(React, 'useState').mockReturnValueOnce(['', mockSetTitle]);
 		render(
-			<AppContext.Provider value={{ appState: {}, updateAppState: vi.fn() }}>
-				<Home />
-			</AppContext.Provider>
+			<GlobalContext.Provider value={{ appState: {}, updateAppState: vi.fn() }}>
+				<UserContext.Provider value={{ currentUser, setCurrentUser }}>
+					<VideoDetailsContext.Provider
+						value={{
+							file,
+							setFile,
+							videos,
+							setVideos,
+							videoDetails,
+							setVideoDetails,
+							videoUrl,
+							setVideoUrl
+						}}
+					>
+						<Home />
+					</VideoDetailsContext.Provider>
+				</UserContext.Provider>
+			</GlobalContext.Provider>
 		);
 		expect(mockSetTitle).not.toHaveBeenCalled();
 		window = originalWindow;

@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Image, Button, OverlayTrigger, Popover, Dropdown } from 'react-bootstrap';
+import React, { useEffect, useContext, useRef } from 'react';
+import { Image, Button, OverlayTrigger, Dropdown } from 'react-bootstrap';
 import { Globe2, MenuDown, X } from 'react-bootstrap-icons';
 import logo from '../logo.svg';
 import { localesList } from '../utils/languages';
-import { AppContext } from '../context';
+import { GlobalContext } from '../context/GlobalContext';
 import Authentication from './Authentication';
 import DarkModeToggle from './DarkModeToggle';
+import GeneralPopover from './GeneralPopover';
+import { Message } from '@wikimedia/react.i18n';
 
 function Header(props) {
-	const { appState, updateAppState } = useContext(AppContext);
-	const { user, current_step: currentStep, current_locale: currentLocale } = appState || {};
+	const { appState, updateAppState } = useContext(GlobalContext);
+	const { current_locale: currentLocale, themeMode } = appState || {};
 
-	const [themeMode, setThemeMode] = useState(localStorage.getItem('theme'));
 	const localeName = useRef(false);
 	const { apiUrl } = props;
 
@@ -20,8 +21,7 @@ function Header(props) {
 			localeName.current = currentLocale.native_name;
 		}
 		// Set theme (dark or light) on load
-		const theme = localStorage.getItem('theme') || 'light';
-		document.body.setAttribute('theme', theme);
+		document.body.setAttribute('theme', themeMode);
 	}, [currentLocale]);
 
 	/**
@@ -33,7 +33,7 @@ function Header(props) {
 
 		document.body.setAttribute('theme', newTheme);
 		localStorage.setItem('theme', newTheme);
-		setThemeMode(newTheme);
+		updateAppState({ themeMode: newTheme });
 	};
 
 	const updateLocaleState = localeObj => {
@@ -46,26 +46,23 @@ function Header(props) {
 		document.body.setAttribute('data-sidebar', 'hide');
 	};
 
-	const localesListPopover = (
-		<Popover id="locales-popover">
-			<Popover.Header as="h3">Choose your language</Popover.Header>
-			<Popover.Body>
-				{Object.keys(localesList).map((code, index) => (
-					<div
-						className={`locale-item ${
-							currentLocale && localesList[code].locale === currentLocale.locale && 'active'
-						}`}
-						title={localesList[code].name}
-						value={localesList[code].locale}
-						onClick={() => updateLocaleState(localesList[code])}
-						key={`locale-${index}`}
-					>
-						{localesList[code].native_name}
-					</div>
-				))}
-			</Popover.Body>
-		</Popover>
-	);
+	const localesListProps = {
+		id: 'locales-popover',
+		title: 'Choose your language',
+		body: Object.keys(localesList).map((code, index) => (
+			<div
+				className={`locale-item ${
+					currentLocale && localesList[code].locale === currentLocale.locale && 'active'
+				}`}
+				title={localesList[code].name}
+				value={localesList[code].locale}
+				onClick={() => updateLocaleState(localesList[code])}
+				key={`locale-${index}`}
+			>
+				{localesList[code].native_name}
+			</div>
+		))
+	};
 
 	return (
 		<div id="sidebar">
@@ -83,7 +80,7 @@ function Header(props) {
 					</span>
 				</div>
 				<div className="site-options-phone">
-					<OverlayTrigger trigger="click" rootClose placement="bottom" overlay={localesListPopover}>
+					<OverlayTrigger trigger="click" rootClose overlay={GeneralPopover(localesListProps)} placement="bottom">
 						<span
 							className="language-switch option-wrapper"
 							title={currentLocale && currentLocale.native_name}
@@ -97,7 +94,7 @@ function Header(props) {
 				</div>
 			</div>
 			<div className="user-wrapper">
-				<Authentication user={user} apiUrl={props.apiUrl} />
+				<Authentication apiUrl={apiUrl} />
 				<Dropdown autoClose={false}>
 					<Dropdown.Toggle
 						variant="secondary"
@@ -116,7 +113,7 @@ function Header(props) {
 									trigger="click"
 									rootClose
 									placement="bottom"
-									overlay={localesListPopover}
+									overlay={GeneralPopover(localesListProps)}
 								>
 									<span
 										className="language-switch option-wrapper"
@@ -135,7 +132,7 @@ function Header(props) {
 							target="_blank"
 							padding="1em"
 						>
-							Documentation
+							<Message id="guide-to-use" />
 						</Dropdown.Item>
 					</Dropdown.Menu>
 				</Dropdown>
@@ -151,7 +148,7 @@ function Header(props) {
 					)
 				}
 			>
-				Documentation
+				<Message id="guide-to-use" />
 			</Button>
 		</div>
 	);

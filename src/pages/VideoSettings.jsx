@@ -12,35 +12,30 @@ import {
 	VolumeDownFill
 } from 'react-bootstrap-icons';
 import { Message } from '@wikimedia/react.i18n';
-import { AppContext } from '../context';
+import { GlobalContext } from '../context/GlobalContext';
 
-import DragResize from './DragResize';
-import VideoProcess from './VideoProcess';
-import Trim from './Trim';
-import VideoPlayer from './VideoPlayer';
+import { VideoDetailsContext } from '../context/VideoDetailsContext';
+import { UserContext } from '../context/UserContext';
+
+import DragResize from '../components/DragResize';
+import VideoProcess from '../components/VideoProcess';
+import Trim from '../components/Trim';
+import VideoPlayer from '../components/VideoPlayer';
 import { storeItem, getStoredItem, clearItems } from '../utils/storage';
 import { formatTime } from '../utils/time';
-import Slider from './Slider';
-
-/** utility function to convert string to Title case.
- * @param {string} type, string to convert
- * @returns {string} type, string after converting to title case
- * Note-> Planned to migrate this function to another file in future
- */
-function toTitleCase(type) {
-	return type.charAt(0).toUpperCase() + type.slice(1);
-}
+import Slider from '../components/Slider';
+import { toTitleCase, processVideo } from '../utils/video';
 
 /**
  * Handle videos settings UI and actions
  * @param {object} props Inherited props
  * @returns {string} Output
  */
-function VideoSettings(props) {
-	const { appState, updateAppState } = useContext(AppContext);
-
-	const { video_url: videoUrl, current_sub_step: currentSubStep } = appState;
-	const { socket, user } = props;
+function VideoSettings() {
+	const { updateAppState, appState } = useContext(GlobalContext);
+	const { socketId } = appState;
+	const { currentUser } = useContext(UserContext);
+	const { videoUrl, currentSubStep, setCurrentSubStep, file } = useContext(VideoDetailsContext);
 
 	const videoPlayer = useRef(null);
 	const trims = useRef(null);
@@ -360,18 +355,46 @@ function VideoSettings(props) {
 		updateSettings({ modified: false });
 	};
 
+	const manipulations = videoManipulationData.current;
+	const volumeInt = parseInt(manipulations.volume);
+	const settingData = {
+		rotateValue: manipulations.rotate_value,
+		inputVideoUrl: videoUrl,
+		trimMode: trimMode.current,
+		trims: trims.current,
+		volume: volumeInt,
+		modified: settings.reduce((acc, setting) => {
+			const { type, modified } = setting;
+			acc[type] = modified;
+			return acc;
+		}, {}),
+		crop: {
+			width: manipulations.crop_width,
+			height: manipulations.crop_height,
+			x: manipulations.crop_x,
+			y: manipulations.crop_y
+		}
+	};
 	/**
 	 * Move to process video screen if changes have been made
 	 *
 	 * @returns {void}
 	 */
-	const processVideo = () => {
+	const processvideo = async () => {
 		if (!canPreview) {
 			return;
 		}
-		updateAppState({
-			current_sub_step: 'process'
-		});
+		setCurrentSubStep('process');
+		const userinfo = {
+			mediawikiId: currentUser.mediawikiId,
+			username: currentUser.username,
+			socketId: socketId
+		};
+		const formData = new FormData();
+		formData.append('data', JSON.stringify(settingData));
+		formData.append('user', JSON.stringify(userinfo));
+		formData.append('file', file);
+		await processVideo(formData, updateAppState, setCurrentSubStep);
 	};
 
 	/**
@@ -433,7 +456,7 @@ function VideoSettings(props) {
 							variant="primary"
 							className="me-5"
 							disabled={canPreview === false}
-							onClick={processVideo}
+							onClick={processvideo}
 						>
 							<PlayCircle />
 							<span className="setting-title">
@@ -520,17 +543,7 @@ function VideoSettings(props) {
 		</div>
 	);
 
-	return currentSubStep !== 'process' ? (
-		settingsComponent
-	) : (
-		<VideoProcess
-			socket={socket}
-			manipulations={videoManipulationData.current}
-			settings={settings}
-			user={user}
-			trim={{ mode: trimMode.current, trims: trims.current }}
-		/>
-	);
+	return currentSubStep !== 'process' ? settingsComponent : <VideoProcess settings={settings} />;
 }
 
 export default VideoSettings;

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Notification from '../components/Notification';
-import { AppContext } from '../context';
+import { GlobalContext } from '../context/GlobalContext';
 import { vi } from 'vitest';
 
 describe('Notification component', () => {
@@ -9,11 +9,11 @@ describe('Notification component', () => {
 		const mockNotification = [{ messageId: 'testId', type: 'info', autohide: true }];
 		const mockAppState = { notifications: mockNotification };
 		render(
-			<AppContext.Provider
+			<GlobalContext.Provider
 				value={{ appState: mockAppState, updateNotification: mockUpdateNotification }}
 			>
 				<Notification />
-			</AppContext.Provider>
+			</GlobalContext.Provider>
 		);
 		expect(screen.getByText('notifications-title-info')).toBeInTheDocument();
 		expect(screen.getByText('testId')).toBeInTheDocument();
@@ -27,11 +27,11 @@ describe('Notification component', () => {
 		const mockNotification = [{ text: 'testText', type: 'info', autohide: true }];
 		const mockAppState = { notifications: mockNotification };
 		render(
-			<AppContext.Provider
+			<GlobalContext.Provider
 				value={{ appState: mockAppState, updateNotification: mockUpdateNotification }}
 			>
 				<Notification />
-			</AppContext.Provider>
+			</GlobalContext.Provider>
 		);
 		expect(screen.getByText('notifications-title-info')).toBeInTheDocument();
 	});
@@ -56,11 +56,11 @@ describe('Notification component', () => {
 		];
 		const mockAppState = { notifications: mockNotification };
 		render(
-			<AppContext.Provider
+			<GlobalContext.Provider
 				value={{ appState: mockAppState, updateNotification: mockUpdateNotification }}
 			>
 				<Notification />
-			</AppContext.Provider>
+			</GlobalContext.Provider>
 		);
 		expect(screen.getAllByText('notifications-title-info')).toHaveLength(2);
 		expect(screen.getByText('testId1').querySelector('a')).toHaveAttribute('href', mockLink);
@@ -85,11 +85,11 @@ describe('Notification component', () => {
 		];
 		const mockAppState = { notifications: mockNotification };
 		render(
-			<AppContext.Provider
+			<GlobalContext.Provider
 				value={{ appState: mockAppState, updateNotification: mockUpdateNotification }}
 			>
 				<Notification />
-			</AppContext.Provider>
+			</GlobalContext.Provider>
 		);
 		expect(screen.getByText('notifications-title-error')).toBeInTheDocument();
 		expect(screen.getByText('testId')).toBeInTheDocument();

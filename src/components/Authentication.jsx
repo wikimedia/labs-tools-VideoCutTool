@@ -1,31 +1,32 @@
 import React, { useContext } from 'react';
-import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Button, OverlayTrigger } from 'react-bootstrap';
 import { Message } from '@wikimedia/react.i18n';
-import { AppContext } from '../context';
+import { GlobalContext } from '../context/GlobalContext';
 import { onLogin, onLogOut } from '../utils/auth';
 import ENV_SETTINGS from '../env';
 
 const { base_wiki_url } = ENV_SETTINGS();
+import { UserContext } from '../context/UserContext';
+import GeneralPopover from './GeneralPopover';
 
 function Authentication(props) {
-	const { updateAppState } = useContext(AppContext);
-	const { user, apiUrl } = props;
-
+	const { updateAppState } = useContext(GlobalContext);
+	const { apiUrl } = props;
+	const { setCurrentUser, currentUser: user } = useContext(UserContext);
 	// Login redirect URL to the back-end server
 	const handleLogin = () => {
-		onLogin(apiUrl, updateAppState);
+		onLogin(apiUrl, setCurrentUser, updateAppState);
 	};
 
 	const handleLogOut = () => {
-		onLogOut(updateAppState);
+		onLogOut(updateAppState, setCurrentUser);
 	};
 
-	const popover = (
-		<Popover id="popover-basic">
-			<Popover.Header as="h3">
-				<Message id="logout-confirm-text" />
-			</Popover.Header>
-			<Popover.Body>
+	const popoverProps = {
+		id: 'popover-basic',
+		title: <Message id="logout-confirm-text" />,
+		body: (
+			<div>
 				<Button variant="primary" size="sm" onClick={handleLogOut}>
 					<Message id="logout-confirm-yes" />
 				</Button>
@@ -36,9 +37,9 @@ function Authentication(props) {
 				>
 					<Message id="logout-confirm-no" />
 				</Button>
-			</Popover.Body>
-		</Popover>
-	);
+			</div>
+		)
+	};
 	return (
 		<div>
 			{!user && (
@@ -65,7 +66,12 @@ function Authentication(props) {
 						/>
 					</span>
 					<span className="logout-btn">
-						<OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popover}>
+						<OverlayTrigger
+							trigger="click"
+							rootClose
+							placement="bottom"
+							overlay={GeneralPopover(popoverProps)}
+						>
 							<Button variant="success" id="logout-button" size="sm">
 								<Message id="logout" />
 							</Button>

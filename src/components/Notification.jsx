@@ -7,7 +7,7 @@ import {
 	CheckCircleFill
 } from 'react-bootstrap-icons';
 import { Message } from '@wikimedia/react.i18n';
-import { AppContext } from '../context';
+import { GlobalContext } from '../context/GlobalContext';
 
 function Notification() {
 	// if notification type is not present, default to info
@@ -19,7 +19,7 @@ function Notification() {
 	};
 	const defaultType = 'info';
 
-	const { appState, updateNotification } = useContext(AppContext);
+	const { appState, updateNotification } = useContext(GlobalContext);
 	const { notifications } = appState;
 
 	const onToastClose = index => {

@@ -2,33 +2,26 @@ import { useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup, ToggleButton, Form, InputGroup } from 'react-bootstrap';
 import { Upload, Download, CardHeading, CardText, ChatLeftTextFill } from 'react-bootstrap-icons';
 import { Message, BananaContext } from '@wikimedia/react.i18n';
-import { AppContext } from '../context';
-import VideoPlayer from './VideoPlayer';
-import ProgressBar from './ProgressBar';
+import { GlobalContext } from '../context/GlobalContext';
+import { VideoDetailsContext } from '../context/VideoDetailsContext';
+import { UserContext } from '../context/UserContext';
+import VideoPlayer from '../components/VideoPlayer';
+import ProgressBar from '../components/ProgressBar';
 import ENV_SETTINGS from '../env';
 import { uploadVideos } from '../utils/video';
+import { formatTime } from '../utils/time';
 
 const API_URL = ENV_SETTINGS().backend_url;
 const fileNameRegex = /^(.*)\.[a-zA-Z0-9]+$/;
 
 function Results() {
 	const banana = useContext(BananaContext);
-	const {
-		appState,
-		updateAppState,
-		hourTimer,
-		minuteTimer,
-		secondTimer,
-		setHourTimer,
-		setMinuteTimer,
-		setSecondTimer
-	} = useContext(AppContext);
-	const { videos, user, video_details: videoDetails } = appState;
+	const { updateAppState } = useContext(GlobalContext);
+	const { videos, videoDetails, setVideoUrl, processTime,setCurrentStep ,setCurrentSubStep} = useContext(VideoDetailsContext);
+	const { currentUser: user } = useContext(UserContext);
 	const [videoState, setVideoState] = useState([]);
 	const [showProgress, setShowProgress] = useState(false);
-	const [encodeTimer, setEncodeTimer] = useState('');
 	const [wantTitle, setWantTitle] = useState('');
-
 	const updateVideoState = (newState, index) => {
 		const newVideoData = { ...videoState[index], ...newState };
 		const newVideosState = [...videoState];
@@ -99,25 +92,6 @@ function Results() {
 		setWantTitle(videosWithDetails[0].title);
 	}, []);
 
-	useEffect(() => {
-		const endTimer = new Date();
-		let endHour = endTimer.getHours() - hourTimer;
-		let endMinute = endTimer.getMinutes() - minuteTimer;
-		let endSecond = endTimer.getSeconds() - secondTimer;
-		if (endSecond < 0) {
-			endMinute -= 1;
-			endSecond += 60;
-		}
-		if (endMinute < 0) {
-			endHour -= 1;
-			endMinute += 60;
-		}
-		setEncodeTimer(`${endHour} hours: ${endMinute} minutes: ${endSecond} seconds`);
-		setHourTimer('');
-		setMinuteTimer('');
-		setSecondTimer('');
-	}, []);
-
 	const updateUploadType = (index, type) => {
 		const data = {
 			selectedOptionName: type
@@ -131,7 +105,7 @@ function Results() {
 	};
 
 	const uploadVideo = async () => {
-		await uploadVideos(setShowProgress, videoState, user, wantTitle, updateAppState);
+		await uploadVideos(setShowProgress, videoState, user, wantTitle, updateAppState, setVideoUrl,setCurrentSubStep,setCurrentStep);
 	};
 
 	return (
@@ -143,10 +117,7 @@ function Results() {
 							{video.title.length > 0 && <h5 title={video.title}>{video.title}</h5>}
 							{video.title.length === 0 && <h5>(No Title)</h5>}
 						</div>
-						<p>
-							Time Taken:
-							{encodeTimer}
-						</p>
+						<p> Time taken: {formatTime(processTime/1000)} seconds</p>
 						<div className={`row ${video.displayUploadToCommons === false && 'd-none'}`}>
 							<div className="video-player-wrapper col-md-7">
 								<VideoPlayer videoUrl={`${API_URL}/${video.path}`} />

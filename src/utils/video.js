@@ -9,7 +9,14 @@ const { phab_link, base_wiki_url } = ENV_SETTINGS();
  * @param {function} updateAppState Update app state function
  * @returns {void}
  */
-const retrieveVideoData = async (videoUrl, videoTitle, updateAppState) => {
+const retrieveVideoData = async (
+	videoUrl,
+	videoTitle,
+	updateAppState,
+	setVideoDetails,
+	setVideoUrl,
+	setCurrentStep
+) => {
 	if (!videoUrl.includes('commons.wikimedia.org')) {
 		return;
 	}
@@ -29,14 +36,12 @@ const retrieveVideoData = async (videoUrl, videoTitle, updateAppState) => {
 		const { pages } = response.query;
 		if (Object.keys(pages)[0] !== '-1') {
 			const { user, canonicaltitle, comment, url } = pages[Object.keys(pages)[0]].videoinfo[0];
-			updateAppState({
-				current_step: 2,
-				video_url: url,
-				video_details: {
-					author: user,
-					title: decodeURIComponent(canonicaltitle.slice(5)).replace(/\s/g, '_'),
-					comment
-				}
+			setCurrentStep(2);
+			setVideoUrl(url);
+			setVideoDetails({
+				author: user,
+				title: decodeURIComponent(canonicaltitle.slice(5)).replace(/\s/g, '_'),
+				comment
 			});
 		}
 	} catch (err) {
@@ -59,7 +64,13 @@ const retrieveVideoData = async (videoUrl, videoTitle, updateAppState) => {
  * @param {function} updateAppState Update app state function
  * @returns {void}
  */
-const checkFileExist = async (filePath, updateAppState) => {
+const checkFileExist = async (
+	filePath,
+	updateAppState,
+	setVideoDetails,
+	setVideoUrl,
+	setCurrentStep
+) => {
 	// First check if pattern File:(filename) exists
 	const matchPath = filePath.match(/File:(.*)$/);
 	if (matchPath === null) {
@@ -82,7 +93,14 @@ const checkFileExist = async (filePath, updateAppState) => {
 			return;
 		}
 		// File exists, retrieve video data
-		await retrieveVideoData(filePath, fileName, updateAppState);
+		await retrieveVideoData(
+			filePath,
+			fileName,
+			updateAppState,
+			setVideoDetails,
+			setVideoUrl,
+			setCurrentStep
+		);
 	} catch (err) {
 		updateAppState({
 			notification: {
@@ -103,7 +121,7 @@ const checkFileExist = async (filePath, updateAppState) => {
  * @param {function} updateAppState Update app state function
  * @returns {void}
  */
-const processVideo = async (formData, updateAppState) => {
+const processVideo = async (formData, updateAppState, setCurrentSubStep) => {
 	const API_URL = ENV_SETTINGS().backend_url;
 	try {
 		const res = await fetch(`${API_URL}/process`, {
@@ -115,8 +133,8 @@ const processVideo = async (formData, updateAppState) => {
 	} catch (err) {
 		// errors are catched here from the fetch call
 		if (err.message) {
+			setCurrentSubStep('');
 			updateAppState({
-				current_sub_step: '',
 				notification: {
 					type: 'error',
 					messageId: err.message,
@@ -140,7 +158,16 @@ const processVideo = async (formData, updateAppState) => {
  * @returns {void}
  */
 
-const uploadVideos = async (setShowProgress, videoState, user, wantTitle, updateAppState) => {
+const uploadVideos = async (
+	setShowProgress,
+	videoState,
+	user,
+	wantTitle,
+	updateAppState,
+	setVideoUrl,
+	setCurrentSubStep,
+	currentStep
+) => {
 	const API_URL = ENV_SETTINGS().backend_url;
 
 	setShowProgress(true);
@@ -175,12 +202,11 @@ const uploadVideos = async (setShowProgress, videoState, user, wantTitle, update
 					link: `${base_wiki_url}/wiki/File:${wantTitle}`,
 					linkTitle: 'task-uploaded-wikimedia-commons-footer-cover',
 					footerId: 'task-uploaded-wikimedia-commons-footer'
-				},
-				// Reset UI
-				current_step: 1,
-				current_sub_step: '',
-				video_url: ''
+				}
 			});
+			currentStep(1);
+			setCurrentSubStep('');
+			setVideoUrl('');
 		} else {
 			const { type, warnings } = data;
 			if (type === 'Warning') {
@@ -217,4 +243,12 @@ const uploadVideos = async (setShowProgress, videoState, user, wantTitle, update
 	}
 };
 
-export { checkFileExist, processVideo, uploadVideos };
+/** utility function to convert string to Title case.
+ * @param {string} type, string to convert
+ * @returns {string} type, string after converting to title case
+ * Note-> Planned to migrate this function to another file in future
+ */
+function toTitleCase(type) {
+	return type.charAt(0).toUpperCase() + type.slice(1);
+}
+export { checkFileExist, processVideo, uploadVideos, toTitleCase };
