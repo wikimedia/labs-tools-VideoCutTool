@@ -16,7 +16,7 @@ const Settings = require('./models/Settings.js');
 
 const app = express();
 
-const MemoryStore = require('memorystore')(session)
+const MemoryStore = require('memorystore')(session);
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
@@ -27,7 +27,7 @@ app.use(
 	fileUpload({
 		useTempFiles: true,
 		tempFileDir: 'tmp/', // so that they're publicly accessible
-		limits: { fileSize: 500 * 1024 * 1024 },
+		limits: { fileSize: 500 * 1024 * 1024 * 1024 },
 		abortOnLimit: true
 	})
 );
