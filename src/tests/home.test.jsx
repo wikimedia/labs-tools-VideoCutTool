@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Home from '../components/home';
 import { vi } from 'vitest';
 import { AppContext } from '../context';

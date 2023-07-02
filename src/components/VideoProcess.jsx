@@ -4,9 +4,11 @@ import { AppContext } from '../context';
 import { socket } from '../utils/socket';
 import ProgressBar from './ProgressBar';
 import { processVideo } from '../utils/video';
+import ENV_SETTINGS from '../env';
 
 function VideoProcess(props) {
 	const banana = useContext(BananaContext);
+	const { phab_link } = ENV_SETTINGS();
 	const { appState, updateAppState } = useContext(AppContext);
 
 	const { manipulations, trim, settings } = props;
@@ -75,8 +77,10 @@ function VideoProcess(props) {
 				updateAppState({
 					current_sub_step: '',
 					notification: {
-						text: 'An error occurred during the process',
-						type: 'error'
+						type: 'error',
+						messageId: 'error-process',
+						footerId: 'notification-error-bug-call-to-action',
+						link: phab_link
 					}
 				});
 			}

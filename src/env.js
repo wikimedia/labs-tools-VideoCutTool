@@ -7,7 +7,9 @@ const ENV_SETTINGS = () => {
 				not_found_path: '/*',
 				backend_url: 'https://videocuttool.wmcloud.org/api',
 				socket_io_path: '/socket.io',
-				socket_io_url: 'https://videocuttool.wmcloud.org:4000'
+				socket_io_url: 'https://videocuttool.wmcloud.org:4000',
+				phab_link:
+					'https://phabricator.wikimedia.org/maniphest/task/edit/form/43/?projects=VideoCutTool'
 			};
 
 		default:
@@ -17,7 +19,9 @@ const ENV_SETTINGS = () => {
 				not_found_path: '/*',
 				backend_url: '/api',
 				socket_io_path: '/socket.io',
-				socket_io_url: 'http://localhost:8000'
+				socket_io_url: 'http://localhost:8000',
+				phab_link:
+					'https://phabricator.wikimedia.org/maniphest/task/edit/form/43/?projects=VideoCutTool'
 			};
 	}
 };

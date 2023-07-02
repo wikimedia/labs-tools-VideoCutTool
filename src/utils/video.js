@@ -208,7 +208,6 @@ const uploadVideos = async (setShowProgress, videoState, user, wantTitle, update
 		updateAppState({
 			notification: {
 				type: 'error',
-				messageId: 'error',
 				text: err.message,
 				footerId: 'notification-error-bug-call-to-action',
 				linkTitle: 'notifications-error-bug-report',

@@ -1,10 +1,24 @@
 import { useContext } from 'react';
 import { Toast } from 'react-bootstrap';
-import { InfoCircleFill, ExclamationCircleFill, ExclamationTriangleFill, CheckCircleFill } from 'react-bootstrap-icons';
+import {
+	InfoCircleFill,
+	ExclamationCircleFill,
+	ExclamationTriangleFill,
+	CheckCircleFill
+} from 'react-bootstrap-icons';
 import { Message } from '@wikimedia/react.i18n';
 import { AppContext } from '../context';
 
 function Notification() {
+	// if notification type is not present, default to info
+	const notificationTypes = {
+		info: <InfoCircleFill />,
+		warning: <ExclamationTriangleFill />,
+		error: <ExclamationCircleFill />,
+		success: <CheckCircleFill />
+	};
+	const defaultType = 'info';
+
 	const { appState, updateNotification } = useContext(AppContext);
 	const { notifications } = appState;
 
@@ -26,17 +40,17 @@ function Notification() {
 						: { autohide: false })}
 				>
 					<div className="notification-icon">
-						{notification.type === 'info' && <InfoCircleFill />}
-						{notification.type === 'warning' && <ExclamationTriangleFill />}
-						{notification.type === 'error' && <ExclamationCircleFill />}
-						{notification.type === 'success' && <CheckCircleFill />}
+						{Object.keys(notificationTypes).includes(notification.type)
+							? notificationTypes[notification.type]
+							: notificationTypes[defaultType]}
 					</div>
 					<div className="notification-header">
 						<strong className="me-auto">
-							{notification.type === 'info' && <Message id="notifications-title" />}
-							{notification.type === 'warning' && <Message id="notification-title-warning" />}
-							{notification.type === 'error' && <Message id="notifications-title-error" />}
-							{notification.type === 'success' && <Message id="notification-title-success" />}
+							{Object.keys(notificationTypes).includes(notification.type) ? (
+								<Message id={`notifications-title-${notification.type}`} />
+							) : (
+								<Message id={`notifications-title-${defaultType}`} />
+							)}
 						</strong>
 						<button
 							type="button"
@@ -48,54 +62,31 @@ function Notification() {
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					{notification.messageId && (
-						<div className="notification-body">
-							{notification.text && notification.text.startsWith('https://commons.wikimedia.org/wiki/File:') ? (
-								<a
-									className="link"
-									href={notification.text}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<Message id={notification.messageId} />
-								</a>
-							) : (
-								<Message id={notification.messageId} />
-							)}
-							<div className="notification-timer">
-								<span />
-							</div>
-						</div>
-					)}
-					{notification.type === 'error' && (
-						<div className="notification-footer">
+					<div className="notification-body">
+						{notification.messageId ? (
 							<Message
-								id="notification-error-bug-call-to-action"
-								placeholders={[
-									<a
-										href="https://phabricator.wikimedia.org/maniphest/task/edit/form/43/?projects=VideoCutTool"
-										target="_blank"
-										rel="noreferrer"
-									>
-										{' '}
-										<Message id="notifications-error-bug-report" />
-									</a>
-								]}
+								id={notification.messageId}
+								// applies placeholder when text is present
+								placeholders={notification.text && [notification.text]}
 							/>
-						</div>
-					)}
+						) : (
+							// applies text when messageId is not present, and notification.text is present
+							notification.text && notification.text
+						)}
+					</div>
 					<div className="notification-footer">
-						{notification.type === "warning" &&
-							<Message id="notification-warning-call-to-action" />
-						}
-						{notification.type === "success" && (
-							<a
-								href={notification.text}
-								target="_blank"
-								rel="noreferrer"
-							>
-								<Message id="task-uploaded-wikimedia-commons" />
-							</a>
+						{notification.footerId && (
+							<Message
+								id={notification.footerId}
+								placeholders={
+									// applies placeholder if link is present
+									notification.link && [
+										<a href={notification.link} target="_blank" rel="noreferrer">
+											<Message id={notification.linkTitle} />
+										</a>
+									]
+								}
+							/>
 						)}
 					</div>
 				</Toast>
