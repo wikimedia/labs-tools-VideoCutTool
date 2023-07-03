@@ -99,7 +99,7 @@ describe('Home component', () => {
 				</UserContext.Provider>
 			</GlobalContext.Provider>
 		);
-		expect(screen.getAllByText('VideoCutTool')).toBeTruthy();
+		expect(screen.getByTestId('title')).toBeInTheDocument();
 	});
 
 	it('should clear local storage', () => {

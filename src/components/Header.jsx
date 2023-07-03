@@ -71,7 +71,9 @@ function Header(props) {
 			</div>
 			<div className="logo-wrapper">
 				<Image alt="logo" src={logo} width="100" height="40" />
-				<h1 className="text-white">VideoCutTool</h1>
+				<h1 className="text-white">
+					<Message id="title" />
+				</h1>
 			</div>
 			<div className="site">
 				<div className="darkmode-button-phone">
@@ -80,7 +82,12 @@ function Header(props) {
 					</span>
 				</div>
 				<div className="site-options-phone">
-					<OverlayTrigger trigger="click" rootClose overlay={GeneralPopover(localesListProps)} placement="bottom">
+					<OverlayTrigger
+						trigger="click"
+						rootClose
+						overlay={GeneralPopover(localesListProps)}
+						placement="bottom"
+					>
 						<span
 							className="language-switch option-wrapper"
 							title={currentLocale && currentLocale.native_name}

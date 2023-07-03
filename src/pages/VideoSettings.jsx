@@ -470,7 +470,9 @@ function VideoSettings() {
 							onClick={undoChanges}
 						>
 							<XCircle />
-							<span className="setting-title">Reset</span>
+							<span className="setting-title">
+								<Message id="reset-text" />
+							</span>
 						</Button>
 					</div>
 				</div>
@@ -482,13 +484,17 @@ function VideoSettings() {
 									onClick={() => changeRotation(videoManipulationData.current.rotate_value - 1)}
 								>
 									<ArrowCounterclockwise size={18} />
-									<span className="setting-title">Left</span>
+									<span className="setting-title">
+										<Message id="rotate-left" />
+									</span>
 								</Button>
 								<Button
 									onClick={() => changeRotation(videoManipulationData.current.rotate_value + 1)}
 								>
 									<ArrowClockwise size={18} />
-									<span className="setting-title">Right</span>
+									<span className="setting-title">
+										<Message id="rotate-right" />
+									</span>
 								</Button>
 							</ButtonGroup>
 						</div>
@@ -505,7 +511,9 @@ function VideoSettings() {
 								>
 									<VolumeMute size={18} />
 									{videoManipulationData.current.mute === true && (
-										<span className="setting-title">Disable</span>
+										<span className="setting-title">
+											<Message id="mute-disable" />
+										</span>
 									)}
 								</ToggleButton>
 								<ToggleButton
@@ -517,7 +525,9 @@ function VideoSettings() {
 								>
 									<VolumeUpFill size={18} />
 									{videoManipulationData.current.mute === false && (
-										<span className="setting-title">Enable</span>
+										<span className="setting-title">
+											<Message id="mute-enable" />
+										</span>
 									)}
 								</ToggleButton>
 							</ToggleButtonGroup>

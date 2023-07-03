@@ -17,7 +17,8 @@ const fileNameRegex = /^(.*)\.[a-zA-Z0-9]+$/;
 function Results() {
 	const banana = useContext(BananaContext);
 	const { updateAppState } = useContext(GlobalContext);
-	const { videos, videoDetails, setVideoUrl, processTime,setCurrentStep ,setCurrentSubStep} = useContext(VideoDetailsContext);
+	const { videos, videoDetails, setVideoUrl, processTime, setCurrentStep, setCurrentSubStep } =
+		useContext(VideoDetailsContext);
 	const { currentUser: user } = useContext(UserContext);
 	const [videoState, setVideoState] = useState([]);
 	const [showProgress, setShowProgress] = useState(false);
@@ -105,7 +106,16 @@ function Results() {
 	};
 
 	const uploadVideo = async () => {
-		await uploadVideos(setShowProgress, videoState, user, wantTitle, updateAppState, setVideoUrl,setCurrentSubStep,setCurrentStep);
+		await uploadVideos(
+			setShowProgress,
+			videoState,
+			user,
+			wantTitle,
+			updateAppState,
+			setVideoUrl,
+			setCurrentSubStep,
+			setCurrentStep
+		);
 	};
 
 	return (
@@ -117,7 +127,7 @@ function Results() {
 							{video.title.length > 0 && <h5 title={video.title}>{video.title}</h5>}
 							{video.title.length === 0 && <h5>(No Title)</h5>}
 						</div>
-						<p> Time taken: {formatTime(processTime/1000)} seconds</p>
+						<p> Time taken: {formatTime(processTime / 1000)} seconds</p>
 						<div className={`row ${video.displayUploadToCommons === false && 'd-none'}`}>
 							<div className="video-player-wrapper col-md-7">
 								<VideoPlayer videoUrl={`${API_URL}/${video.path}`} />

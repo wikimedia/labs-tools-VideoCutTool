@@ -733,7 +733,9 @@ function Trim(props) {
 					className="mt-2 mt-md-0"
 				>
 					<Plus size={20} />
-					<div className="setting-title">Add timeline</div>
+					<div className="setting-title">
+						<Message id="trim-add-timeline" />
+					</div>
 				</Button>
 			</div>
 

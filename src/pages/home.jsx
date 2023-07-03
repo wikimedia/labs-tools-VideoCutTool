@@ -45,8 +45,8 @@ function Home() {
 		const { socketId, ...rest } = data;
 		storeItem('user', rest);
 		setCurrentUser(rest);
-		updateAppState({ socketId:socketId });
-		console.log(socketId)
+		updateAppState({ socketId: socketId });
+
 		const location = window.location.href;
 		if (location.indexOf('?') !== -1) {
 			setTitle(`${base_wiki_url}/wiki/File:${location.split('?')[1].split('=')[1]}`);
@@ -101,7 +101,9 @@ function Home() {
 						<List size="25" />
 					</span>
 					<Image alt="logo" src={logo} width="100" height="40" />
-					<h1 className="text-white">VideoCutTool</h1>
+					<h1 className="text-white" data-testid="title">
+						<Message id="title" />
+					</h1>
 				</div>
 				{currentStep === 1 && <UrlBox title={title} />}
 				{currentStep === 2 && <VideoSettings />}

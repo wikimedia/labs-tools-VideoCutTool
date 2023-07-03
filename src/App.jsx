@@ -8,6 +8,7 @@ import Home from './pages/home';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ENV_SETTINGS from './env';
+import { Message } from '@wikimedia/react.i18n';
 
 function App() {
 	return (
@@ -17,7 +18,12 @@ function App() {
 					<VideoDetailsProvider>
 						<BrowserRouter>
 							<Routes>
-								<Route exact path={ENV_SETTINGS().path} element={<Home />} title="VideoCutTool" />
+								<Route
+									exact
+									path={ENV_SETTINGS().path}
+									element={<Home />}
+									title={<Message id="title" />}
+								/>
 								<Route path={ENV_SETTINGS().not_found_path} element={<Navigate to="/" />} />
 							</Routes>
 						</BrowserRouter>
