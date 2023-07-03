@@ -70,9 +70,9 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 async function onListening() {
-	await User.sync();
-	await Video.sync();
-	await Settings.sync();
+	await User.sync({ alter: true });
+	await Video.sync({ alter: true });
+	await Settings.sync({ alter: true });
 	const addr = server.address();
 	const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
 	console.log(`Listening on ${bind}`);
