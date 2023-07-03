@@ -66,7 +66,8 @@ function VideoProcess(props) {
 						type: 'error',
 						messageId: 'error-process',
 						footerId: 'notification-error-bug-call-to-action',
-						link: phab_link
+						link: phab_link,
+						linkTitle: 'notifications-error-bug-report'
 					}
 				});
 			}

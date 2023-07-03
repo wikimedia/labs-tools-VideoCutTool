@@ -312,9 +312,9 @@ function VideoSettings() {
 		}
 		let trimValue = '';
 		for (let i = 0; i < newValue.length; i++) {
-			trimValue += `(${formatTime(newValue[i].from).split('.')[0]} - ${
-				formatTime(newValue[i].to).split('.')[0]
-			})`;
+			const formattedFrom = formatTime(newValue[i].from).split('.')[0];
+			const formattedTo = formatTime(videoPlayer?.current.getState().duration).split('.')[0];
+			trimValue += `(${formattedFrom} - ${formattedTo})`;
 		}
 		updateSettings(
 			{
