@@ -1,0 +1,39 @@
+{
+	"@metadata": {
+		"authors": [
+			"Chulsu463"
+		]
+	},
+	"error-process": "yabure andande error iliha",
+	"error-retrieve-data": "video i data be gairangge error oho",
+	"error-file-not-exist": "Wikimedia Commons de cagan bisirakū",
+	"error-worker": "video be yaburengge error oho (weilesi).",
+	"login": "dosiki",
+	"login-alert-preview": "Commons be tuwame benere jalin si dosirengge oyonggo.",
+	"login-error": "dosirengge error oho",
+	"logout-message": "yongkiyan tucike",
+	"notifications-title-info": "alan!",
+	"report-issues": "leolen be boolaki",
+	"repository": "asara kuren",
+	"task-processing": "yabume bi",
+	"task-stage-downloading": "sindan",
+	"task-stage-manipulations": "jafan",
+	"task-stage-concating": "holboronggo",
+	"task-stage-converting_video_format": "video i format be kūbuliki",
+	"task-stage-cropping": "meiteki",
+	"task-stage-losing_audio": "jilgan oakū ome bi",
+	"task-stage-rotating": "šurden",
+	"task-stage-trimming": "miyaimin",
+	"task-uploaded-wikimedia-commons": "Wikimedia Commons de yongkiyan benehe",
+	"task-uploading": "benen",
+	"task-uploading-wikimedia-commons": "Wikipedia Commons de beneki",
+	"task-uploaded-wikimedia-commons-footer": "si $1 de video tuwarangge mutembi",
+	"task-uploaded-wikimedia-commons-footer-cover": "Wikimedia Commons",
+	"warning-badfilename-message": "benehe cagan i gebu oci ere wiki de gairakū. sini cagan be ice gebu arafi geli bene.",
+	"warning-duplicate-message": "benehe cagan encu (eici adali) gebu aifini bi.",
+	"warning-duplicate-archive-message": "benehe cagan encu (eici adali) gebu bihe damu nakaha.",
+	"warning-exists-footer": "encu gebu eici Overwrite be sonjo.",
+	"warning-badfilename-footer": "ede $1 bi.",
+	"warning-duplicate-footer": "bulen be benerengge baitakū.",
+	"warning-duplicate-archive-footer": "ede cagan ekcin geli benerengge muterakūngge be arame bi."
+}
