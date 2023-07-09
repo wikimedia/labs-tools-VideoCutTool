@@ -8,7 +8,8 @@ import {
 	Scissors,
 	Crop,
 	PlayCircle,
-	XCircle
+	XCircle,
+	VolumeDownFill
 } from 'react-bootstrap-icons';
 import { Message } from '@wikimedia/react.i18n';
 import { AppContext } from '../context';
@@ -19,6 +20,7 @@ import Trim from './Trim';
 import VideoPlayer from './VideoPlayer';
 import { storeItem, getStoredItem, clearItems } from '../utils/storage';
 import { formatTime } from '../utils/time';
+import Slider from './Slider';
 
 /** utility function to convert string to Title case.
  * @param {string} type, string to convert
@@ -56,7 +58,8 @@ function VideoSettings(props) {
 		crop_height: 0,
 		crop_width: 0,
 		rotate_value: 3,
-		mute: false
+		mute: false,
+		volume: 100
 	};
 	const videoManipulationData = useRef(initialVideoManipulationData);
 	const [videoAttr, setVideoAttr] = useState({});
@@ -87,12 +90,19 @@ function VideoSettings(props) {
 			title_id: 'setting-crop',
 			modified: false,
 			icon: Crop
+		},
+		{
+			type: 'volume',
+			title_id: 'setting-volume',
+			modified: false,
+			icon: VolumeDownFill
 		}
 	];
 
 	const [settings, setSettings] = useState(initialSettingsState);
 	const [canPreview, setCanPreview] = useState(false);
 	const [currentSetting, setCurrentSetting] = useState(false);
+	const [currentVolume, setCurrentVolume] = useState(100);
 
 	/**
 	 * Update settings by first cloning the current settings
@@ -192,15 +202,37 @@ function VideoSettings(props) {
 			mute: change
 		});
 
-		// Toggle mute on disolayed video
-		const videoEl = document.querySelector('#video-player video');
-		videoEl.muted = change;
+		// Toggle mute on displayed video
+		videoPlayer.current.videoEl.muted = change;
 
-		updateSettings({
-			modified: change
-		});
+		updateSettings(
+			{
+				modified: change
+			},
+			'mute'
+		);
 	};
 
+	const changeVolume = e => {
+		const newVolume = e.target.value;
+		if (newVolume == 0) {
+			muteAudio(true);
+			updateSettings({
+				modified: false
+			});
+		} else {
+			muteAudio(false);
+			updateVideoManipulationData({
+				volume: newVolume
+			});
+			updateSettings({
+				modified: newVolume != 100,
+				values: `(${newVolume}%)`
+			});
+		}
+		setCurrentVolume(newVolume);
+		videoPlayer.current.videoEl.volume = newVolume / 100;
+	};
 	/**
 	 * Callback to handle video rotation
 	 * @param {int} newRotateValue New rotation value
@@ -317,6 +349,10 @@ function VideoSettings(props) {
 			case 'trim':
 				trimHash.current = Date.now();
 				clearItems(['video-trim-hash']);
+				break;
+			case 'volume':
+				updateVideoManipulationData({ volume: 100 });
+				setCurrentVolume(100);
 				break;
 			default:
 				break;
@@ -462,6 +498,11 @@ function VideoSettings(props) {
 									)}
 								</ToggleButton>
 							</ToggleButtonGroup>
+						</div>
+					)}
+					{currentSetting.type === 'volume' && (
+						<div className="volume-options">
+							<Slider title="Volume" onChange={changeVolume} value={currentVolume} />
 						</div>
 					)}
 					{videoPlayer.current && (

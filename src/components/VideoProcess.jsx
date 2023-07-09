@@ -17,11 +17,13 @@ function VideoProcess(props) {
 	const [progressInfo, setProgressInfo] = useState(null);
 	const [currentTask, setCurrentTask] = useState(banana.i18n('task-processing'));
 
+	const volumeInt = parseInt(manipulations.volume);
 	const settingData = {
 		rotateValue: manipulations.rotate_value,
 		inputVideoUrl: videoUrl,
 		trimMode: trim.mode,
 		trims: trim.trims,
+		volume: volumeInt,
 		modified: settings.reduce((acc, setting) => {
 			const { type, modified } = setting;
 			acc[type] = modified;
@@ -50,7 +52,6 @@ function VideoProcess(props) {
 
 				if (stage === 'manipulations') {
 					const tasks = [];
-
 					if (isSettingModified('rotate')) {
 						tasks.push(banana.i18n('task-stage-rotating'));
 					}
@@ -66,7 +67,9 @@ function VideoProcess(props) {
 					if (isSettingModified('trim')) {
 						tasks.push(banana.i18n('task-stage-trimming'));
 					}
-
+					if (isSettingModified('volume')) {
+						tasks.push(banana.i18n('task-stage-volume'));
+					}
 					currentTaskString += ` (${tasks.join(', ')})`;
 				}
 

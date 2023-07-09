@@ -127,3 +127,13 @@
 		}
 	}
 }
+
+.slider{
+	display: flex;
+	flex-direction: column;
+	max-width: fit-content;
+}
+.slider-inner{
+	display: flex;
+	align-items: center;
+}

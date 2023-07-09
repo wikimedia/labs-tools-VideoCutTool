@@ -64,6 +64,7 @@ function Results() {
 		}
 		if (changes[2].modified === true) subcomment += 'trimmed ';
 		if (changes[3].modified === true) subcomment += 'cropped ';
+		if (changes[4].modified === true) subcomment += 'changed volume ';
 		if (subcomment === '') {
 			subcomment += 'not edited ';
 		}

@@ -34,7 +34,8 @@ const VideoPlayer = forwardRef((props, forwardedRef) => {
 	useImperativeHandle(
 		forwardedRef,
 		() => ({
-			getState: () => videoAttr
+			getState: () => videoAttr,
+			videoEl: videoEl.current
 		}),
 		[videoAttr]
 	);
