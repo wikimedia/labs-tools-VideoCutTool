@@ -10,8 +10,9 @@ const Settings = require('../models/Settings.js');
 const { blob } = require('stream/consumers');
 
 const uploadVideos = async (req, res) => {
-	const BASE_URL = 'https://commons.wikimedia.org/w/api.php?';
-	const { CLIENT_ID, CLIENT_SECRET } = config;
+	const { CLIENT_ID, CLIENT_SECRET, BASE_WIKI_URL } = config();
+	const BASE_URL = `${BASE_WIKI_URL}/w/api.php?`;
+
 	const { user } = req.body;
 
 	try {
@@ -31,7 +32,7 @@ const uploadVideos = async (req, res) => {
 		params.append('client_secret', CLIENT_SECRET);
 
 		const getAccessToken = await fetch(
-			'https://commons.wikimedia.org/w/rest.php/oauth2/access_token',
+			`${BASE_WIKI_URL}/w/rest.php/oauth2/access_token`,
 			{
 				method: 'POST',
 				headers: {

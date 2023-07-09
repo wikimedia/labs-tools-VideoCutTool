@@ -17,7 +17,7 @@ import logo from '../logo.svg';
 import '../style/main.scss';
 import '../style/dark-theme.scss';
 
-const { backend_url: backendUrl, phab_link } = ENV_SETTINGS();
+const { backend_url: backendUrl, phab_link, base_wiki_url } = ENV_SETTINGS();
 
 socket.on('connect', () => {
 	console.log('check 2', socket.connected);
@@ -57,7 +57,7 @@ function Home() {
 
 		const location = window.location.href;
 		if (location.indexOf('?') !== -1) {
-			setTitle(`https://commons.wikimedia.org/wiki/File:${location.split('?')[1].split('=')[1]}`);
+			setTitle(`${base_wiki_url}/wiki/File:${location.split('?')[1].split('=')[1]}`);
 		} else {
 			setTitle('');
 		}

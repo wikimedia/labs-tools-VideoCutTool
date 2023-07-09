@@ -3,6 +3,9 @@ import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { Message } from '@wikimedia/react.i18n';
 import { AppContext } from '../context';
 import { onLogin, onLogOut } from '../utils/auth';
+import ENV_SETTINGS from '../env';
+
+const { base_wiki_url } = ENV_SETTINGS();
 
 function Authentication(props) {
 	const { updateAppState } = useContext(AppContext);
@@ -54,7 +57,7 @@ function Authentication(props) {
 							placeholders={[
 								<a
 									className="text-white font-weight-bold"
-									href={`https://commons.wikimedia.org/wiki/user:${user.username}`}
+									href={`${base_wiki_url}/wiki/user:${user.username}`}
 								>
 									{user.username}
 								</a>
