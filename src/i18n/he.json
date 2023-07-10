@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
+			"Neriah",
 			"YaronSh",
 			"ישראל קלר"
 		]
@@ -12,7 +13,7 @@
 	"file-not-existing": "הקובץ לא קיים",
 	"footer-authors": "$1 וגם $2",
 	"languages": "שפות",
-	"login": "רישום / כניסה",
+	"login": "כניסה",
 	"login-alert": "נא להיכנס כדי להשתמש בכלי",
 	"login-alert-preview": "עליך להיכנס כדי להציג תצוגה מקדימה ולהעלות לוויקישיתוף",
 	"login-alert-upload": "כניסה לצורך העלאה לוויקישיתוף",

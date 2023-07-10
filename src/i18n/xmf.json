@@ -1,0 +1,35 @@
+{
+	"@metadata": {
+		"authors": [
+			"Narazeni"
+		]
+	},
+	"404-go-back": "დუდხასჷლაშა დორთინა",
+	"error-file-not-exist": "ფაილი ვა რე ვიკიოწკარუეს",
+	"languages": "ნინეფი",
+	"login": "მიშულა",
+	"login-error": "მიშულაშის ჩილათაქ მოხვადჷ",
+	"logout": "გიშულა",
+	"logout-confirm-no": "ვარი",
+	"logout-confirm-yes": "ქო",
+	"logout-message": "წუმოძინელო გიშულირი რე",
+	"notifications-title-info": "გინაფა!",
+	"repository": "რეპოზიტორია",
+	"step-video-url": "ვიდეო URL",
+	"task-processing": "დამუშება",
+	"task-stage-downloading": "იხარგუ",
+	"task-stage-manipulations": "მანიპულაციეფი",
+	"task-stage-concating": "აკოკათუა",
+	"task-stage-cropping": "დოკუნტარაფა",
+	"task-stage-losing_audio": "ხონარიშ დინაფა",
+	"task-stage-rotating": "მუკორთინაფა",
+	"task-stage-trimming": "მოჭკირუა",
+	"task-uploaded-wikimedia-commons": "წჷმოძინელო ეიხარგჷ ვიკიოწკარუეშა",
+	"task-uploading": "იხარგუაფუ",
+	"task-uploading-wikimedia-commons": "ეთმიხარგუაფუ ვიკიოწკარუეშა",
+	"upload-action-new-file": "ახალ ფაილო ეხარგუა",
+	"upload-edit-button": "ვიდეოშ რედაქტირაფა",
+	"warning-exists-message": "ფაილი თეჯგურა ჯოხოთ უკვე რე.",
+	"warning-duplicate-message": "ეხარგილი ფაილი რე შხვადოშხვა (ვარ-და კჷნ თეჯგურა) ჯოხოთ.",
+	"warning-badfilename-footer": "შილებე იკათუანდას $1"
+}

@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jon Harald Søby"
+		]
+	},
+	"error-process": "En feil oppsto under prosessen",
+	"error-retrieve-data": "Noe gikk galt under henting av videoens data",
+	"error-file-not-exist": "Fila finnes ikke på Wikimedia Commons",
+	"error-worker": "En feil oppsto under prosessering av videoen (arbeider).",
+	"login": "Logg inn",
+	"login-error": "Feil under innlogging",
+	"logout-message": "Utlogging vellykket",
+	"notifications-error-bug-report": "Phabricator",
+	"notifications-title-info": "Varsel!",
+	"report-issues": "Rapporter problemer",
+	"repository": "Kodelager",
+	"task-processing": "Prosesserer",
+	"task-stage-downloading": "Laster ned",
+	"task-stage-manipulations": "Manipuleringer",
+	"task-stage-converting_video_format": "Konverterer videoformat",
+	"task-stage-losing_audio": "Mister lyd",
+	"task-stage-rotating": "Roterende",
+	"task-uploaded-wikimedia-commons": "Lastet opp til Wikimedia Commons",
+	"task-uploading": "Laster opp",
+	"task-uploading-wikimedia-commons": "Laster opp til Wikimedia Commons",
+	"task-uploaded-wikimedia-commons-footer": "Du kan sjekke ut videoen på $1",
+	"task-uploaded-wikimedia-commons-footer-cover": "Wikimedia Commons",
+	"warning-exists-message": "Ei fil med samme navn finnes allerede.",
+	"warning-badfilename-message": "Det angitte filnavnet er ikke tillatt på denne wikien. Velg et annet filnavn og prøv igjen",
+	"warning-duplicate-message": "Den opplastede fila finnes under et annet (eller samme) navn.",
+	"warning-badfilename-footer-cover": "Forbudte eller ulovlige tegn.",
+	"warning-duplicate-archive-footer": "Dette kan indikere at fila er upassende og ikke bør lastes opp."
+}

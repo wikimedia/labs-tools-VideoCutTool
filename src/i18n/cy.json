@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Afalau",
 			"JonesT143"
 		]
 	},
@@ -8,13 +9,16 @@
 	"404-image-description": "404 Tudalen heb ei chanfod",
 	"file-not-existing": "Nid yw'r Ffeil yn Bodoli",
 	"languages": "Ieithoedd",
-	"login": "Cofrestru / Mewngofnodi",
+	"login": "Mewngofnodi",
 	"login-alert": "Er mwyn defnyddio'r offer yma, mewngofnodwch os gwelwch yn dda",
+	"login-error": "Gwall wrth fewngofnodi",
 	"logout": "Allgofnodi",
 	"logout-confirm-no": "Nac ydw",
 	"logout-confirm-text": "Ydych chi'n siŵr?",
 	"logout-confirm-yes": "Ydw",
 	"new-video": "Bydd eich fideo{{Plural:$1||s}} newydd yma:",
+	"notifications-error-bug-report": "Phabricator",
+	"notifications-title-info": "Hysbysiad!",
 	"notifications-title-error": "Gwall!",
 	"notifications-wait": "Mae eich fideo yng nghanol prosesu. Arhoswch nes mae'r fideo newydd wedi'i gynhyrchu os gwelwch yn dda",
 	"preview-text": "Rhagolwg",

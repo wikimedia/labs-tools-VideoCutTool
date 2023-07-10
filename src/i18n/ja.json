@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"LaMagiaaa",
+			"MagicAho",
 			"MathXplore",
 			"Omotecho",
 			"Tamaki Wakita",
@@ -16,7 +17,7 @@
 	"languages": "言語",
 	"login": "登録／ログイン",
 	"login-alert": "このツールを使うにはログインしてください",
-	"login-alert-preview": "プレビューとコモンズへのアップロードにはログインが必要です",
+	"login-alert-preview": "プレビューしてコモンズにアップロードするにはログインする必要があります",
 	"login-alert-upload": "ウィキメディア コモンズへのアップロードにはログインが必要です",
 	"logout": "ログアウト",
 	"logout-confirm-no": "いいえ",
@@ -51,6 +52,7 @@
 	"task-stage-manipulations": "操作",
 	"task-stage-concating": "統合中",
 	"task-stage-converting_video_format": "動画のフォーマットを変換",
+	"task-stage-cropping": "複製",
 	"task-stage-losing_audio": "音声を除去中",
 	"task-stage-rotating": "上下を転換中",
 	"task-stage-trimming": "短縮",
@@ -80,5 +82,9 @@
 	"video-trim-more": "さらに追加",
 	"video-trim-more-concatenate": "1本の動画に統合",
 	"video-trim-to": "終了点",
+	"warning-badfilename-message": "指定されたファイル名は、この Wiki では使用できません。ファイルの名前を変更して再試行してください",
+	"warning-duplicate-message": "アップロードされたファイルは別の (または同じ) 名前で存在します。",
+	"warning-duplicate-archive-message": "アップロードされたファイルは以前は別の (または同じ) 名前で存在していましたが、削除されました。",
+	"warning-exists-footer": "別の名前を選択するか、上書きを使用します。",
 	"welcome": "ようこそ、$1さん"
 }

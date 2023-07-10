@@ -12,7 +12,7 @@
 	"file-not-existing": "Tiedostoa ei ole olemassa",
 	"footer-authors": "$1 ja $2",
 	"languages": "Kielet",
-	"login": "Rekisteröidy / kirjaudu",
+	"login": "Kirjaudu sisään",
 	"login-alert": "Aloita käyttö kirjautumalla sisään",
 	"login-alert-preview": "Sinun pitää olla kirjautunut sisään, jotta voisit esikatsella ja tallentaa Commonsiin",
 	"login-alert-upload": "Kirjaudu sisään tallentaaksesi Wikimedia Commonsiin",
