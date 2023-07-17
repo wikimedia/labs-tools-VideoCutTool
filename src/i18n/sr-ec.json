@@ -5,17 +5,19 @@
 			"Milicevic01"
 		]
 	},
+	"error-file-not-exist": "Датотека не постоји на Викимедијиној остави",
 	"file-not-existing": "Датотека не постоји",
 	"footer-authors": "$1 и $2",
 	"languages": "Језици",
 	"login": "Пријава",
+	"login-error": "Грешка при пријављивању",
 	"logout-confirm-no": "Не",
 	"logout-confirm-text": "Јесте ли сигурни?",
 	"logout-confirm-yes": "Да",
 	"logout-message": "Успешно сте одјављени",
 	"notification-error-bug-call-to-action": "Нисте очекивали ово? Пријавите проблем на $1",
 	"notifications-error-bug-report": "Фабрикатор",
-	"notifications-not-existing": "Датотека не постоји на Викимедијиној Остави",
+	"notifications-not-existing": "Датотека не постоји на Викимедијиној остави",
 	"notifications-title-info": "Обавештење!",
 	"notifications-title-error": "Грешка!",
 	"notifications-title-success": "Успешно!",
@@ -55,5 +57,8 @@
 	"video-trim-from": "Од",
 	"video-trim-more": "Додај још",
 	"warning-exists-message": "Датотека с’тим називом већ постоји.",
+	"warning-exists-footer": "Изаберите друго име или преснимите.",
+	"warning-badfilename-footer": "Можда садржи $1",
+	"warning-badfilename-footer-cover": "Забрањени или недозвољени знаци.",
 	"welcome": "Добро дошли, $1"
 }
