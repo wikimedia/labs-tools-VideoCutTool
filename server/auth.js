@@ -2,7 +2,7 @@ const config = require('./config.js');
 
 module.exports = async (req, res, next) => {
 	const { code } = req.query;
-	const { CLIENT_ID, CLIENT_SECRET } = config;
+	const { CLIENT_ID, CLIENT_SECRET, BASE_WIKI_URL } = config();
 
 	const params = new URLSearchParams();
 	params.append('grant_type', 'authorization_code');
@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 	params.append('client_secret', CLIENT_SECRET);
 
 	try {
-		const fetchData = await fetch('https://commons.wikimedia.org/w/rest.php/oauth2/access_token', {
+		const fetchData = await fetch(`${BASE_WIKI_URL}/w/rest.php/oauth2/access_token`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 		res.locals.refresh_token = refreshToken;
 
 		const getUserData = await fetch(
-			'https://commons.wikimedia.org/w/rest.php/oauth2/resource/profile',
+			`${BASE_WIKI_URL}/w/rest.php/oauth2/resource/profile`,
 			{
 				method: 'GET',
 				headers: {

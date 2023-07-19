@@ -16,6 +16,8 @@ const Settings = require('./models/Settings.js');
 
 const app = express();
 
+const { BASE_WIKI_URL, CLIENT_ID } = config();
+
 const MemoryStore = require('memorystore')(session);
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -87,12 +89,12 @@ app.get('/test-auth', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-	const baseUrl = 'https://commons.wikimedia.org';
+	const baseUrl = BASE_WIKI_URL;
 	const endpoint = '/w/rest.php/oauth2/authorize';
 
 	const url = new URL(baseUrl + endpoint);
 	url.searchParams.append('response_type', 'code');
-	url.searchParams.append('client_id', config.CLIENT_ID);
+	url.searchParams.append('client_id', CLIENT_ID);
 
 	res.send(res.redirect(url));
 });

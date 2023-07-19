@@ -1,5 +1,5 @@
 import ENV_SETTINGS from '../env';
-const { phab_link } = ENV_SETTINGS();
+const { phab_link, base_wiki_url } = ENV_SETTINGS();
 
 /**
  * Get video date from either commons site or user uploads
@@ -14,7 +14,7 @@ const retrieveVideoData = async (videoUrl, videoTitle, updateAppState) => {
 		return;
 	}
 	try {
-		const baseUrl = 'https://commons.wikimedia.org/w/api.php?';
+		const baseUrl = `${base_wiki_url}/w/api.php?`;
 		const params = {
 			action: 'query',
 			format: 'json',
@@ -66,7 +66,7 @@ const checkFileExist = async (filePath, updateAppState) => {
 		return;
 	}
 	const fileName = matchPath[0];
-	const baseUrl = 'https://commons.wikimedia.org/w/api.php?';
+	const baseUrl = `${base_wiki_url}/w/api.php?`;
 	const params = {
 		action: 'query',
 		titles: fileName,
@@ -172,7 +172,7 @@ const uploadVideos = async (setShowProgress, videoState, user, wantTitle, update
 				notification: {
 					type: 'success',
 					messageId: 'task-uploaded-wikimedia-commons',
-					link: `https://commons.wikimedia.org/wiki/File:${wantTitle}`,
+					link: `${base_wiki_url}/wiki/File:${wantTitle}`,
 					linkTitle: 'task-uploaded-wikimedia-commons-footer-cover',
 					footerId: 'task-uploaded-wikimedia-commons-footer'
 				},

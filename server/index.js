@@ -8,7 +8,7 @@ const Video = require('./models/Video.js');
 const Settings = require('./models/Settings.js');
 
 const server = createServer(app);
-const { PORT } = config;
+const { PORT } = config();
 
 /**
  * Listen on provided port, on all network interfaces.
