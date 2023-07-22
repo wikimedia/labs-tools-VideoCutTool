@@ -384,7 +384,6 @@ function VideoSettings() {
 		if (!canPreview) {
 			return;
 		}
-		setCurrentSubStep('process');
 		const userinfo = {
 			mediawikiId: currentUser.mediawikiId,
 			username: currentUser.username,
@@ -395,6 +394,7 @@ function VideoSettings() {
 		formData.append('user', JSON.stringify(userinfo));
 		formData.append('file', file);
 		await processVideo(formData, updateAppState, setCurrentSubStep);
+		setCurrentSubStep('process');
 	};
 
 	/**
