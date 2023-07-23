@@ -1,7 +1,7 @@
 version: '3.7'
 services:
-  videocuttool:
-    container_name: videocuttool
+  videcuttool-server:
+    container_name: videcuttool-server
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -16,7 +16,7 @@ services:
       - NODE_ENV=development
       - FAST_REFRESH=true
       - DB_CONNECTION_URL=postgresql://videocuttool:videocuttool@database:5432/videocuttool
-      - BACKEND_URL=http://videocuttool:4000/api/
+      - BACKEND_URL=http://videcuttool-server:4000/api/
     env_file:
       - .env.dev
     depends_on:
@@ -36,10 +36,12 @@ services:
   nginx:
     restart: always
     depends_on:
-      - videocuttool
+      - videcuttool-server
     image: nginx:latest
+    env_file:
+      - .env.dev
     ports:
-      - 8000:80
+      - ${BETA_PORT:-8000}:80
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
 volumes:

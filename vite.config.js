@@ -7,8 +7,9 @@ export default defineConfig({
 		host: true,
 		strictPort: true,
 		hmr: {
-			Port: 8000,
-			path: 'vite-hmr'
+			path: 'vite-hmr',
+			port: 3000,
+			clientPort: process.env.BETA_PORT ?? 8000,
 		}
 	},
 	build: {
