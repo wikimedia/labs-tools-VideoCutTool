@@ -180,7 +180,8 @@ function Trim(props) {
 
 			updateRangeAttr({
 				left,
-				from
+				from,
+				to: duration
 			});
 		}
 
