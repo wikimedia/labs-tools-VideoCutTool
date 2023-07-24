@@ -24,7 +24,6 @@
 	"logout-confirm-yes": "Sim",
 	"new-video": "{{PLURAL:$1|Seu novo vídeo|Seus novos vVídeos}} estará aqui:",
 	"notification-error-bug-call-to-action": "Não esperava isso? Reporte esse problema a $1",
-	"notifications-error-bug-report": "phabricator",
 	"notifications-not-existing": "O arquivo não existe no Wikimedia Commons",
 	"notifications-not-overwritable": "Você não pode substituir um vídeo de um dispositivo",
 	"notifications-title-error": "Erro!",

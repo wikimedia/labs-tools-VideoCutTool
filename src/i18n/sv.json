@@ -21,7 +21,6 @@
 	"logout-confirm-yes": "Ja",
 	"new-video": "{{PLURAL:$1|Din nya video|Dina nya videor}} kommer finnas här:",
 	"notification-error-bug-call-to-action": "Förväntade du dig inte detta? Rapportera det här problemet till $1",
-	"notifications-error-bug-report": "phabricator",
 	"notifications-not-existing": "Filen finns inte på Wikimedia Commons",
 	"notifications-not-overwritable": "Du kan inte skriva över en video från en enhet",
 	"notifications-title-error": "Fel!",

@@ -18,7 +18,6 @@
 	"logout-confirm-text": "¿Seguro?",
 	"logout-confirm-yes": "Sí",
 	"notification-error-bug-call-to-action": "¿No esperabas esto? Reporta este problema a $1",
-	"notifications-error-bug-report": "Phabricator",
 	"notifications-not-existing": "El archivo no existe en Wikimedia Commons",
 	"notifications-title-success": "¡Éxito!",
 	"notifications-title-warning": "¡Atención!",

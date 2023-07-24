@@ -23,7 +23,6 @@
 	"logout-confirm-yes": "Ya",
 	"new-video": "Video baru Anda{{PLURAL:$1||}} akan ada di sini:",
 	"notification-error-bug-call-to-action": "Tidak mengharapkan ini? Laporkan masalah ini ke $1",
-	"notifications-error-bug-report": "phabricator",
 	"notifications-not-existing": "Berkas tidak ada di Wikimedia Commons",
 	"notifications-not-overwritable": "Anda tidak dapat menimpa video dari perangkat",
 	"notifications-title-error": "Galat!",

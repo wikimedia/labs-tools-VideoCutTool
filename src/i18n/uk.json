@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"DDPAT",
 			"Ice bulldog",
 			"Ата"
@@ -22,7 +23,7 @@
 	"logout-confirm-yes": "Так",
 	"new-video": "{{PLURAL:$1|Ваше нове|Ваші нові}} відео {{PLURAL:$1|буде|будуть}} тут:",
 	"notification-error-bug-call-to-action": "Не чекали цього? Повідомте про цю проблему на $1",
-	"notifications-error-bug-report": "фабрикаторі",
+	"notifications-error-bug-report": "Фабрикаторі",
 	"notifications-not-existing": "Файл не існує на Вікісховищі",
 	"notifications-not-overwritable": "Ви не можете перезаписати відео з пристрою",
 	"notifications-title-error": "Помилка!",

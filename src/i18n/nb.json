@@ -11,7 +11,6 @@
 	"login": "Logg inn",
 	"login-error": "Feil under innlogging",
 	"logout-message": "Utlogging vellykket",
-	"notifications-error-bug-report": "Phabricator",
 	"notifications-title-info": "Varsel!",
 	"report-issues": "Rapporter problemer",
 	"repository": "Kodelager",

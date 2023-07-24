@@ -17,7 +17,6 @@
 	"logout-confirm-text": "Ydych chi'n siŵr?",
 	"logout-confirm-yes": "Ydw",
 	"new-video": "Bydd eich fideo{{Plural:$1||s}} newydd yma:",
-	"notifications-error-bug-report": "Phabricator",
 	"notifications-title-info": "Hysbysiad!",
 	"notifications-title-error": "Gwall!",
 	"notifications-wait": "Mae eich fideo yng nghanol prosesu. Arhoswch nes mae'r fideo newydd wedi'i gynhyrchu os gwelwch yn dda",

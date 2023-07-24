@@ -19,7 +19,6 @@
 	"logout-confirm-yes": "Jo",
 	"new-video": "{{PLURAL:$1|Ären neie Video|Är nei Videoe}} kommen hei hin:",
 	"notification-error-bug-call-to-action": "Hutt Dir dat net erwaart? Mellt dëse Problem bei $1.",
-	"notifications-error-bug-report": "Phabricator",
 	"notifications-not-existing": "De Fichier gëtt et net op Wikimedia Commons",
 	"notifications-title-error": "Feeler!",
 	"notifications-title-success": "Erfolleg!",

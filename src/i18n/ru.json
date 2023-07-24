@@ -23,7 +23,6 @@
 	"logout-confirm-yes": "Да",
 	"new-video": "{{PLURAL:$1|Ваше новое|Ваши новые}} видео {{PLURAL:$1|будет|будут}} здесь:",
 	"notification-error-bug-call-to-action": "Не ожидал этого? Сообщите об проблеме на $1",
-	"notifications-error-bug-report": "phabricator",
 	"notifications-not-existing": "Файл не существует на Викискладе",
 	"notifications-not-overwritable": "Вы не можете перезаписать видео с устройства",
 	"notifications-title-error": "Ошибка!",

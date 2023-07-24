@@ -21,7 +21,6 @@
 	"logout-confirm-text": "Oletko varma?",
 	"logout-confirm-yes": "Kyllä",
 	"new-video": "{{PLURAL:$1|Uusi|Uudet}} videosi tulevat olemaan täällä:",
-	"notifications-error-bug-report": "Phabricator",
 	"notifications-not-existing": "Tiedostoa ei ole Wikimedia Commonsissa",
 	"notifications-not-overwritable": "Et voi ylikirjoittaa tiedosta laitteelta",
 	"notifications-title-error": "Virhe!",
