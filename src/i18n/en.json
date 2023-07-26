@@ -100,10 +100,12 @@
 	"warning-badfilename-message": "The file name supplied is not acceptable on this wiki. Please rename the file and try again",
 	"warning-duplicate-message": "The uploaded file exists under a different (or the same) name.",
 	"warning-duplicate-archive-message": "The uploaded used to exist under a different (or the same) name but has been deleted.",
+	"warning-was-deleted-message":"The file with the given name used to exist but has been deleted.",
 	"warning-exists-footer":"Choose a different name or use Overwrite.",
 	"warning-badfilename-footer":"It may contain $1",
 	"warning-badfilename-footer-cover":"Forbidden or Illegal characters.",
 	"warning-duplicate-footer":"Uploading a duplicate may be undesirable.",
 	"warning-duplicate-archive-footer":"This may indicate that the file is inappropriate and should not be uploaded.",
+	"warning-was-deleted-footer":"Check the deletion log for details.",
 	"welcome": "Welcome, $1"
 }

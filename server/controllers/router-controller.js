@@ -112,20 +112,18 @@ const uploadVideos = async (req, res) => {
 			}
 			// If warning exist then show the relevant message
 			else if (upload && upload.result === 'Warning') {
-				const {
-					warnings: { exists, badfilename, duplicate }
-				} = upload;
+				const { warnings } = upload;
 
-				// for multiple warnings, show them all to the user
+				// for multiple warnings, show them all to the user, like
+				// warning-exists
+				// warning-badfilename
+				// warning-was-deleted
+				// warning-duplicate
+				// warning-duplicate-archive
 				const warningsArray = [];
-				if (exists !== undefined) warningsArray.push('warning-exists');
-
-				if (badfilename !== undefined) warningsArray.push('warning-badfilename');
-
-				if (duplicate !== undefined) warningsArray.push('warning-duplicate');
-
-				if (upload.warnings['duplicate-archive'] !== undefined)
-					warningsArray.push('warning-duplicate-archive');
+				Object.keys(warnings).forEach(key => {
+					warningsArray.push(`warning-${key}`);
+				});
 
 				if (warningsArray.length > 0) {
 					const warning = new Error('Warning');
