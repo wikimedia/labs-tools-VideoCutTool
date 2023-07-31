@@ -19,7 +19,7 @@
 	"task-stage-downloading": "sindan",
 	"task-stage-manipulations": "jafan",
 	"task-stage-concating": "holboronggo",
-	"task-stage-converting_video_format": "video i format be kūbuliki",
+	"task-stage-converting": "video i format be kūbuliki",
 	"task-stage-cropping": "meiteki",
 	"task-stage-losing_audio": "jilgan oakū ome bi",
 	"task-stage-rotating": "šurden",
