@@ -178,6 +178,7 @@ async function manipulateVideo({ videoId, videoPath }, manipulations) {
 
 	let cmdArray = [];
 	if (trim !== true) {
+		// if trim is enabled then these flags are already being passed
 		cmdArray = ['-i', `${videoPath}`, '-c:a', 'copy'];
 	}
 
@@ -185,8 +186,9 @@ async function manipulateVideo({ videoId, videoPath }, manipulations) {
 		cmdArray.push('-an');
 	}
 
+	const audioFilters = [];
 	if (volume !== undefined) {
-		cmdArray = ['-i', `${videoPath}`, '-filter:a', `volume=${volume / 100}`];
+		audioFilters.push(`volume=${volume / 100}`);
 	}
 
 	const videoFilters = [];
@@ -210,6 +212,11 @@ async function manipulateVideo({ videoId, videoPath }, manipulations) {
 	if (videoFilters.length > 0) {
 		cmdArray.push('-vf');
 		cmdArray.push(`${videoFilters.join(',')}`);
+	}
+
+	if (audioFilters.length > 0) {
+		cmdArray.push('-af');
+		cmdArray.push(`${audioFilters.join(',')}`);
 	}
 
 	if (trim !== true) {
