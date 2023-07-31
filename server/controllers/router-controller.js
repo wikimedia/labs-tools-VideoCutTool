@@ -31,16 +31,13 @@ const uploadVideos = async (req, res) => {
 		params.append('client_id', CLIENT_ID);
 		params.append('client_secret', CLIENT_SECRET);
 
-		const getAccessToken = await fetch(
-			`${BASE_WIKI_URL}/w/rest.php/oauth2/access_token`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				body: params
-			}
-		);
+		const getAccessToken = await fetch(`${BASE_WIKI_URL}/w/rest.php/oauth2/access_token`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: params
+		});
 
 		const tokenData = await getAccessToken.json();
 		const { access_token: accessToken, refresh_token: newRefreshToken } = tokenData;
@@ -184,94 +181,93 @@ const processVideo = async (req, res) => {
 		const { crop, inputVideoUrl, trimMode, trims, modified, rotateValue, videoName, volume } =
 			JSON.parse(req.body.data);
 
-		try {
-			const user = JSON.parse(req.body.user);
+		const user = JSON.parse(req.body.user);
 
-			await User.upsert(user);
-			const userDoc = await User.findOne({ mediawikiId: user.mediawikiId });
-			const videoData = {
-				id: randomUUID(),
-				url: inputVideoUrl,
-				videoDownloadPath,
-				uploadedBy: userDoc.mediawikiId,
-				status: 'downloading',
-				videoName,
-				UserMediawikiId: user.mediawikiId
-			};
-
-			const SettingsData = {
-				trims,
-				trimMode,
-				crop,
-				modified,
-				rotateValue,
-				volume,
-				VideoId: videoData.id
-			};
-
-			const videoDbObj = await Video.create(videoData);
-			await videoDbObj.save();
-			const videoSettingsDbObj = await Settings.create(SettingsData);
-			await videoSettingsDbObj.save();
-			const videoId = videoData.id;
-
-			videoIdResponse = JSON.stringify({ videoId: videoData.id });
-
-			const worker = new Worker(path.resolve(__dirname, '../worker.js'), {
-				workerData: {
-					_id: videoId,
-					inputVideoUrl,
-					videoDownloadPath,
-					videoName,
-					settings: {
-						trims,
-						trimMode,
-						crop,
-						modified,
-						rotateValue,
-						volume
-					}
-				}
-			});
-
-			// Listen for a message from worker
-			worker.on('message', async payload => {
-				console.log(payload);
-				if (payload.type.includes('frontend')) {
-					io.to(user.socketId).emit('progress:update', payload.data);
-				}
-				if (payload.data.status === 'processing') {
-					await Video.update(
-						{ status: payload.data.status, stage: payload.data.stage },
-						{ where: { id: payload.videoId } }
-					);
-				} else if (payload.data.status === 'done') {
-					Video.update(
-						{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos },
-						{ where: { id: payload.videoId } }
-					);
-				} else {
-					Video.update(
-						{ status: payload.data.status, errorData: payload.data.error },
-						{ where: { id: payload.videoId } }
-					);
-				}
-			});
-
-			worker.on('error', error => {
-				console.log('WORKER ERROR', error);
-				const workerError = new Error('error-worker');
-				workerError.success = false;
-				workerError.status = 400;
-				throw workerError;
-			});
-		} catch (err) {
-			console.log(err);
+		if (Object.keys(user).length === 0) {
 			const e = new Error('login-alert-preview');
 			e.success = false;
 			e.status = 400;
 			throw e;
 		}
+
+		await User.upsert(user);
+		const userDoc = await User.findOne({ mediawikiId: user.mediawikiId });
+		const videoData = {
+			id: randomUUID(),
+			url: inputVideoUrl,
+			videoDownloadPath,
+			uploadedBy: userDoc.mediawikiId,
+			status: 'downloading',
+			videoName,
+			UserMediawikiId: user.mediawikiId
+		};
+
+		const SettingsData = {
+			trims,
+			trimMode,
+			crop,
+			modified,
+			rotateValue,
+			volume,
+			VideoId: videoData.id
+		};
+
+		const videoDbObj = await Video.create(videoData);
+		await videoDbObj.save();
+		const videoSettingsDbObj = await Settings.create(SettingsData);
+		await videoSettingsDbObj.save();
+		const videoId = videoData.id;
+
+		videoIdResponse = JSON.stringify({ videoId: videoData.id });
+
+		const worker = new Worker(path.resolve(__dirname, '../worker.js'), {
+			workerData: {
+				_id: videoId,
+				inputVideoUrl,
+				videoDownloadPath,
+				videoName,
+				settings: {
+					trims,
+					trimMode,
+					crop,
+					modified,
+					rotateValue,
+					volume
+				}
+			}
+		});
+
+		// Listen for a message from worker
+		worker.on('message', async payload => {
+			console.log(payload);
+			if (payload.type.includes('frontend')) {
+				io.to(user.socketId).emit('progress:update', payload.data);
+			}
+			if (payload.data.status === 'processing') {
+				await Video.update(
+					{ status: payload.data.status, stage: payload.data.stage },
+					{ where: { id: payload.videoId } }
+				);
+			} else if (payload.data.status === 'done') {
+				Video.update(
+					{ status: payload.data.status, stage: 'done', videoPublicPaths: payload.data.videos },
+					{ where: { id: payload.videoId } }
+				);
+			} else {
+				Video.update(
+					{ status: payload.data.status, errorData: payload.data.error },
+					{ where: { id: payload.videoId } }
+				);
+			}
+		});
+
+		worker.on('error', error => {
+			console.log('WORKER ERROR', error);
+			const workerError = new Error('error-worker');
+			workerError.success = false;
+			workerError.status = 400;
+			throw workerError;
+		});
 	} catch (err) {
 		console.log(err);
 		const { status, message, success } = err;

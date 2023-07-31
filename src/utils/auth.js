@@ -1,6 +1,7 @@
 import PopupTools from 'popup-tools';
+import { socket } from './socket';
 
-const onLogin = (apiUrl, setCurrentUser,updateAppState) => {
+const onLogin = (apiUrl, setCurrentUser, updateAppState) => {
 	PopupTools.popup(`${apiUrl}/login`, 'Wiki Connect', { width: 1000, height: 600 }, (err, data) => {
 		if (!err) {
 			updateAppState({
@@ -12,6 +13,7 @@ const onLogin = (apiUrl, setCurrentUser,updateAppState) => {
 			});
 			setCurrentUser(data.user);
 			localStorage.setItem('user', JSON.stringify(data.user));
+			socket.emit('join', data.user);
 		} else {
 			updateAppState({
 				notification: {

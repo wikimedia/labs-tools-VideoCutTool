@@ -12,7 +12,7 @@ import { VideoDetailsContext } from '../context/VideoDetailsContext';
 import { UserContext } from '../context/UserContext';
 import { socket } from '../utils/socket';
 import Notification from '../components/Notification';
-import { clearItems, getStoredItem, storeItem } from '../utils/storage';
+import { clearItems, getStoredItem } from '../utils/storage';
 import ENV_SETTINGS from '../env';
 
 import logo from '../logo.svg';
@@ -37,15 +37,15 @@ function Home() {
 	const { appState, updateAppState } = useContext(GlobalContext);
 	const { notifications } = appState || {};
 	const { currentStep } = useContext(VideoDetailsContext);
-	const { currentUser, setCurrentUser } = useContext(UserContext);
+	const { setCurrentUser } = useContext(UserContext);
 	const [showHeader, setShowHeader] = useState(false);
 	const [title, setTitle] = useState('');
+	const userLocalStorage = getStoredItem('user');
 
 	socket.on('update', data => {
-		const { socketId, ...rest } = data;
-		storeItem('user', rest);
-		setCurrentUser(rest);
-		updateAppState({ socketId: socketId });
+		// Update socket id reference
+		const { socketId } = data;
+		updateAppState({ socketId });
 
 		const location = window.location.href;
 		if (location.indexOf('?') !== -1) {
@@ -66,24 +66,10 @@ function Home() {
 		]);
 
 		// Update socket reference
-		updateAppState({ socket: socket.id });
+		updateAppState({ socket });
 
-		try {
-			const userLocalStorage = getStoredItem('user');
-
-			if (userLocalStorage) {
-				setCurrentUser(localStorage);
-			}
-		} catch (e) {
-			setCurrentUser(null);
-		}
-
-		const location = window.location.href;
-		if (location.indexOf('?') !== -1) {
-			setTitle(`https://commons.wikimedia.org/wiki/File:${location.split('?')[1].split('=')[1]}`);
-		} else {
-			setTitle('');
-		}
+		// Update current user
+		setCurrentUser(userLocalStorage);
 	}, []);
 
 	const toggleHeader = () => {

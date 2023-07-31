@@ -384,17 +384,19 @@ function VideoSettings() {
 		if (!canPreview) {
 			return;
 		}
+
+		// if user is not logged in, this would be empty object
 		const userinfo = {
-			mediawikiId: currentUser.mediawikiId,
-			username: currentUser.username,
-			socketId: socketId
+			...currentUser,
+			...(socketId && { socketId })
 		};
+
+		setCurrentSubStep('process');
 		const formData = new FormData();
 		formData.append('data', JSON.stringify(settingData));
 		formData.append('user', JSON.stringify(userinfo));
 		formData.append('file', file);
 		await processVideo(formData, updateAppState, setCurrentSubStep);
-		setCurrentSubStep('process');
 	};
 
 	/**
