@@ -70,6 +70,12 @@ function Home() {
 
 		// Update current user
 		setCurrentUser(userLocalStorage);
+		const location = window.location.href;
+		if (location.indexOf('?') !== -1) {
+			setTitle(`${base_wiki_url}/wiki/File:${location.split('?')[1].split('=')[1]}`);
+		} else {
+			setTitle('');
+		}
 	}, []);
 
 	const toggleHeader = () => {
