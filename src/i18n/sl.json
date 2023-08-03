@@ -104,10 +104,12 @@
 	"warning-badfilename-message": "Navedeno ime datoteke v tem vikiju ni sprejemljivo. Preimenujte datoteko in poskusite znova",
 	"warning-duplicate-message": "Naložena datoteka že obstaja pod drugim (ali istim) imenom.",
 	"warning-duplicate-archive-message": "Naloženo je obstajalo pod drugim (ali istim) imenom, vendar je bilo izbrisano.",
+	"warning-was-deleted-message": "Datoteka s tem imenom je obstajala, vendar je bila izbrisana.",
 	"warning-exists-footer": "Izberite drugo ime ali uporabite Prepiši.",
 	"warning-badfilename-footer": "Morda vsebuje $1",
 	"warning-badfilename-footer-cover": "Prepovedani ali nedovoljeni znaki.",
 	"warning-duplicate-footer": "Naložitev dvojnika morda ni zaželena.",
 	"warning-duplicate-archive-footer": "To lahko pomeni, da je datoteka neprimerna in je ne bi smeli naložiti.",
+	"warning-was-deleted-footer": "Za podrobnosti preverite dnevnik brisanja.",
 	"welcome": "Pozdravljeni, $1"
 }

@@ -67,5 +67,6 @@
 	"video-trim-to": "A",
 	"warning-duplicate-message": "Il file caricato esiste con un nome diverso (o con lo stesso nome).",
 	"warning-duplicate-archive-message": "Il file caricato esisteva con un nome diverso (o con lo stesso nome), ma è stato cancellato.",
+	"warning-was-deleted-message": "Il file con il nome indicato esisteva ma è stato cancellato.",
 	"welcome": "Benvenuto, $1"
 }

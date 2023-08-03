@@ -111,12 +111,12 @@
 	"warning-badfilename-message": "Warning message if the filename contains forbidden characters",
 	"warning-duplicate-message": "Warning message if the video is a duplicate of another video on Commons",
 	"warning-duplicate-archive-message": "Warning message if the video is a duplicate of a deleted video on Commons",
-	"warning-was-deleted-message":"Warning message if the video was deleted on Commons",
+	"warning-was-deleted-message": "Warning message if the video was deleted on Commons",
 	"warning-exists-footer": "Suggestion for Warning Exists",
 	"warning-badfilename-footer": "Link to the page that lists forbidden characters",
 	"warning-badfilename-footer-cover": "Title for the illegal characters link",
 	"warning-duplicate-footer": "Suggestion for Warning Duplicate",
 	"warning-duplicate-archive-footer": "Suggestion for Warning Duplicate Archive",
-	"warning-was-deleted-footer":"Suggestion for Warning Was Deleted.",
+	"warning-was-deleted-footer": "Suggestion for Warning Was Deleted.",
 	"welcome": "Welcome message shown in the navbar\n* $1 - The username in bold with a link to the user page on Wikimedia Commons"
 }

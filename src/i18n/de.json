@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Brettchenweber",
 			"Distel135",
 			"DraconicDark",
 			"FF-11",
@@ -110,10 +111,12 @@
 	"warning-badfilename-message": "Der angegebene Dateiname ist in diesem Wiki nicht akzeptabel. Bitte benenne die Datei um und versuche es erneut",
 	"warning-duplicate-message": "Die hochgeladene Datei existiert unter einem anderen (oder gleichen) Namen.",
 	"warning-duplicate-archive-message": "Die hochgeladene Datei existierte früher unter einem anderen (oder demselben) Namen, wurde aber gelöscht.",
+	"warning-was-deleted-message": "Die Datei mit dem angegebenen Namen existierte früher, wurde jedoch gelöscht.",
 	"warning-exists-footer": "Wähle einen anderen Namen oder verwende „Überschreiben“.",
 	"warning-badfilename-footer": "Es kann $1 enthalten",
 	"warning-badfilename-footer-cover": "Verbotene oder illegale Zeichen.",
 	"warning-duplicate-footer": "Das Hochladen eines Duplikats kann unerwünscht sein.",
 	"warning-duplicate-archive-footer": "Dies kann darauf hinweisen, dass die Datei ungeeignet ist und nicht hochgeladen werden sollte.",
+	"warning-was-deleted-footer": "Weitere Informationen findest du im Löschlogbuch.",
 	"welcome": "Willkommen,$1"
 }

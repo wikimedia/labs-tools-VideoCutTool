@@ -104,10 +104,12 @@
 	"warning-badfilename-message": "此 wiki 不接受提供該檔案名稱。請對檔案重新命名並重試",
 	"warning-duplicate-message": "上傳的檔案以不同（或相同）的名稱存在。",
 	"warning-duplicate-archive-message": "上傳內容曾以不同（或相同）的名稱存在，但已被刪除。",
+	"warning-was-deleted-message": "具指定名稱的檔案曾經存在，但已被刪除。",
 	"warning-exists-footer": "選擇不同的名稱或使用覆寫。",
 	"warning-badfilename-footer": "這可能包含$1",
 	"warning-badfilename-footer-cover": "禁止或違反規則的字元。",
 	"warning-duplicate-footer": "上傳副本是不可取的。",
 	"warning-duplicate-archive-footer": "這可能代表該檔案不合適且不應上傳。",
+	"warning-was-deleted-footer": "檢查刪除日誌來了解詳細資訊。",
 	"welcome": "歡迎，$1"
 }

@@ -107,10 +107,12 @@
 	"warning-badfilename-message": "Le nom de fichier fourni n’est pas accepté sur ce wiki. Veuillez renommer le fichier et réessayer",
 	"warning-duplicate-message": "Le fichier téléchargé existe sous un nom différent (ou le même).",
 	"warning-duplicate-archive-message": "Le fichier téléchargé avait existé sous un nom différent (ou le même), mais a été supprimé.",
+	"warning-was-deleted-message": "Le fichier avec le nom donné a existé, mais a été supprimé.",
 	"warning-exists-footer": "Choisir un autre nom ou utiliser Écraser.",
 	"warning-badfilename-footer": "Il peut contenir $1",
 	"warning-badfilename-footer-cover": "Caractères interdits ou illégaux.",
 	"warning-duplicate-footer": "Télécharger un doublon peut ne pas être souhaité",
 	"warning-duplicate-archive-footer": "Cela peut indiquer qu’un fichier n’est pas approprié et ne devrait pas être téléchargé.",
+	"warning-was-deleted-footer": "Vérifier le journal de suppression pour les détails.",
 	"welcome": "Bienvenue, $1"
 }
