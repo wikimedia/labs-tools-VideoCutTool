@@ -14,13 +14,8 @@ const server = createServer(app);
 server.listen(PORT);
 
 const io = new Server(server, {
-  cors: {
-    origin: ORIGIN,
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
-  transports: ['polling', 'websocket'],
-  allowEIO3: true,
+	transports: ['polling', 'websocket'],
+	allowEIO3: true
 });
 
 io.sockets.on('connection', (socket) => {

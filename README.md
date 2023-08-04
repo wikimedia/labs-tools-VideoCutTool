@@ -30,7 +30,7 @@ If it's for production, use call back URL as:
 <https://videocuttool.wmcloud.org/api/auth/mediawiki/callback>
 
 If it's for development, use call back URL as:
-<http://localhost:4000/api/auth/mediawiki/callback>
+<http://localhost:8000/api/auth/mediawiki/callback>
 
 ### Creating .env file
 
@@ -124,6 +124,54 @@ Install the following utilities:
 
 - git
 - docker
+
+### Setting up beta version
+
+Set up your Cloud VPS Horizon, from the above tutorial.
+
+beta-videocuttool instance using `ssh -J <username>@primary.bastion.wmflabs.org <username>@beta-videocuttool.videocuttool.eqiad1.wikimedia.cloud`
+
+> where _username_ is your gerrit-authorized username
+
+After setting up the cloud, set up Crontab, for syncing your beta with the current master
+
+- Create a file for storing the logs
+
+```
+sudo mkdir /app/logs
+```
+
+```
+sudo touch /app/logs/beta.log
+```
+
+- Create a crontab for the root user
+
+```
+sudo crontab -e
+```
+
+opens the Cron-tab for the root user, and paste the below line on the editor
+
+```
+0 * * * * /app/VideoCutTool/beta-sync.sh >> /app/logs/beta.log
+```
+
+> Note: The above line runs the beta-sync.sh file at every hour.
+
+If you couldn't find `/app/VideoCutTool` in the server instance, go ahead and install dependencies like
+
+- Git
+- [Docker Engine](https://docs.docker.com/engine/install/debian/)
+- Vim/Nano (Based on preference)
+
+via `apt` or some other package manager you prefer.
+
+- After installing these, go to `/app`, and use the above `git pull` command to get the repository on the beta-server
+- Now follow the above steps to set up crontab.
+- Make sure to run all the docker commands in the detached mode, via the -d flag
+
+If you face any issues regarding setting up beta instance, feel free to raise your queries on [phabricator](https://phabricator.wikimedia.org/tag/videocuttool/), or contact us via Zulip.
 
 ## Credits
 
