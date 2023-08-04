@@ -1,26 +1,37 @@
 version: '3.9'
 services:
-  videocuttool:
-    container_name: videocuttool
+  videocuttool-server:
+    container_name: videocuttool-server
     build:
       context: .
       dockerfile: Dockerfile.prd
     volumes:
       - ./src:/app/src:ro
       - ./server:/app/server
-      - ./public:/app/public
+      - ./data/video-data/videos:/app/server/videos
+      - ./data/video-data/public:/app/server/public
+      - ./data/video-data/tmp:/app/server/tmp
       - '/app/node_modules'
-    ports:
-      - '80:80'
-      - '4000:4000'
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgres://videocuttool:videocuttool@127.0.0.1:5432/videocuttool
-      BACKEND_URL: https://videocuttool.wmcloud.org/api/
+      DB_CONNECTION_URL: postgres://videocuttool:videocuttool@database:5432/videocuttool
     env_file:
       - .env.prod
-    depend_on:
+    links:
       - database
+    depends_on:
+      - database
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+       - '80:80'
+    links:
+      - videocuttool-server
+    depends_on:
+      - videocuttool-server
   database:
     restart: unless-stopped
     image: postgres:15
@@ -30,4 +41,4 @@ services:
       POSTGRES_DB: videocuttool
       PGDATA: /var/lib/postgresql/data/pg_data
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ./data/postgresql-data:/var/lib/postgresql/data

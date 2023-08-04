@@ -36,3 +36,11 @@ yarn-error.log*
 /server/tmp
 mongo-data
 postgres/pg_data
+data/postgresql-data/*
+data/postgresql-data/
+data/video-data/public/*
+!/data/video-data/public/.gitkeep
+data/video-data/tmp/*
+!/data/video-data/tmp/.gitkeep
+data/video-data/videos/*
+!/data/video-data/videos/.gitkeep

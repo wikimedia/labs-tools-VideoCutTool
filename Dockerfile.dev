@@ -3,7 +3,7 @@ FROM node:18
 
 # Install FFMPEG library
 RUN apt update -y
-RUN apt install ffmpeg -y nginx
+RUN apt install ffmpeg -y
 
 # Set the workdir /app
 WORKDIR /app

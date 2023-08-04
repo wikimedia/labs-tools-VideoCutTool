@@ -6,7 +6,7 @@
 		"prestart": "node ./config.js",
 		"start": "node ./bin/www",
 		"serve": "nodemon index.js --legacy-watch --trace-warnings",
-		"start:prod": "pm2 node index.js",
+		"start:prod": "node index.js",
 		"stop:prod": "pm2 stop app-server",
 		"test": "pm2 stop app-server"
 	},

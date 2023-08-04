@@ -55,7 +55,12 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 async function onListening() {
-  await Promise.all([User.sync({ alter: true }), Video.sync({ alter: true }), Settings.sync({ alter: true })]);
+	// The order here is important since Settings depends on Video which
+	// depends on User. Using Promise.all(...) will create a race condition
+	// where the tables will be created out of order
+	await User.sync( { alter: true } );
+	await Video.sync( { alter: true } );
+	await Settings.sync( { alter: true } );
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
   console.log(`Listening on ${bind}`);

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script is used to sync the beta branch with the master branch.
-# This script is run by the Crontab on the beta cloud server.
+# This script is run by the Crontab on the cloud server.
 
 
 echo "Syncing beta server with master branch..."
@@ -27,7 +27,7 @@ if [ "$before_pull_commit_hash" != "$after_pull_commit_hash" ]; then
     echo "Before pull commit hash: $before_pull_commit_hash"
     echo "After pull commit hash: $after_pull_commit_hash"
     git pull origin master
-    docker compose -f ./docker-compose.dev.yml up --build -Vd --force-recreate
+    docker compose -f ./docker-compose.prd.yml up --build -Vd --force-recreate
     echo "Beta server is now up to date with master branch."
 else
     echo "Beta server is already up to date with master branch."

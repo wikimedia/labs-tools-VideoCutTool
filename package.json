@@ -51,7 +51,7 @@
 		"postinstall": "npm --prefix ./server install",
 		"serve": "npm run serve --prefix server",
 		"dev": "cross-env NODE_ENV=development concurrently \"npm run start\" \"npm run serve\"",
-		"prd": "npm run start:prod --prefix server",
+		"prd": "node ./server/index.js",
 		"server": "node ./server/index.js"
 	},
 	"browserslist": [
