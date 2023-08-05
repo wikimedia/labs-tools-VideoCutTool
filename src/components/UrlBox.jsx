@@ -1,13 +1,19 @@
 import { useState, useRef, useContext, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Message } from '@wikimedia/react.i18n';
 import { Form, FormLabel } from 'react-bootstrap';
 import { GlobalContext } from '../context/GlobalContext';
+import { UserContext } from '../context/UserContext';
 import { VideoDetailsContext } from '../context/VideoDetailsContext';
-import { checkFileExist } from '../utils/video';
+import { checkFileExist, fetchVideoId, fetchViaUrl } from '../utils/video';
+import ENV_SETTINGS from '../env';
+const API_URL = ENV_SETTINGS().backend_url;
 
 function UrlBox(props) {
+	const navigate = useNavigate();
 	const { updateAppState } = useContext(GlobalContext);
-	const { setVideoDetails, setVideoUrl,setFile,setCurrentStep } = useContext(VideoDetailsContext);
+	const { setVideoDetails, setVideoUrl, setFile, setVideoId, setCurrentSubStep } = useContext(VideoDetailsContext);
+	const { currentUser } = useContext(UserContext);
 	const { title: requiredTitle } = props;
 	const allowedExtensions = 'mp4,webm,mov,flv,ogv';
 	const [mouseHover, setMouseHover] = useState(false);
@@ -25,7 +31,12 @@ function UrlBox(props) {
 		e.preventDefault();
 	};
 
-	const onFileUpload = e => {
+	useEffect(() => {
+		fetchViaUrl(updateAppState, setVideoDetails, setVideoUrl, setVideoId, navigate, currentUser,setCurrentSubStep);
+	}, []);
+
+
+	const onFileUpload = async (e) => {
 		const files = (e.dataTransfer && e.dataTransfer.files) || e.nativeEvent.target.files;
 		if (files.length === 0) {
 			return;
@@ -37,12 +48,17 @@ function UrlBox(props) {
 			alert('File extension not allowed. Currently we allow only ' + allowedExtensions + ' files.');
 			return;
 		}
-		setCurrentStep(2);
+
 		setFile(files[0]);
-		setVideoUrl(URL.createObjectURL(files[0]));
+		const fileurl = URL.createObjectURL(files[0])
+		setVideoUrl(fileurl);
 		setVideoDetails({
 			title: files[0].name.replace(/\s/g, '_')
 		});
+		await fetchVideoId(
+			files[0].name.replace(/\s/g, '_')
+			, fileurl, files[0], setVideoId, navigate, currentUser, setCurrentSubStep, updateAppState);
+
 	};
 
 	const dropped = e => {
@@ -51,14 +67,24 @@ function UrlBox(props) {
 		onFileUpload(e);
 	};
 
+	// Call the function to fetch the UUID
+
 	useEffect(() => {
 		setTitle(requiredTitle);
-		checkFileExist(requiredTitle, updateAppState,setVideoDetails, setVideoUrl,setCurrentStep,setCurrentStep);
+		checkFileExist(requiredTitle, updateAppState, setVideoDetails, setVideoUrl);
 	}, [requiredTitle]);
 
-	const onUrlInput = e => {
+	const onUrlInput = async (e) => {
 		setTitle(e.target.value);
-		checkFileExist(e.target.value, updateAppState,setVideoDetails, setVideoUrl,setCurrentStep);
+		try {
+			const result = await checkFileExist(e.target.value, updateAppState, setVideoDetails, setVideoUrl);
+			if (result) {
+				fetchVideoId(result.title, result.url, null, setVideoId, navigate, currentUser, setCurrentSubStep, updateAppState);
+			}
+		}
+		catch (e) {
+			console.log(e);
+		}
 	};
 
 	return (

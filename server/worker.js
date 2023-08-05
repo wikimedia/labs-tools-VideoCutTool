@@ -21,11 +21,6 @@ async function process() {
 		let error = false;
 		let videoPath = videoDownloadPath;
 
-		if (videoDownloadPath === null) {
-			const urlDownload = await utils.downloadVideo(inputVideoUrl, downloadingVideoInfo);
-			videoPath = urlDownload.videoPath;
-			error = urlDownload.error;
-		}
 		if (error || !videoPath || !fs.existsSync(videoPath)) {
 			return 'Error downloading video';
 		}

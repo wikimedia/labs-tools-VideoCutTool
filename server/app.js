@@ -6,8 +6,8 @@ const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const { randomUUID } = require('crypto');
 const PopupTools = require('popup-tools');
+const { processVideo, uploadVideos, downloadVideo, registerVideo } = require('./controllers/router-controller.js');
 
-const { processVideo, uploadVideos, downloadVideo } = require('./controllers/router-controller.js');
 const config = require('./config.js');
 const User = require('./models/User.js');
 const auth = require('./auth.js');
@@ -136,6 +136,7 @@ app.get('/logout', (req, res) => {
 app.post('/process', processVideo);
 app.post('/upload', uploadVideos);
 app.get('/download/:videopath', downloadVideo);
+app.post("/register", registerVideo );
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

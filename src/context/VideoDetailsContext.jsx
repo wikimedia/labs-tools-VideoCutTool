@@ -9,8 +9,8 @@ const VideoDetailsProvider = function VideoDetailsProvider(props) {
 	const [file, setFile] = useState(null);
 	const [videoDetails, setVideoDetails] = useState({});
 	const [processTime, setProcessTime] = useState('');
-	const [currentStep, setCurrentStep] = useState(1);
 	const [currentSubStep, setCurrentSubStep] = useState('');
+	const [videoId, setVideoId] = useState(null);
 	const contextValue = useMemo(
 		() => ({
 			videos,
@@ -23,10 +23,10 @@ const VideoDetailsProvider = function VideoDetailsProvider(props) {
 			setVideoDetails,
 			processTime,
 			setProcessTime,
-			currentStep,
-			setCurrentStep,
 			currentSubStep,
-			setCurrentSubStep
+			setCurrentSubStep,
+			videoId,
+			setVideoId
 		}),
 		[
 			videos,
@@ -39,10 +39,8 @@ const VideoDetailsProvider = function VideoDetailsProvider(props) {
 			setVideoDetails,
 			processTime,
 			setProcessTime,
-			currentStep,
-			setCurrentStep,
 			currentSubStep,
-			setCurrentSubStep
+			setCurrentSubStep, videoId, setVideoId
 		]
 	);
 	return (

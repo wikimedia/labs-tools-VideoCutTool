@@ -1,5 +1,7 @@
 import ENV_SETTINGS from '../env';
-const { phab_link, base_wiki_url } = ENV_SETTINGS();
+const { phab_link, base_wiki_url, backend_url: API_URL, file_url } = ENV_SETTINGS();
+
+
 
 /**
  * Get video date from either commons site or user uploads
@@ -14,8 +16,7 @@ const retrieveVideoData = async (
 	videoTitle,
 	updateAppState,
 	setVideoDetails,
-	setVideoUrl,
-	setCurrentStep
+	setVideoUrl
 ) => {
 	if (!videoUrl.includes('commons.wikimedia.org')) {
 		return;
@@ -36,14 +37,20 @@ const retrieveVideoData = async (
 		const { pages } = response.query;
 		if (Object.keys(pages)[0] !== '-1') {
 			const { user, canonicaltitle, comment, url } = pages[Object.keys(pages)[0]].videoinfo[0];
-			setCurrentStep(2);
 			setVideoUrl(url);
 			setVideoDetails({
 				author: user,
 				title: decodeURIComponent(canonicaltitle.slice(5)).replace(/\s/g, '_'),
 				comment
 			});
+			return {
+				author: user,
+				title: decodeURIComponent(canonicaltitle.slice(5)).replace(/\s/g, '_'),
+				comment,
+				url
+			};
 		}
+
 	} catch (err) {
 		updateAppState({
 			notification: {
@@ -68,8 +75,7 @@ const checkFileExist = async (
 	filePath,
 	updateAppState,
 	setVideoDetails,
-	setVideoUrl,
-	setCurrentStep
+	setVideoUrl
 ) => {
 	// First check if pattern File:(filename) exists
 	const matchPath = filePath.match(/File:(.*)$/);
@@ -93,14 +99,15 @@ const checkFileExist = async (
 			return;
 		}
 		// File exists, retrieve video data
-		await retrieveVideoData(
+		const result = await retrieveVideoData(
 			filePath,
 			fileName,
 			updateAppState,
 			setVideoDetails,
-			setVideoUrl,
-			setCurrentStep
+			setVideoUrl
 		);
+		return result;
+
 	} catch (err) {
 		updateAppState({
 			notification: {
@@ -122,7 +129,6 @@ const checkFileExist = async (
  * @returns {void}
  */
 const processVideo = async (formData, updateAppState, setCurrentSubStep) => {
-	const API_URL = ENV_SETTINGS().backend_url;
 	try {
 		const res = await fetch(`${API_URL}/process`, {
 			method: 'POST',
@@ -166,9 +172,8 @@ const uploadVideos = async (
 	updateAppState,
 	setVideoUrl,
 	setCurrentSubStep,
-	currentStep
+	navigate
 ) => {
-	const API_URL = ENV_SETTINGS().backend_url;
 
 	setShowProgress(true);
 	const uploadData = {
@@ -204,7 +209,7 @@ const uploadVideos = async (
 					footerId: 'task-uploaded-wikimedia-commons-footer'
 				}
 			});
-			currentStep(1);
+			navigate(`/`);
 			setCurrentSubStep('');
 			setVideoUrl('');
 		} else {
@@ -251,4 +256,58 @@ const uploadVideos = async (
 function toTitleCase(type) {
 	return type.charAt(0).toUpperCase() + type.slice(1);
 }
-export { checkFileExist, processVideo, uploadVideos, toTitleCase };
+
+const fetchVideoId = async (title, url, file, setVideoId, navigate, currentUser, setCurrentSubStep, updateAppState) => {
+	const formData = new FormData();
+	formData.append('title', JSON.stringify(title));
+	formData.append('url', JSON.stringify(url));
+	formData.append('user', JSON.stringify(currentUser));
+	formData.append('file', file);
+	try {
+		const response = await fetch(`${API_URL}/register`, {
+			method: 'POST',
+			body: formData,
+		});
+
+		const data = await response.json();
+		if (!response.ok) {
+			throw data;
+		}
+
+		setVideoId(data.id);
+		navigate(`/edit/${data.id}`)
+	} catch (err) {
+		if (err.message) {
+			setCurrentSubStep('');
+			updateAppState({
+				notification: {
+					type: 'error',
+					messageId: err.message,
+					footerId: 'notification-error-bug-call-to-action',
+					linkTitle: 'notifications-error-bug-report',
+					link: phab_link
+				}
+			});
+		}
+	}
+};
+
+const fetchViaUrl = async (updateAppState, setVideoDetails, setVideoUrl, setVideoId, navigate, currentUser,setCurrentSubStep) => {
+	const currentUrl = window.location.href;
+	if (!currentUrl.includes('title')) {
+		return;
+	}
+	const decodedTitle = decodeURIComponent(currentUrl.split('?title=')[1]);
+	const originalUrl = `${file_url}${decodedTitle}`;
+	try {
+		const result = await checkFileExist(originalUrl, updateAppState, setVideoDetails, setVideoUrl);
+		if (result) {
+			fetchVideoId(result.title, result.url, null, setVideoId, navigate, currentUser, setCurrentSubStep, updateAppState);
+		}
+	}
+	catch (e) {
+		console.log(e);
+	}
+}
+
+export { checkFileExist, processVideo, uploadVideos, toTitleCase, fetchVideoId, fetchViaUrl };

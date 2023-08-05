@@ -2,7 +2,7 @@ import { render, cleanup } from '@testing-library/react';
 import { UserContext } from '../context/UserContext';
 import Authentication from '../components/Authentication';
 import { onLogOut, onLogin } from '../utils/auth';
-import { Message } from '@wikimedia/react.i18n';
+
 
 import PopupTools from 'popup-tools';
 import ENV_SETTINGS from '../env';

@@ -101,7 +101,7 @@ function Header(props) {
 				</div>
 			</div>
 			<div className="user-wrapper">
-				<Authentication apiUrl={apiUrl} />
+				<Authentication  />
 				<Dropdown autoClose={false}>
 					<Dropdown.Toggle
 						variant="secondary"

@@ -13,6 +13,9 @@ import {
 } from 'react-bootstrap-icons';
 import { Message } from '@wikimedia/react.i18n';
 import { GlobalContext } from '../context/GlobalContext';
+import { List } from 'react-bootstrap-icons';
+import logo from '../logo.svg';
+import { Image } from 'react-bootstrap';
 
 import { VideoDetailsContext } from '../context/VideoDetailsContext';
 import { UserContext } from '../context/UserContext';
@@ -25,6 +28,11 @@ import { storeItem, getStoredItem, clearItems } from '../utils/storage';
 import { formatTime } from '../utils/time';
 import Slider from '../components/Slider';
 import { toTitleCase, processVideo } from '../utils/video';
+import Header from '../components/Header';
+import ENV_SETTINGS from '../env';
+import Footer from '../components/Footer';
+import Notification from '../components/Notification';
+
 
 /**
  * Handle videos settings UI and actions
@@ -33,13 +41,14 @@ import { toTitleCase, processVideo } from '../utils/video';
  */
 function VideoSettings() {
 	const { updateAppState, appState } = useContext(GlobalContext);
-	const { socketId } = appState;
+	const { socketId ,notifications} = appState;
 	const { currentUser } = useContext(UserContext);
-	const { videoUrl, currentSubStep, setCurrentSubStep, file } = useContext(VideoDetailsContext);
+	const { videoUrl, currentSubStep, setCurrentSubStep, file, videoId, setVideoUrl, setVideoDetails } = useContext(VideoDetailsContext);
 
 	const videoPlayer = useRef(null);
 	const trims = useRef(null);
 	const trimMode = useRef('single');
+	const { backend_url: backendUrl } = ENV_SETTINGS();
 
 	// Hash to reset trim
 	const trimHash = useRef(getStoredItem('video-trim-hash') || Date.now());
@@ -393,9 +402,9 @@ function VideoSettings() {
 
 		setCurrentSubStep('process');
 		const formData = new FormData();
+		formData.append("videoid", videoId)
 		formData.append('data', JSON.stringify(settingData));
 		formData.append('user', JSON.stringify(userinfo));
-		formData.append('file', file);
 		await processVideo(formData, updateAppState, setCurrentSubStep);
 	};
 
@@ -554,8 +563,30 @@ function VideoSettings() {
 			</div>
 		</div>
 	);
+	const toggleHeader = () => {
+		const status = !showHeader;
+		document.body.setAttribute('data-sidebar', status ? 'show' : 'hide');
+		setShowHeader(status);
+	};
 
-	return currentSubStep !== 'process' ? settingsComponent : <VideoProcess settings={settings} />;
+	return (
+		<div id="main-container">
+			<Header apiUrl={backendUrl} />
+			<div id="content" className="flex-column">
+			<div className="logo-wrapper flex-sm-row">
+					<span className="menu-icon" data-testid="sidebar-toggle-button" onClick={toggleHeader}>
+						<List size="25" />
+					</span>
+					<Image alt="logo" src={logo} width="100" height="40" />
+					<h1 className="text-white" data-testid="title">
+						<Message id="title" />
+					</h1>
+				</div>
+				{currentSubStep !== 'process' ? settingsComponent : <VideoProcess settings={settings} />}
+				<Footer />
+			</div>
+			{notifications && notifications.length > 0 && <Notification />}
+		</div>);
 }
 
 export default VideoSettings;

@@ -1,7 +1,8 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../postgres.js');
+const Video = require('./Video.js');
 
-class Settings extends Model {}
+class Settings extends Model { }
 
 Settings.init(
 	{

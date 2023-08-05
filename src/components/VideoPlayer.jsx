@@ -170,7 +170,8 @@ const VideoPlayer = forwardRef((props, forwardedRef) => {
 			data-error={videoAttr.error ? 'true' : 'false'}
 		>
 			<Spinner animation="border" variant="primary" />
-			<div className="video-error-container">{videoAttr.error_message}</div>
+			{videoAttr.error ? <div className="video-error-container">{videoAttr.error_message}</div> : ''}
+
 
 			<div id="video-player">
 				<video

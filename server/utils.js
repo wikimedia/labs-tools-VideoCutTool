@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const { parentPort } = require('worker_threads');
+const { exec } = require('child_process');
 
 const fsPromises = fs.promises;
 
@@ -27,11 +28,11 @@ function convertTimeToMs(time) {
  */
 function deleteFiles(files) {
 	if (!Array.isArray(files)) {
-		fs.unlink(files, () => {});
+		fs.unlink(files, () => { });
 		return;
 	}
 	files.forEach(file => {
-		fs.unlink(file, () => {});
+		fs.unlink(file, () => { });
 	});
 }
 
@@ -144,25 +145,6 @@ function spawnAsyn(args, stage, videoId, resolveObj = {}, trimDuration = {}) {
 			return reject(code);
 		});
 	});
-}
-
-/**
- * Async function to download video before processing
- *
- * @param {string} url Url of the video
- * @param {obj} videoInfo Details of the video
- * @returns {obj} Object with video path on success, or error property on failure
- */
-async function downloadVideo(url, videoInfo) {
-	const { videoName = url, videoId } = videoInfo;
-	const videoExtension = videoName.split('.').pop().toLowerCase();
-	const videoDownloadPath = path.join(
-		__dirname,
-		'videos',
-		`video_${Date.now()}_${parseInt(Math.random() * 10000, 10)}.${videoExtension}`
-	);
-	const cmdArray = ['-y', '-i', url, '-vcodec', 'copy', '-acodec', 'copy', videoDownloadPath];
-	return spawnAsyn(cmdArray, 'downloading', videoId, { videoPath: videoDownloadPath });
 }
 
 /**
@@ -388,13 +370,35 @@ async function moveVideosToPublic(videoPaths) {
 
 	return videos;
 }
+/**
+ * Async function to download video before processing
+ *
+ * @param {string} url Url of the video
+ * @param {string} videoDownloadPath Details of the downloaded video path
+ * @returns {string} String with video path on success, or error property on failure
+ */
+async function download(url,videoDownloadPath) {
+	const command = `ffmpeg -y -i "${url}" -vcodec copy -acodec copy '${videoDownloadPath}'`;
+
+	exec(command, (error, stdout, stderr) => {
+		if (error) {
+			console.error(`Error: ${error}`);
+			return;
+		}
+
+		console.log(`Standard Output:\n${stdout}`);
+		console.error(`Standard Error:\n${stderr}`);
+
+	});
+	return videoDownloadPath;
+}
 
 module.exports = {
 	deleteFiles,
-	downloadVideo,
 	concatVideos,
 	trimVideos,
 	convertVideoFormat,
 	manipulateVideo,
-	moveVideosToPublic
+	moveVideosToPublic,
+	download
 };

@@ -5,17 +5,16 @@ import { GlobalContext } from '../context/GlobalContext';
 import { onLogin, onLogOut } from '../utils/auth';
 import ENV_SETTINGS from '../env';
 
-const { base_wiki_url } = ENV_SETTINGS();
+const { base_wiki_url,backend_url } = ENV_SETTINGS();
 import { UserContext } from '../context/UserContext';
 import GeneralPopover from './GeneralPopover';
 
-function Authentication(props) {
+function Authentication() {
 	const { updateAppState } = useContext(GlobalContext);
-	const { apiUrl } = props;
 	const { setCurrentUser, currentUser: user } = useContext(UserContext);
 	// Login redirect URL to the back-end server
 	const handleLogin = () => {
-		onLogin(apiUrl, setCurrentUser, updateAppState);
+		onLogin(backend_url, setCurrentUser, updateAppState);
 	};
 
 	const handleLogOut = () => {

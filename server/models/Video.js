@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../postgres.js');
 const Settings = require('./Settings.js');
 
-class Video extends Model {}
+class Video extends Model { }
 
 Video.init(
 	{
@@ -10,7 +10,10 @@ Video.init(
 			type: DataTypes.STRING,
 			primaryKey: true
 		},
-		url: DataTypes.STRING,
+		url: {
+			type:DataTypes.STRING,
+			defaultValue:'',
+		},
 		videoDownloadPath: DataTypes.STRING,
 		videoPublicPaths: DataTypes.ARRAY(DataTypes.STRING),
 		videoName: DataTypes.STRING,

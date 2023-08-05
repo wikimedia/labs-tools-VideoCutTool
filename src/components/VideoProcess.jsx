@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Message, BananaContext } from '@wikimedia/react.i18n';
 import { GlobalContext } from '../context/GlobalContext';
 import { VideoDetailsContext } from '../context/VideoDetailsContext';
@@ -7,17 +8,18 @@ import ProgressBar from './ProgressBar';
 import ENV_SETTINGS from '../env';
 
 function VideoProcess(props) {
+	const navigate = useNavigate()
 	const { phab_link } = ENV_SETTINGS();
 	const banana = useContext(BananaContext);
 	const { updateAppState } = useContext(GlobalContext);
-	const { setVideos, setProcessTime, setCurrentSubStep,setCurrentStep} = useContext(VideoDetailsContext);
+	const { setVideos, setProcessTime, setCurrentSubStep, videoId } = useContext(VideoDetailsContext);
 
 	const { settings } = props;
 
 	const [progressInfo, setProgressInfo] = useState(null);
 	const [currentTask, setCurrentTask] = useState(banana.i18n('task-processing'));
 
-	
+
 	const isSettingModified = settingType => {
 		const findSetting = settings.filter(setting => setting.type === settingType);
 		return findSetting[0].modified;
@@ -56,7 +58,8 @@ function VideoProcess(props) {
 
 				setCurrentTask(currentTaskString);
 			} else if (status === 'done') {
-				setCurrentStep(3)
+				navigate(`/upload/${videoId}`)
+				setCurrentSubStep('')
 				setVideos(progressData.videos);
 				setProcessTime(progressData.timeTaken);
 			} else if (status === 'error') {

@@ -1,11 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Home from '../pages/home';
 import { vi } from 'vitest';
 import { GlobalContext } from '../context/GlobalContext';
 import { UserContext } from '../context/UserContext';
 import { VideoDetailsContext } from '../context/VideoDetailsContext';
 import { clearItems, getStoredItem } from '../utils/storage';
+import ENV_SETTINGS from '../env';
+import { Message } from '@wikimedia/react.i18n';
 
 vi.mock('../utils/storage', () => ({
 	clearItems: vi.fn(),
@@ -22,6 +25,19 @@ vi.mock('../utils/socket', () => {
 		}
 	};
 });
+
+vi.mock('react-router-dom', async () => {
+	const actual = await vi.importActual('react-router-dom');
+	return {
+		...actual,
+		__esModule: true,
+		BrowserRouter: ({ children }) => <div>{children}</div>,
+		Routes: ({ children }) => <div>{children}</div>,
+		Route: ({ element }) => element,
+		useNavigate: vi.fn(),
+	};
+});
+
 
 describe('Home component', () => {
 	it('should toggle sidebar on click', () => {
@@ -53,7 +69,16 @@ describe('Home component', () => {
 							setVideoUrl
 						}}
 					>
-						<Home />
+						<BrowserRouter>
+							<Routes>
+								<Route
+									exact
+									path={ENV_SETTINGS().path}
+									element={<Home />}
+									title={<Message id="title" />}
+								/>
+							</Routes>
+						</BrowserRouter>
 					</VideoDetailsContext.Provider>
 				</UserContext.Provider>
 			</GlobalContext.Provider>
@@ -94,7 +119,16 @@ describe('Home component', () => {
 							setVideoUrl
 						}}
 					>
-						<Home />
+						<BrowserRouter>
+							<Routes>
+								<Route
+									exact
+									path={ENV_SETTINGS().path}
+									element={<Home />}
+									title={<Message id="title" />}
+								/>
+							</Routes>
+						</BrowserRouter>
 					</VideoDetailsContext.Provider>
 				</UserContext.Provider>
 			</GlobalContext.Provider>
@@ -131,7 +165,16 @@ describe('Home component', () => {
 							setVideoUrl
 						}}
 					>
-						<Home />
+						<BrowserRouter>
+							<Routes>
+								<Route
+									exact
+									path={ENV_SETTINGS().path}
+									element={<Home />}
+									title={<Message id="title" />}
+								/>
+							</Routes>
+						</BrowserRouter>
 					</VideoDetailsContext.Provider>
 				</UserContext.Provider>
 			</GlobalContext.Provider>
@@ -177,7 +220,16 @@ describe('Home component', () => {
 							setVideoUrl
 						}}
 					>
-						<Home />
+						<BrowserRouter>
+							<Routes>
+								<Route
+									exact
+									path={ENV_SETTINGS().path}
+									element={<Home />}
+									title={<Message id="title" />}
+								/>
+							</Routes>
+						</BrowserRouter>
 					</VideoDetailsContext.Provider>
 				</UserContext.Provider>
 			</GlobalContext.Provider>

@@ -9,6 +9,7 @@ const Video = require('../models/Video.js');
 const Settings = require('../models/Settings.js');
 const { blob } = require('stream/consumers');
 
+
 const uploadVideos = async (req, res) => {
 	const { CLIENT_ID, CLIENT_SECRET, BASE_WIKI_URL } = config();
 	const BASE_URL = `${BASE_WIKI_URL}/w/api.php?`;
@@ -151,33 +152,32 @@ const uploadVideos = async (req, res) => {
 		return res.status(status).send({ success, message, type, warnings });
 	}
 };
-
+const getVideoDownloadPathById = async (videoId) => {
+	try {
+		const video = await Video.findOne({
+			where: { id: videoId },
+			attributes: ['videoDownloadPath'],
+		});
+		if (!video) {
+			throw new Error('Video not found');
+		}
+		return video.videoDownloadPath;
+	} catch (error) {
+		console.error('Error fetching videoDownloadPath:', error);
+		return null;
+	}
+};
 const processVideo = async (req, res) => {
 	const io = req.app.get('socketio');
 
-	const uploadedFile = req.files?.file;
+	const videoId = req.body.videoid;
+
 	let videoIdResponse = '';
 	try {
-		let videoDownloadPath = null;
-		// Handle file process from upload
-		if (uploadedFile !== undefined) {
-			const { name } = uploadedFile;
-			const videoExtension = name.split('.').pop().toLowerCase();
-			videoDownloadPath = path.join(
-				__dirname,
-				'..',
-				'videos',
-				`video_${Date.now()}_${parseInt(Math.random() * 10000, 10)}.${videoExtension}`
-			);
-
-			// Create a promise for the callback
-			await new Promise((resolve, reject) => {
-				uploadedFile.mv(videoDownloadPath, err => (err ? reject(err) : resolve()));
-			});
-		}
-
 		const { crop, inputVideoUrl, trimMode, trims, modified, rotateValue, videoName, volume } =
 			JSON.parse(req.body.data);
+
+		const videoDownloadPath = await getVideoDownloadPathById(videoId);
 
 		const user = JSON.parse(req.body.user);
 
@@ -188,18 +188,6 @@ const processVideo = async (req, res) => {
 			throw e;
 		}
 
-		await User.upsert(user);
-		const userDoc = await User.findOne({ mediawikiId: user.mediawikiId });
-		const videoData = {
-			id: randomUUID(),
-			url: inputVideoUrl,
-			videoDownloadPath,
-			uploadedBy: userDoc.mediawikiId,
-			status: 'downloading',
-			videoName,
-			UserMediawikiId: user.mediawikiId
-		};
-
 		const SettingsData = {
 			trims,
 			trimMode,
@@ -207,16 +195,11 @@ const processVideo = async (req, res) => {
 			modified,
 			rotateValue,
 			volume,
-			VideoId: videoData.id
+			VideoId: videoId
 		};
+		await Settings.update(SettingsData, { where: { VideoId: videoId } });
 
-		const videoDbObj = await Video.create(videoData);
-		await videoDbObj.save();
-		const videoSettingsDbObj = await Settings.create(SettingsData);
-		await videoSettingsDbObj.save();
-		const videoId = videoData.id;
-
-		videoIdResponse = JSON.stringify({ videoId: videoData.id });
+		videoIdResponse = JSON.stringify({ videoId: videoId });
 
 		const worker = new Worker(path.resolve(__dirname, '../worker.js'), {
 			workerData: {
@@ -287,8 +270,72 @@ const downloadVideo = (req, res) => {
 	res.download(file);
 };
 
+const registerVideo = async (req, res) => {
+	const videoid = randomUUID();
+	const videoName = JSON.parse(req.body.title);
+	const user = JSON.parse(req.body.user);
+	const url = req.body.url ? req.body.url : '';
+	const uploadedFile = req.files?.file;
+
+	const videoExtension = videoName.split('.').pop().toLowerCase();
+	const videoDownloadPath = path.join(
+		__dirname,
+		'../videos',
+		`video_${Date.now()}_${parseInt(Math.random() * 10000, 10)}.${videoExtension}`
+	);
+
+	try {
+		if (!user) {
+			const e = new Error('login-alert-preview');
+			e.success = false;
+			e.status = 400;
+			throw e;
+		}
+		if (url.includes('wikimedia')) {
+			await utils.download(url, videoDownloadPath);
+		}
+		else {
+			await new Promise((resolve, reject) => {
+				uploadedFile.mv(videoDownloadPath, err => (err ? reject(err) : resolve()));
+			});
+		}
+		await User.upsert(user);
+		const userDoc = await User.findOne({ mediawikiId: user.mediawikiId });
+		const videoData = {
+			id: videoid,
+			url: url,
+			videoDownloadPath,
+			uploadedBy: userDoc.mediawikiId,
+			status: 'downloading',
+			videoName,
+			UserMediawikiId: user.mediawikiId
+		};
+		const SettingsData = {
+			rotateValue: 0,
+			trimMode: 'single',
+			trims: [],
+			modified: {},
+			crop: {},
+			volume: 0,
+			VideoId: videoData.id
+		};
+		const videoDbObj = await Video.create(videoData);
+		await videoDbObj.save();
+
+		const videoSettingsDbObj = await Settings.create(SettingsData);
+		await videoSettingsDbObj.save();
+
+		res.send({ id: videoid });
+	} catch (err) {
+		console.log(err);
+		const { status, message, success } = err;
+		return res.status(status).send({ success, message });
+	}
+}
+
 module.exports = {
 	downloadVideo,
 	processVideo,
-	uploadVideos
+	uploadVideos,
+	registerVideo
 };
