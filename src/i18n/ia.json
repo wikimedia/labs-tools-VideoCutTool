@@ -104,10 +104,12 @@
 	"warning-badfilename-message": "Le nomine de file fornite non es acceptabile sur iste wiki. Per favor renomina le file e essaya lo de novo",
 	"warning-duplicate-message": "Le file incargate existe sub un altere (o le mesme) nomine.",
 	"warning-duplicate-archive-message": "Le file incargate existeva sub un altere (o le mesme) nomine ma ha essite delite.",
+	"warning-was-deleted-message": "Le file con le nomine indicate existeva, ma ha essite delite.",
 	"warning-exists-footer": "Elige un altere nomine o usa Superscriber.",
 	"warning-badfilename-footer": "Illo pote continer $1",
 	"warning-badfilename-footer-cover": "Characteres prohibite o non valide",
 	"warning-duplicate-footer": "Incargar un duplicato pote esser indesirabile.",
 	"warning-duplicate-archive-footer": "Isto pote indicar que le file es inappropriate e non debe esser incargate.",
+	"warning-was-deleted-footer": "Consulta le registro de deletiones pro detalios.",
 	"welcome": "Benvenite, $1"
 }
