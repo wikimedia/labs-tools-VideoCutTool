@@ -137,27 +137,27 @@ After setting up the cloud, set up Crontab, for syncing your beta with the curre
 
 - Create a file for storing the logs
 
-```
+```sh
 sudo mkdir /app/logs
 ```
 
-```
+```sh
 sudo touch /app/logs/beta.log
 ```
 
 - Create a crontab for the root user
 
-```
+```sh
 sudo crontab -e
 ```
 
 opens the Cron-tab for the root user, and paste the below line on the editor
 
-```
-0 * * * * /app/VideoCutTool/beta-sync.sh >> /app/logs/beta.log
+```s
+0 * * * * /app/VideoCutTool/server-sync.sh >> /app/logs/beta.log
 ```
 
-> Note: The above line runs the beta-sync.sh file at every hour.
+> Note: The above line runs the server-sync.sh file at every hour.
 
 If you couldn't find `/app/VideoCutTool` in the server instance, go ahead and install dependencies like
 
