@@ -23,7 +23,9 @@ body[theme='dark'] {
 
 		#url-box .drop-area {
 			border-color: $border-color;
-
+			input ::placeholder{
+				color:#b6e2fa;
+			}
 			.drop-area-click {
 				background-color: $bg-color-accent3;
 			}
