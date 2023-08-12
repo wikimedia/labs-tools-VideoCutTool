@@ -12,6 +12,7 @@ services:
       - ./data/video-data/public:/app/server/public
       - ./data/video-data/tmp:/app/server/tmp
       - '/app/node_modules'
+      - /app/server/node_modules/
     environment:
       NODE_ENV: production
       DB_CONNECTION_URL: postgres://videocuttool:videocuttool@database:5432/videocuttool
