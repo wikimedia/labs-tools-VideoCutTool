@@ -84,7 +84,7 @@ function Results() {
 					'{{self|cc-by-sa-4.0}}\n',
 					'[[Category:VideoCutTool]]\n',
 					`{{Extracted from|File:${title}}}`
-				],
+				].join('\n'),
 				selectedOptionName: 'new-file',
 				displayUploadToCommons: true
 			};
@@ -103,6 +103,14 @@ function Results() {
 	const updateTitle = (index, title) => {
 		updateVideoState({ title }, index);
 		setWantTitle(title);
+	};
+
+	const updateComment = (index, comment) => {
+		updateVideoState({ comment }, index);
+	};
+
+	const updateWikiText = (index, text) => {
+		updateVideoState({ text }, index);
 	};
 
 	const uploadVideo = async () => {
@@ -177,7 +185,11 @@ function Results() {
 										<ChatLeftTextFill size="18" />
 									</InputGroup.Text>
 
-									<Form.Control type="text" defaultValue={video.comment} />
+									<Form.Control
+										type="text"
+										defaultValue={video.comment}
+										onChange={e => updateComment(index, e.target.value)}
+									/>
 								</InputGroup>
 
 								<InputGroup className="mb-3" title={banana.i18n('upload-text')}>
@@ -185,7 +197,12 @@ function Results() {
 										<CardText size="18" />
 									</InputGroup.Text>
 
-									<Form.Control as="textarea" rows={15} defaultValue={video.text.join('\n')} />
+									<Form.Control
+										as="textarea"
+										rows={15}
+										defaultValue={video.text}
+										onChange={e => updateWikiText(index, e.target.value)}
+									/>
 								</InputGroup>
 								<div className="upload-button d-flex justify-content-between">
 									<Button onClick={uploadVideo}>

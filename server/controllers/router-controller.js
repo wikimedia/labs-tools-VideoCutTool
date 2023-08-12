@@ -77,7 +77,7 @@ const uploadVideos = async (req, res) => {
 			uploadParams.append('token', csrfToken);
 			uploadParams.append('file', file, { knownLength: fs.statSync(filePath).size });
 			uploadParams.append('filename', title);
-			uploadParams.append('text', text.join('\r\n'));
+			uploadParams.append('text', text);
 			uploadParams.append('comment', comment);
 
 			let url = `${BASE_URL}?&action=upload&format=json`;
