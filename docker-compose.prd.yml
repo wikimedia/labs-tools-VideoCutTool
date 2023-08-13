@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   videocuttool-server:
-    restart: restart-always
+    restart: always
     container_name: videocuttool-server
     build:
       context: .
