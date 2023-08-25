@@ -68,7 +68,8 @@ const VideoPlayer = forwardRef((props, forwardedRef) => {
 			duration: videoEl.current.duration,
 			videoWidth: videoEl.current.videoWidth,
 			videoHeight: videoEl.current.videoHeight,
-			loading: false
+			loading: false,
+			error: false
 		});
 		if (onCanPlay) {
 			onCanPlay();
