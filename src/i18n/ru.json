@@ -47,6 +47,8 @@
 	"report-issues": "Сообщить о проблемах",
 	"repository": "Репозиторий",
 	"reset-text": "Сбросить",
+	"rotate-left": "Влево",
+	"rotate-right": "Вправо",
 	"setting-audio": "Удалить аудио",
 	"setting-crop": "Откадрировать видео",
 	"setting-rotate": "Повернуть видео",
@@ -100,9 +102,13 @@
 	"video-trim-title": "Настройки обрезки видео",
 	"video-trim-to": "До",
 	"warning-exists-message": "Файл с таким именем уже существует.",
+	"warning-badfilename-message": "Указанное имя файла неприемлемо для этой вики. Пожалуйста, переименуйте файл и повторите попытку.",
+	"warning-duplicate-message": "Загруженный файл существует под другим (или тем же) именем.",
+	"warning-was-deleted-message": "Файл с данным именем существовал, но был удалён.",
 	"warning-exists-footer": "Выберите другое имя или используйте перезапись.",
 	"warning-badfilename-footer": "Может содержать $1",
 	"warning-badfilename-footer-cover": "Запрещённые или недопустимые символы.",
 	"warning-duplicate-footer": "Загрузка дубликата может быть нежелательной.",
+	"warning-was-deleted-footer": "Подробности смотрите в журнале удалений.",
 	"welcome": "Добро пожаловать, $1"
 }
